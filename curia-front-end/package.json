@@ -7,7 +7,10 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "test": "jest --watchAll",
+    "test": "npx playwright test",
+    "test:debug": "npx playwright test --debug",
+    "test:ui": "npx playwright test --ui",
+    "test:gen": "npx playwright codegen",
     "lint": "expo lint",
     "build:web": "expo export -p web && npx workbox-cli generateSW workbox-config.js"
   },
@@ -42,7 +45,9 @@
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
+    "@playwright/test": "^1.51.1",
     "@types/jest": "^29.5.12",
+    "@types/node": "^22.14.0",
     "@types/react": "~18.3.12",
     "@types/react-test-renderer": "^18.3.0",
     "jest": "^29.2.1",
