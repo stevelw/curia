@@ -14,7 +14,8 @@
     "lint": "eslint .",
     "build:web": "expo export -p web && npx workbox-cli generateSW workbox-config.js",
     "deploy:dev": "npm run build:web && netlify deploy --dir=dist",
-    "deploy:prod": "npm run build:web && netlify deploy --prod --dir=dist"
+    "deploy:prod": "npm run build:web && netlify deploy --prod --dir=dist",
+    "pre-commit": "eslint . && npx playwright test"
   },
   "jest": {
     "preset": "jest-expo"

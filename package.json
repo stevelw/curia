@@ -9,7 +9,8 @@
   "author": "Steve Locke-Wheaton",
   "type": "module",
   "scripts": {
-    "prepare": "husky"
+    "prepare": "husky",
+    "pre-commit": "npm run pre-commit --prefix curia-front-end"
   },
   "dependencies": {},
   "devDependencies": {
