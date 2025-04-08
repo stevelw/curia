@@ -1,6 +1,8 @@
 module.exports = {
-  extends: "expo",
+  extends: ["expo", "prettier"],
+  plugins: ["prettier"],
   rules: {
     "no-console": "warn",
+    "prettier/prettier": "error",
   },
 };
