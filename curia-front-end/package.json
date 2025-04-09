@@ -1,15 +1,15 @@
 {
-  "name": "curia-front-end",
+  "name": "curia",
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {
     "start": "expo start",
-    "reset-project": "node ./scripts/reset-project.js",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
     "test": "jest --watchAll",
-    "lint": "expo lint"
+    "lint": "expo lint",
+    "build:web": "expo export -p web && npx workbox-cli generateSW workbox-config.js"
   },
   "jest": {
     "preset": "jest-expo"

@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "curia-front-end",
-    "slug": "curia-front-end",
+    "name": "Curia",
+    "slug": "curia",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -19,7 +19,7 @@
     },
     "web": {
       "bundler": "metro",
-      "output": "static",
+      "output": "single",
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
