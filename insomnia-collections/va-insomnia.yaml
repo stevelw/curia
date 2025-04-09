@@ -1,0 +1,55 @@
+type: collection.insomnia.rest/5.0
+name: V&A
+meta:
+  id: wrk_9314fce876494e7d9acb661c6f185ae0
+  created: 1744205080445
+  modified: 1744205080445
+collection:
+  - url: "{{ _.base_URL }}/objects/search"
+    name: Search
+    meta:
+      id: req_32bfd5fe90464b2183edd4c9b5d0b365
+      created: 1744205750947
+      modified: 1744206845458
+      isPrivate: false
+      sortKey: -1744205750947
+    method: GET
+    parameters:
+      - id: pair_05884b00868546a4b3c28fd95e540a4a
+        name: q
+        value: china
+        disabled: false
+      - id: pair_3b12e572232242678b1bac0f8ddb3d05
+        name: page_size
+        value: "10"
+        disabled: false
+      - id: pair_5e65374cc4154fccbfa26aa173296417
+        name: page
+        value: "1"
+        disabled: false
+    headers:
+      - name: User-Agent
+        value: insomnia/11.0.2
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_e7df115d4f86bd5f84180bfdc531fec546ef487e
+    created: 1744205080466
+    modified: 1744205080466
+environments:
+  name: Base Environment
+  meta:
+    id: env_e7df115d4f86bd5f84180bfdc531fec546ef487e
+    created: 1744205080464
+    modified: 1744205738008
+    isPrivate: false
+  data:
+    base_URL: https://api.vam.ac.uk/v2
