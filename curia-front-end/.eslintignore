@@ -1,0 +1,9 @@
+node_modules/**
+package.json
+yarn.lock
+dist/**
+assets/**
+.vscode
+.expo-shared
+.prettirrc
+.eslintrc.js

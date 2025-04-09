@@ -11,10 +11,11 @@
     "test:debug": "npx playwright test --debug",
     "test:ui": "npx playwright test --ui",
     "test:gen": "npx playwright codegen",
-    "lint": "expo lint",
+    "lint": "eslint .",
     "build:web": "expo export -p web && npx workbox-cli generateSW workbox-config.js",
     "deploy:dev": "npm run build:web && netlify deploy --dir=dist",
-    "deploy:prod": "npm run build:web && netlify deploy --prod --dir=dist"
+    "deploy:prod": "npm run build:web && netlify deploy --prod --dir=dist",
+    "pre-commit": "eslint . && npx playwright test"
   },
   "jest": {
     "preset": "jest-expo"
@@ -52,8 +53,13 @@
     "@types/node": "^22.14.0",
     "@types/react": "~18.3.12",
     "@types/react-test-renderer": "^18.3.0",
+    "eslint": "8",
+    "eslint-config-expo": "~8.0.1",
+    "eslint-config-prettier": "^10.1.1",
+    "eslint-plugin-prettier": "^5.2.6",
     "jest": "^29.2.1",
     "jest-expo": "~52.0.6",
+    "prettier": "^3.5.3",
     "react-test-renderer": "18.3.1",
     "typescript": "^5.3.3"
   },

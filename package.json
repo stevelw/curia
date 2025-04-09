@@ -1,0 +1,19 @@
+{
+  "name": "curia",
+  "version": "1.0.0",
+  "homepage": "https://github.com/stevelw/curia#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stevelw/curia.git"
+  },
+  "author": "Steve Locke-Wheaton",
+  "type": "module",
+  "scripts": {
+    "prepare": "husky",
+    "pre-commit": "npm run pre-commit --prefix curia-front-end"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "husky": "^9.1.7"
+  }
+}
