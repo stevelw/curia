@@ -12,7 +12,9 @@
     "test:ui": "npx playwright test --ui",
     "test:gen": "npx playwright codegen",
     "lint": "expo lint",
-    "build:web": "expo export -p web && npx workbox-cli generateSW workbox-config.js"
+    "build:web": "expo export -p web && npx workbox-cli generateSW workbox-config.js",
+    "deploy:dev": "npm run build:web && netlify deploy --dir=dist",
+    "deploy:prod": "npm run build:web && netlify deploy --prod --dir=dist"
   },
   "jest": {
     "preset": "jest-expo"
