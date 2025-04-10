@@ -1,5 +1,24 @@
 import { Stack } from "expo-router";
+import { DevToolsBubble } from "react-native-react-query-devtools";
+import * as Clipboard from "expo-clipboard";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 export default function RootLayout() {
-  return <Stack />;
+  const queryClient = new QueryClient();
+
+  const onCopy = async (text: string) => {
+    try {
+      await Clipboard.setStringAsync(text);
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Stack />
+      <DevToolsBubble onCopy={onCopy} />
+    </QueryClientProvider>
+  );
 }
