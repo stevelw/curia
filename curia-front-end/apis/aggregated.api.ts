@@ -2,8 +2,11 @@ import * as vaApi from "./va.api";
 import * as metApi from "./met.api";
 import { useQueries, UseQueryResult } from "@tanstack/react-query";
 
+type ApiSource = "MET" | "V&A";
+
 export interface Artefact {
-  Title: string;
+  title: string;
+  apiSource: ApiSource;
 }
 
 export function useArtefactSearch(
