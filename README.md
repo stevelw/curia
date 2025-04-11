@@ -8,6 +8,10 @@ The example 'production' version is published at [curia.netlify.app](https://cur
 
 Curia is designed as an extensible platform, and some example API integrations are included.
 
+### The Metropolitan Museum of Art
+
+[The Met's API](https://metmuseum.github.io) provides select datasets for unrestricted commercial and noncommercial use using the [Creative Commons Zero license](https://creativecommons.org/publicdomain/zero/1.0/).
+
 ### The V&A
 
 [The V&A's API](https://developers.vam.ac.uk) is covered by their [Terms and Conditions](https://www.vam.ac.uk/info/va-websites-terms-conditions) (in particular Section 9). Below are some important clauses to be aware of when developing this integration.
