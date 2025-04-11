@@ -3,25 +3,49 @@ import { Artefact } from "./aggregated.api";
 
 export const name = "MET API";
 
-type ObjectId = number;
+const BASE_URL = "https://collectionapi.metmuseum.org/public/collection/v1";
 
-interface Response {
-  objectIDs: ObjectId[];
+type CollectionObjectId = number;
+
+interface FetchCollectionObjectResponse {
+  objectID: CollectionObjectId;
+  title: string;
+}
+
+interface SearchResponse {
+  objectIDs: CollectionObjectId[];
+}
+
+function fetchObject(
+  collectionObjectId: CollectionObjectId,
+): Promise<Artefact> {
+  return axios
+    .get<FetchCollectionObjectResponse>(
+      `${BASE_URL}/objects/${collectionObjectId}`,
+    )
+    .then(({ data: collectionObject }) => {
+      const artefact: Artefact = {
+        title: collectionObject.title,
+        apiSource: name,
+      };
+      return artefact;
+    })
+    .catch(() => {
+      throw new Error("Error in MET API");
+    });
 }
 
 export function search(searchTerm: string): Promise<Artefact[]> {
   return axios
-    .get<Response>(
-      "https://collectionapi.metmuseum.org/public/collection/v1/search",
-      {
-        params: { q: searchTerm },
-      },
-    )
-    .then(({ data }) => {
-      return data.objectIDs.map<Artefact>((objectId) => ({
-        title: objectId.toString(),
-        apiSource: name,
-      }));
+    .get<SearchResponse>(`${BASE_URL}/search`, {
+      params: { q: searchTerm },
+    })
+    .then(({ data: { objectIDs: collectionObjectIds } }) => {
+      return Promise.all(
+        collectionObjectIds.map((collectionObjectId) =>
+          fetchObject(collectionObjectId),
+        ),
+      );
     })
     .catch((err) => {
       throw new Error(`MET: ${err}`);
