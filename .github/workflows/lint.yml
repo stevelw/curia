@@ -13,6 +13,6 @@ jobs:
         with:
           node-version: lts/*
       - name: Install dependencies
-        run: npm ci && npm ci --prefix curia-front-end
-      - name: Run pre-commit hook
-        run: npm run pre-commit
+        run: npm ci --prefix curia-front-end
+      - name: Run ESLint on frontend
+        run: npm run lint --prefix curia-front-end
