@@ -7,3 +7,4 @@ assets/**
 .expo-shared
 .prettirrc
 .eslintrc.js
+expo-env.d.ts

@@ -3,3 +3,4 @@
 node_modules/
 # Local Netlify folder
 .netlify
+curia-front-end/expo-env.d.ts
