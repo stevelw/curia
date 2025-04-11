@@ -43,6 +43,7 @@ export default function SearchResults() {
       {queryResults.pending && <p>Loading...</p>}
       <FlatList
         data={queryResults.pending ? [] : queryResults.data}
+        keyExtractor={(item) => item.localId}
         renderItem={({ item }) => <CollectionObjectListItem item={item} />}
       />
     </>

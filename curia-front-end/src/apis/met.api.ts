@@ -2,6 +2,7 @@ import axios from "axios";
 import Artefact from "../types/Artefact.interface";
 
 export const name = "MET API";
+export const slug = "met";
 
 const BASE_URL = "https://collectionapi.metmuseum.org/public/collection/v1";
 
@@ -25,6 +26,7 @@ function fetchObject(
     )
     .then(({ data: collectionObject }) => {
       const artefact: Artefact = {
+        localId: slug + collectionObjectId,
         title: collectionObject.title,
         apiSource: name,
       };

@@ -2,6 +2,7 @@ import axios from "axios";
 import Artefact from "../types/Artefact.interface";
 
 export const name = "V&A API";
+export const slug = "va";
 
 interface Record {
   systemNumber: string;
@@ -113,7 +114,7 @@ interface Organisation {
   value: string;
 }
 
-interface Response {
+interface SearchResponse {
   info: {
     record_count: number;
     page_size: number;
@@ -162,11 +163,12 @@ interface Response {
 
 export function search(searchTerm: string): Promise<Artefact[]> {
   return axios
-    .get<Response>("https://api.vam.ac.uk/v2/objects/search", {
+    .get<SearchResponse>("https://api.vam.ac.uk/v2/objects/search", {
       params: { q: searchTerm, page_size: 100, page: 1 },
     })
     .then(({ data }) => {
-      return data.records.map<Artefact>(({ _primaryTitle }) => ({
+      return data.records.map<Artefact>(({ systemNumber, _primaryTitle }) => ({
+        localId: slug + systemNumber,
         title: _primaryTitle,
         apiSource: name,
       }));
