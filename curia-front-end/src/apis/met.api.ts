@@ -5,6 +5,7 @@ export const name = "MET API";
 export const slug = "met";
 
 const BASE_URL = "https://collectionapi.metmuseum.org/public/collection/v1";
+const MAX_RESULTS_LIMIT = 100;
 
 type CollectionObjectId = number;
 
@@ -44,9 +45,9 @@ export function search(searchTerm: string): Promise<Artefact[]> {
     })
     .then(({ data: { objectIDs: collectionObjectIds } }) => {
       return Promise.all(
-        collectionObjectIds.map((collectionObjectId) =>
-          fetchObject(collectionObjectId),
-        ),
+        collectionObjectIds
+          .slice(0, MAX_RESULTS_LIMIT)
+          .map((collectionObjectId) => fetchObject(collectionObjectId)),
       );
     })
     .catch((err) => {

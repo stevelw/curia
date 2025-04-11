@@ -4,6 +4,8 @@ import Artefact from "../types/Artefact.interface";
 export const name = "V&A API";
 export const slug = "va";
 
+const MAX_RESULTS_LIMIT = 100;
+
 interface Record {
   systemNumber: string;
   accessionNumber: string;
@@ -167,11 +169,13 @@ export function search(searchTerm: string): Promise<Artefact[]> {
       params: { q: searchTerm, page_size: 100, page: 1 },
     })
     .then(({ data }) => {
-      return data.records.map<Artefact>(({ systemNumber, _primaryTitle }) => ({
-        localId: slug + systemNumber,
-        title: _primaryTitle,
-        apiSource: name,
-      }));
+      return data.records
+        .slice(0, MAX_RESULTS_LIMIT)
+        .map<Artefact>(({ systemNumber, _primaryTitle }) => ({
+          localId: slug + systemNumber,
+          title: _primaryTitle,
+          apiSource: name,
+        }));
     })
     .catch(() => {
       throw new Error("API error - V&A");
