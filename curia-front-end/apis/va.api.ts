@@ -1,5 +1,5 @@
 import axios from "axios";
-import Artefact from "../interfaces/Artefact.interface";
+import { Artefact } from "./aggregated.api";
 
 export const name = "V&A API";
 
