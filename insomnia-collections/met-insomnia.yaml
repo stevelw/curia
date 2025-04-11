@@ -30,12 +30,38 @@ collection:
         send: true
         store: true
       rebuildPath: true
+  - url: "{{ _.base_url }}/objects/:id"
+    name: Fetch Object
+    meta:
+      id: req_08f4d1a26e23404a803536d46090ddf9
+      created: 1744378407623
+      modified: 1744378468630
+      isPrivate: false
+      sortKey: -1744215938496
+    method: GET
+    parameters:
+      - id: pair_2e542b1fc9584c6487ebb09dd67746ec
+        disabled: false
+    headers:
+      - name: User-Agent
+        value: insomnia/11.0.2
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+    pathParameters:
+      - name: id
+        value: "486633"
 cookieJar:
   name: Default Jar
   meta:
     id: jar_e73bf6b83db4746a471063994a1212d7d03de83b
     created: 1744225939277
-    modified: 1744226281109
+    modified: 1744378472316
   cookies:
     - key: visid_incap_1662004
       value: NsWQgUYRTzGnH1wwhll7WufH9mcAAAAAQUIPAAAAAAC91nb8849y7L2IvGJxhq39
@@ -45,7 +71,7 @@ cookieJar:
       hostOnly: false
       creation: 2025-04-09T19:18:01.100Z
       lastAccessed: 2025-04-09T19:18:01.100Z
-      id: d4876583-e073-4176-8c84-bbcfb2cbc6fd
+      id: 1e814bf2-fd03-48c7-b605-9f9b61ec9e03
     - key: incap_ses_1371_1662004
       value: GA+4d7Q3okWVX4MPa8UGE+jH9mcAAAAASHxW1B8YonGDjOYnz581dg==
       domain: metmuseum.org
@@ -53,7 +79,15 @@ cookieJar:
       hostOnly: false
       creation: 2025-04-09T19:18:01.107Z
       lastAccessed: 2025-04-09T19:18:01.107Z
-      id: 3ce0b122-e3f6-42b7-afa8-b51eadc40ea6
+      id: aec383aa-5913-4b02-8f18-ee4029d12b09
+    - key: incap_ses_1580_1662004
+      value: FYPlTVxBUyOpUp+G1kntFWca+WcAAAAAu8X0eQlg36lhghS9SNTeNg==
+      domain: metmuseum.org
+      path: /
+      hostOnly: false
+      creation: 2025-04-11T13:34:32.309Z
+      lastAccessed: 2025-04-11T13:34:32.309Z
+      id: ba027b31-2895-4190-a0d3-2dd882903b22
 environments:
   name: Base Environment
   meta:

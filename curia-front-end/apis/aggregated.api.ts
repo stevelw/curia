@@ -7,6 +7,7 @@ type ApiSource = "MET" | "V&A";
 export interface Artefact {
   title: string;
   apiSource: ApiSource;
+  lazyLoading?: () => Promise<Artefact>;
 }
 
 export function useArtefactSearch(
