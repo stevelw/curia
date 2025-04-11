@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Artefact } from "./aggregated.api";
+import Artefact from "../types/Artefact.interface";
 
 export const name = "MET API";
 
