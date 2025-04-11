@@ -1,6 +1,7 @@
 import React from "react";
 import { useArtefactSearch } from "../../apis/aggregated.api";
 import { FlatList } from "react-native";
+import CollectionObjectListItem from "./CollectionObjectListItem";
 
 export default function SearchResults() {
   const queryResults = useArtefactSearch("China");
@@ -21,12 +22,7 @@ export default function SearchResults() {
         data={queryResults.flatMap((queryResult) => {
           return queryResult.isSuccess ? queryResult.data : [];
         })}
-        renderItem={({ item }) => (
-          <div>
-            <h3>{item.title}</h3>
-            <p>Source: {item.apiSource}</p>
-          </div>
-        )}
+        renderItem={({ item }) => <CollectionObjectListItem item={item} />}
       />
     </>
   );
