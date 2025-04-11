@@ -1,27 +1,21 @@
 import * as vaApi from "./va.api";
 import * as metApi from "./met.api";
+import { useQueries, UseQueryResult } from "@tanstack/react-query";
 
 export interface Artefact {
   Title: string;
 }
 
-export function search(searchTerm: string): Promise<Artefact[]> {
-  return Promise.all([metApi.search(searchTerm), vaApi.search(searchTerm)])
-    .then(([metArtefacts, vaArtefacts]) => {
-      return [...metArtefacts, ...vaArtefacts].sort((a, b) => {
-        const titleA = a.Title.toUpperCase();
-        const titleB = b.Title.toUpperCase();
-        if (titleA < titleB) {
-          return -1;
-        }
-        if (titleA > titleB) {
-          return 1;
-        }
-
-        return 0;
-      });
-    })
-    .catch((err) => {
-      throw new Error(`API error: ${err}`);
-    });
+export function useArtefactSearch(
+  searchTerm: string,
+): UseQueryResult<Artefact[]>[] {
+  const apis = [metApi, vaApi];
+  return useQueries({
+    queries: apis.map((api) => ({
+      queryKey: ["search", api.name],
+      queryFn: () => {
+        return api.search(searchTerm);
+      },
+    })),
+  });
 }
