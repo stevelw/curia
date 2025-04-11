@@ -3,7 +3,8 @@ import * as metApi from "./met.api";
 import { useQueries, UseQueryResult } from "@tanstack/react-query";
 
 export interface Artefact {
-  Title: string;
+  title: string;
+  apiSource: string;
 }
 
 export function useArtefactSearch(

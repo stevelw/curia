@@ -19,7 +19,8 @@ export function search(searchTerm: string): Promise<Artefact[]> {
     )
     .then(({ data }) => {
       return data.objectIDs.map<Artefact>((objectId) => ({
-        Title: objectId.toString(),
+        title: objectId.toString(),
+        apiSource: name,
       }));
     })
     .catch((err) => {

@@ -167,7 +167,8 @@ export function search(searchTerm: string): Promise<Artefact[]> {
     })
     .then(({ data }) => {
       return data.records.map<Artefact>(({ _primaryTitle }) => ({
-        Title: _primaryTitle,
+        title: _primaryTitle,
+        apiSource: name,
       }));
     })
     .catch(() => {
