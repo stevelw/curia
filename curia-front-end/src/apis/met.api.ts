@@ -12,6 +12,34 @@ type CollectionObjectId = number;
 interface FetchCollectionObjectResponse {
   objectID: CollectionObjectId;
   title: string;
+  accessionNumber: string;
+  accessionYear: string;
+  isPublicDomain: boolean;
+  primaryImage: string;
+  primaryImageSmall: string;
+  additionalImages: string[];
+  department: string;
+  objectName: string;
+  culture: string;
+  artistDisplayName: string;
+  artistDisplayBio: string;
+  artistBeginDate: string;
+  artistEndDate: string;
+  objectDate: string;
+  objectBeginDate: number;
+  objectEndDate: number;
+  medium: string;
+  city: string;
+  state: string;
+  county: string;
+  country: string;
+  region: string;
+  subregion: string;
+  locale: string;
+  classification: string;
+  repository: string;
+  objectURL: string;
+  GalleryNumber: string;
 }
 
 interface SearchResponse {
@@ -25,14 +53,40 @@ function fetchObject(
     .get<FetchCollectionObjectResponse>(
       `${BASE_URL}/objects/${collectionObjectId}`,
     )
-    .then(({ data: collectionObject }) => {
-      const artefact: Artefact = {
-        localId: slug + collectionObjectId,
-        title: collectionObject.title,
-        apiSource: name,
-      };
-      return artefact;
-    })
+    .then(
+      ({
+        data: {
+          accessionNumber,
+          medium,
+          title,
+          objectDate,
+          artistDisplayName,
+          primaryImageSmall,
+          primaryImage,
+          additionalImages,
+          department,
+          culture,
+        },
+      }) => {
+        const artefact: Artefact = {
+          localId: slug + collectionObjectId,
+          accessionNumber,
+          objectType: medium,
+          title,
+          objectDate,
+          maker: artistDisplayName,
+          images: {
+            primaryThumbnailUrl: primaryImageSmall,
+            primaryImage: primaryImage,
+            additionalImages: additionalImages,
+          },
+          currentLocation: department + " - The Metropolitan Museum of Art",
+          provenance: culture,
+          apiSource: name,
+        };
+        return artefact;
+      },
+    )
     .catch(() => {
       throw new Error("Error in MET API");
     });
