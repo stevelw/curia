@@ -1,6 +1,16 @@
 module.exports = {
-  extends: ["expo", "prettier"],
+  extends: [
+    "expo",
+    "prettier",
+    "plugin:@typescript-eslint/recommended-type-checked",
+  ],
   plugins: ["prettier"],
+  parser: "@typescript-eslint/parser",
+  parserOptions: {
+    projectService: true,
+    tsconfigRootDir: __dirname,
+  },
+  root: true,
   rules: {
     "no-console": "warn",
     "prettier/prettier": "error",
