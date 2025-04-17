@@ -1,9 +1,10 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { FlatList, StyleSheet } from "react-native";
 import CollectionObjectListItem from "./CollectionObjectListItem";
 import { useQueries, UseQueryResult } from "@tanstack/react-query";
-import { vaApi, Artefact } from "../../apis/va.api";
+import { vaApi, SearchFnReturn } from "../../apis/va.api";
 import { metApi } from "../../apis/met.api";
+import PagePicker from "./PagePicker";
 
 const RESULTS_PER_PAGE = 10;
 const MAX_TO_RENDER_PER_BATCH = 10; // 10
@@ -14,12 +15,18 @@ const WINDOW_SIZE = 5; // 21
 const searchTerm = "China";
 
 export default function SearchResults() {
-  const [page] = useState(1);
+  const [page, setPage] = useState(1);
+  const [numberOfPages, setNumberOfPages] = useState(1);
+
   const combineResults = useCallback(
-    (results: UseQueryResult<Artefact[], Error>[]) => {
+    (results: UseQueryResult<SearchFnReturn, Error>[]) => {
       return {
+        totalResultsAvailable: results.reduce((acc, { data }) => {
+          const totalResultsAvailable = data?.totalResultsAvailable ?? 0;
+          return acc + totalResultsAvailable;
+        }, 0),
         data: results
-          .flatMap((result) => result.data)
+          .flatMap((result) => result.data?.results)
           .filter((artefact) => !!artefact)
           .sort((a, b) => {
             if (a.title < b.title) return -1;
@@ -46,19 +53,37 @@ export default function SearchResults() {
     combine: combineResults,
   });
 
+  useEffect(() => {
+    if (!queryResults.pending) {
+      setNumberOfPages(
+        Math.ceil(queryResults.totalResultsAvailable / RESULTS_PER_PAGE),
+      );
+    }
+  }, [queryResults.pending, queryResults.totalResultsAvailable]);
+
   return (
     <>
       <h2 style={styles.h2}>Search Results</h2>
-      {queryResults.pending && <p>Loading...</p>}
-      <FlatList
-        data={queryResults.pending ? [] : queryResults.data}
-        keyExtractor={(item) => item.localId}
-        maxToRenderPerBatch={MAX_TO_RENDER_PER_BATCH}
-        updateCellsBatchingPeriod={UPDATE_CELLS_BATCH_PERIOD}
-        initialNumToRender={INITIAL_NUM_TO_RENDER}
-        windowSize={WINDOW_SIZE}
-        renderItem={({ item }) => <CollectionObjectListItem item={item} />}
+      <PagePicker
+        currentPage={page}
+        numOfPages={numberOfPages}
+        setPageCbFn={(page) => {
+          setPage(page);
+        }}
       />
+      {queryResults.pending ? (
+        <p>Loading...</p>
+      ) : (
+        <FlatList
+          data={queryResults.pending ? [] : queryResults.data}
+          keyExtractor={(item) => item.localId}
+          maxToRenderPerBatch={MAX_TO_RENDER_PER_BATCH}
+          updateCellsBatchingPeriod={UPDATE_CELLS_BATCH_PERIOD}
+          initialNumToRender={INITIAL_NUM_TO_RENDER}
+          windowSize={WINDOW_SIZE}
+          renderItem={({ item }) => <CollectionObjectListItem item={item} />}
+        />
+      )}
     </>
   );
 }

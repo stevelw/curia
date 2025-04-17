@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Api, Artefact } from "./api.class";
+import { Api, Artefact, SearchFnReturn } from "./api.class";
 
 const name = "MET API";
 const slug = "met";
@@ -95,7 +95,7 @@ async function fetchObject(
 async function search(
   searchTerm: string,
   maxResults: number,
-): Promise<Artefact[]> {
+): Promise<SearchFnReturn> {
   return axios
     .get<SearchResponse>(`${BASE_URL}/search`, {
       params: { q: searchTerm },
@@ -108,13 +108,15 @@ async function search(
       );
     })
     .then((artefacts) => {
-      return artefacts
+      const totalResultsAvailable = artefacts.length;
+      const results = artefacts
         .sort((a, b) => {
           if (a.title < b.title) return -1;
           if (a.title > b.title) return 1;
           return 0;
         })
         .slice(0, maxResults);
+      return { totalResultsAvailable, results };
     })
     .catch((err) => {
       throw new Error(`MET: ${err}`);
@@ -123,4 +125,4 @@ async function search(
 
 const metApi = new Api(name, search);
 
-export { metApi, Artefact };
+export { metApi, SearchFnReturn };

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Api, Artefact } from "./api.class";
+import { Api, Artefact, SearchFnReturn } from "./api.class";
 
 const name = "V&A API";
 const slug = "va";
@@ -44,13 +44,14 @@ interface SearchResponse {
 async function search(
   searchTerm: string,
   maxResults: number,
-): Promise<Artefact[]> {
+): Promise<SearchFnReturn> {
   return axios
     .get<SearchResponse>("https://api.vam.ac.uk/v2/objects/search", {
       params: { q: searchTerm, page_size: MAX_RESULTS_LIMIT, page: 1 },
     })
     .then(({ data: { records } }) => {
-      return records
+      const totalResultsAvailable = records.length;
+      const results = records
         .sort((a, b) => {
           if (a._primaryTitle < b._primaryTitle) return -1;
           if (a._primaryTitle > b._primaryTitle) return 1;
@@ -94,6 +95,10 @@ async function search(
             apiSource: name,
           }),
         );
+      return {
+        totalResultsAvailable,
+        results,
+      };
     })
     .catch(() => {
       throw new Error("API error - V&A");
@@ -102,4 +107,4 @@ async function search(
 
 const vaApi = new Api(name, search);
 
-export { vaApi, Artefact };
+export { vaApi, SearchFnReturn };

@@ -1,6 +1,14 @@
 import Artefact from "./Artefact.interface";
 
-type SearchFn = (searchTerm: string, maxResults: number) => Promise<Artefact[]>;
+interface SearchFnReturn {
+  totalResultsAvailable: number;
+  results: Artefact[];
+}
+
+type SearchFn = (
+  searchTerm: string,
+  maxResults: number,
+) => Promise<SearchFnReturn>;
 
 export class Api {
   name;
@@ -11,4 +19,4 @@ export class Api {
   }
 }
 
-export { Artefact };
+export { Artefact, SearchFnReturn };
