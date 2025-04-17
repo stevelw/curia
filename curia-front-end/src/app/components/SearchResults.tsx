@@ -1,5 +1,5 @@
 import React from "react";
-import { FlatList } from "react-native";
+import { FlatList, StyleSheet } from "react-native";
 import CollectionObjectListItem from "./CollectionObjectListItem";
 import { useQueries, UseQueryResult } from "@tanstack/react-query";
 import * as vaApi from "../../apis/va.api";
@@ -44,7 +44,7 @@ export default function SearchResults() {
 
   return (
     <>
-      <h2>Search Results</h2>
+      <h2 style={styles.h2}>Search Results</h2>
       {queryResults.pending && <p>Loading...</p>}
       <FlatList
         data={queryResults.pending ? [] : queryResults.data}
@@ -58,3 +58,9 @@ export default function SearchResults() {
     </>
   );
 }
+
+const styles = StyleSheet.create({
+  h2: {
+    padding: 10,
+  },
+});
