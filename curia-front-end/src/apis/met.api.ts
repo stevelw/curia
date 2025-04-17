@@ -1,8 +1,8 @@
 import axios from "axios";
-import Artefact from "../types/Artefact.interface";
+import { Api, Artefact } from "./api.class";
 
-export const name = "MET API";
-export const slug = "met";
+const name = "MET API";
+const slug = "met";
 
 const BASE_URL = "https://collectionapi.metmuseum.org/public/collection/v1";
 const MAX_RESULTS_LIMIT = 100;
@@ -46,7 +46,7 @@ interface SearchResponse {
   objectIDs: CollectionObjectId[];
 }
 
-function fetchObject(
+async function fetchObject(
   collectionObjectId: CollectionObjectId,
 ): Promise<Artefact> {
   return axios
@@ -92,7 +92,7 @@ function fetchObject(
     });
 }
 
-export function search(searchTerm: string): Promise<Artefact[]> {
+async function search(searchTerm: string): Promise<Artefact[]> {
   return axios
     .get<SearchResponse>(`${BASE_URL}/search`, {
       params: { q: searchTerm },
@@ -108,3 +108,7 @@ export function search(searchTerm: string): Promise<Artefact[]> {
       throw new Error(`MET: ${err}`);
     });
 }
+
+const metApi = new Api(name, search);
+
+export { metApi, Artefact };
