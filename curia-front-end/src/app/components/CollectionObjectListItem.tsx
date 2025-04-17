@@ -15,7 +15,7 @@ export default function CollectionObjectListItem({ item }: Props) {
   } = item;
 
   return (
-    <div>
+    <div role="listitem">
       <h3>{title}</h3>
       <p>
         {maker && maker + ", "}
