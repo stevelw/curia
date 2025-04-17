@@ -92,7 +92,10 @@ async function fetchObject(
     });
 }
 
-async function search(searchTerm: string): Promise<Artefact[]> {
+async function search(
+  searchTerm: string,
+  maxResults: number,
+): Promise<Artefact[]> {
   return axios
     .get<SearchResponse>(`${BASE_URL}/search`, {
       params: { q: searchTerm },
@@ -103,6 +106,15 @@ async function search(searchTerm: string): Promise<Artefact[]> {
           .slice(0, MAX_RESULTS_LIMIT)
           .map((collectionObjectId) => fetchObject(collectionObjectId)),
       );
+    })
+    .then((artefacts) => {
+      return artefacts
+        .sort((a, b) => {
+          if (a.title < b.title) return -1;
+          if (a.title > b.title) return 1;
+          return 0;
+        })
+        .slice(0, maxResults);
     })
     .catch((err) => {
       throw new Error(`MET: ${err}`);
