@@ -41,48 +41,59 @@ interface SearchResponse {
   records: Record[];
 }
 
-async function search(searchTerm: string): Promise<Artefact[]> {
+async function search(
+  searchTerm: string,
+  maxResults: number,
+): Promise<Artefact[]> {
   return axios
     .get<SearchResponse>("https://api.vam.ac.uk/v2/objects/search", {
       params: { q: searchTerm, page_size: MAX_RESULTS_LIMIT, page: 1 },
     })
-    .then(({ data }) => {
-      return data.records.map<Artefact>(
-        ({
-          systemNumber,
-          accessionNumber,
-          objectType,
-          _currentLocation,
-          _primaryTitle,
-          _primaryMaker,
-          _primaryImageId,
-          _primaryDate,
-          _primaryPlace,
-          _images,
-        }) => ({
-          localId: slug + systemNumber,
-          accessionNumber,
-          objectType,
-          title: _primaryTitle,
-          objectDate: _primaryDate,
-          maker: _primaryMaker.name + ", " + _primaryMaker.association,
-          images: {
-            primaryThumbnailUrl: _images._primary_thumbnail,
-            primaryImage: _primaryImageId,
-            iiif_image_base_url: _images._iiif_image_base_url + _primaryImageId,
-            additionalImages: [_images._iiif_image_base_url],
-          },
-          currentLocation:
-            _currentLocation.site +
-            " - " +
-            _currentLocation.displayName +
-            (_currentLocation.onDisplay
-              ? " (On display)"
-              : " (Not on display)"),
-          provenance: _primaryPlace,
-          apiSource: name,
-        }),
-      );
+    .then(({ data: { records } }) => {
+      return records
+        .sort((a, b) => {
+          if (a._primaryTitle < b._primaryTitle) return -1;
+          if (a._primaryTitle > b._primaryTitle) return 1;
+          return 0;
+        })
+        .slice(0, maxResults)
+        .map<Artefact>(
+          ({
+            systemNumber,
+            accessionNumber,
+            objectType,
+            _currentLocation,
+            _primaryTitle,
+            _primaryMaker,
+            _primaryImageId,
+            _primaryDate,
+            _primaryPlace,
+            _images,
+          }) => ({
+            localId: slug + systemNumber,
+            accessionNumber,
+            objectType,
+            title: _primaryTitle,
+            objectDate: _primaryDate,
+            maker: _primaryMaker.name + ", " + _primaryMaker.association,
+            images: {
+              primaryThumbnailUrl: _images._primary_thumbnail,
+              primaryImage: _primaryImageId,
+              iiif_image_base_url:
+                _images._iiif_image_base_url + _primaryImageId,
+              additionalImages: [_images._iiif_image_base_url],
+            },
+            currentLocation:
+              _currentLocation.site +
+              " - " +
+              _currentLocation.displayName +
+              (_currentLocation.onDisplay
+                ? " (On display)"
+                : " (Not on display)"),
+            provenance: _primaryPlace,
+            apiSource: name,
+          }),
+        );
     })
     .catch(() => {
       throw new Error("API error - V&A");
