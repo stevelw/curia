@@ -2,9 +2,8 @@ import React from "react";
 import { FlatList, StyleSheet } from "react-native";
 import CollectionObjectListItem from "./CollectionObjectListItem";
 import { useQueries, UseQueryResult } from "@tanstack/react-query";
-import * as vaApi from "../../apis/va.api";
-import * as metApi from "../../apis/met.api";
-import Artefact from "../../types/Artefact.interface";
+import { vaApi, Artefact } from "../../apis/va.api";
+import { metApi } from "../../apis/met.api";
 
 const MAX_TO_RENDER_PER_BATCH = 10; // 10
 const UPDATE_CELLS_BATCH_PERIOD = 50; // 50
