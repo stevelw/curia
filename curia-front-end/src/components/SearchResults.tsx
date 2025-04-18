@@ -2,8 +2,8 @@ import React, { useCallback, useEffect, useState } from "react";
 import { FlatList, StyleSheet } from "react-native";
 import CollectionObjectListItem from "./CollectionObjectListItem";
 import { useQueries, UseQueryResult } from "@tanstack/react-query";
-import { vaApi, SearchFnReturn } from "../../apis/va.api";
-import { metApi } from "../../apis/met.api";
+import { vaApi, SearchFnReturn } from "../apis/va.api";
+import { metApi } from "../apis/met.api";
 import PagePicker from "./PagePicker";
 
 const RESULTS_PER_PAGE = 10;
@@ -63,7 +63,7 @@ export default function SearchResults() {
 
   return (
     <>
-      <h2 style={styles.h2}>Search Results</h2>
+      <h1 style={styles.h1}>Search Results</h1>
       <PagePicker
         currentPage={page}
         numOfPages={numberOfPages}
@@ -89,7 +89,7 @@ export default function SearchResults() {
 }
 
 const styles = StyleSheet.create({
-  h2: {
+  h1: {
     padding: 10,
   },
 });
