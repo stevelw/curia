@@ -24,3 +24,7 @@ export default function RootLayout() {
     </QueryClientProvider>
   );
 }
+
+export const unstable_settings = {
+  initialRouteName: "index",
+};
