@@ -1,5 +1,7 @@
 import axios from "axios";
 import { Api, Artefact, SearchFnReturn } from "./api.class";
+import { LocalId } from "./Artefact.interface";
+import { FetchResult } from "react-native";
 
 const name = "V&A API";
 const slug = "va";
@@ -7,7 +9,109 @@ const MAX_RESULTS_LIMIT = 100;
 
 type RecordId = string;
 
-interface Record {
+interface FetchResponse {
+  meta: {
+    _links: {
+      collection_page: {
+        href: string;
+      };
+    };
+    images: {
+      _primary_thumbnail: string;
+      _iiif_image: string;
+      _alt_iiif_image: string[];
+      _images_meta: {
+        assetRef: string;
+        copyright: string;
+        sensitiveImage: boolean;
+      }[];
+    };
+  };
+  record: {
+    systemNumber: string;
+    accessionNumber: string;
+    objectType: string;
+    titles: [
+      {
+        title: string;
+        type: string;
+      },
+    ];
+    physicalDescription: string;
+    artistMakerPerson: {
+      name: {
+        text: string;
+      };
+      note: "";
+    }[];
+    artistMakerOrganisations: {
+      name: {
+        text: string;
+        id: string;
+      };
+      association: {
+        text: string;
+        id: string;
+      };
+      note: string;
+    }[];
+    artistMakerPeople: unknown[];
+    materials: [
+      {
+        text: string;
+      },
+    ];
+    techniques: {
+      text: string;
+    }[];
+    materialsAndTechniques: string;
+    images: string[];
+    galleryLocations: {
+      current: {
+        text: string;
+      };
+    }[];
+    placesOfOrigin: {
+      place: {
+        text: string;
+      };
+      association: {
+        text: string;
+      };
+      note: string;
+    }[];
+    productionDates: {
+      date: {
+        text: string;
+        earliest: string;
+        latest: string;
+      };
+      association: {
+        text: string;
+      };
+      note: string;
+    }[];
+    creditLine: string;
+    dimensions: unknown[];
+    marksAndInscriptions: unknown[];
+    objectHistory: string;
+    historicalContext: string;
+    briefDescription: string;
+    production: string;
+    contentDescription: string;
+    galleryLabels: {
+      text: string;
+      date: {
+        text: string;
+        earliest: string;
+        latest: string;
+      };
+    }[];
+    recordModificationDate: string;
+  };
+}
+
+interface SearchRecord {
   systemNumber: RecordId;
   accessionNumber: string;
   objectType: string;
@@ -38,7 +142,53 @@ interface SearchResponse {
     page: number;
     image_count: number;
   };
-  records: Record[];
+  records: SearchRecord[];
+}
+
+async function fetch(localId: LocalId): Promise<Artefact> {
+  const apiSlugRegex = new RegExp(`^${slug}`);
+  if (!localId.match(apiSlugRegex)) {
+    throw new Error("Incorrect API for localId");
+  }
+  const remoteId = localId.substring(slug.length);
+  return axios
+    .get<FetchResponse>(`https://api.vam.ac.uk/v2/object/${remoteId}`)
+    .then(({ data: { record, meta } }) => {
+      const {
+        systemNumber,
+        accessionNumber,
+        objectType,
+        titles,
+        artistMakerPerson,
+        artistMakerOrganisations,
+        galleryLabels,
+        galleryLocations,
+        placesOfOrigin,
+      } = record;
+      const { images } = meta;
+      const result: Artefact = {
+        localId: slug + systemNumber,
+        accessionNumber,
+        objectType,
+        title: titles[0]?.title || "Untitled",
+        maker:
+          artistMakerPerson[0]?.name?.text ??
+          artistMakerOrganisations[0]?.name?.text ??
+          "Unknown",
+        objectDate: galleryLabels[0]?.date?.text,
+        images: {
+          primaryThumbnailUrl: images._primary_thumbnail,
+          primaryImage: images._primary_thumbnail,
+        },
+        currentLocation: `${galleryLocations[0].current.text} - V&A`,
+        provenance: placesOfOrigin[0]?.place.text,
+        apiSource: name,
+      };
+      return result;
+    })
+    .catch(() => {
+      throw new Error("API error - V&A");
+    });
 }
 
 async function search(
@@ -53,8 +203,10 @@ async function search(
       const totalResultsAvailable = records.length;
       const results = records
         .sort((a, b) => {
-          if (a._primaryTitle < b._primaryTitle) return -1;
-          if (a._primaryTitle > b._primaryTitle) return 1;
+          const titleA = a._primaryTitle === "" ? "Untitled" : a._primaryTitle;
+          const titleB = b._primaryTitle === "" ? "Untitled" : b._primaryTitle;
+          if (titleA < titleB) return -1;
+          if (titleA > titleB) return 1;
           return 0;
         })
         .slice(0, maxResults)
@@ -74,7 +226,7 @@ async function search(
             localId: slug + systemNumber,
             accessionNumber,
             objectType,
-            title: _primaryTitle,
+            title: _primaryTitle === "" ? "Untitled" : _primaryTitle,
             objectDate: _primaryDate,
             maker: _primaryMaker.name + ", " + _primaryMaker.association,
             images: {
@@ -105,6 +257,6 @@ async function search(
     });
 }
 
-const vaApi = new Api(name, search);
+const vaApi = new Api(name, slug, fetch, search);
 
 export { vaApi, SearchFnReturn };
