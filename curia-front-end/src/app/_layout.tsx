@@ -3,8 +3,9 @@ import * as Clipboard from "expo-clipboard";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Stack } from "expo-router";
 
+const queryClient = new QueryClient();
+
 export default function RootLayout() {
-  const queryClient = new QueryClient();
 
   const onCopy = async (text: string) => {
     try {
