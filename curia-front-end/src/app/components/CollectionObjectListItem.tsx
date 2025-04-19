@@ -1,5 +1,5 @@
 import React from "react";
-import Artefact from "../../types/Artefact.interface";
+import { Artefact } from "../../apis/api.class";
 import { StyleSheet } from "react-native";
 
 interface Props {
