@@ -10,7 +10,7 @@ collection:
     meta:
       id: req_32bfd5fe90464b2183edd4c9b5d0b365
       created: 1744205750947
-      modified: 1744206845458
+      modified: 1744897970893
       isPrivate: false
       sortKey: -1744205750947
     method: GET
@@ -38,6 +38,32 @@ collection:
         send: true
         store: true
       rebuildPath: true
+  - url: "{{ _.base_URL }}/object/:object_num"
+    name: Fetch
+    meta:
+      id: req_2fae6084ee154a8aa9de6aa4b8fe249e
+      created: 1745059130304
+      modified: 1745059286950
+      isPrivate: false
+      sortKey: -1743599794257.5
+    method: GET
+    parameters:
+      - id: pair_46428a7d751f4238a83d399aedd1d043
+        disabled: false
+    headers:
+      - name: User-Agent
+        value: insomnia/11.0.2
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+    pathParameters:
+      - name: object_num
+        value: O163544
 cookieJar:
   name: Default Jar
   meta:
