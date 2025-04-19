@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
   },
   listItemLeft: {
     flex: 1,
-    height: 200,
+    height: 100,
   },
   listItemRight: {
     flex: 1,
