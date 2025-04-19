@@ -1,4 +1,3 @@
-import React from "react";
 import { Artefact } from "../apis/api.class";
 import { Pressable, StyleSheet, View } from "react-native";
 import { useRouter } from "expo-router";

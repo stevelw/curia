@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { FlatList, StyleSheet } from "react-native";
 import CollectionObjectListItem from "./CollectionObjectListItem";
 import { useQueries, UseQueryResult } from "@tanstack/react-query";
