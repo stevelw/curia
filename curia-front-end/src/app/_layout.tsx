@@ -21,7 +21,7 @@ export default function RootLayout() {
       <Stack>
         <Stack.Screen name="index" options={{ headerTitle: "Curia" }} />
       </Stack>
-      <DevToolsBubble onCopy={onCopy} />
+      {__DEV__ && <DevToolsBubble onCopy={onCopy} />}
     </QueryClientProvider>
   );
 }
