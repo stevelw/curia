@@ -15,6 +15,6 @@ test("directly loading an artefact page has a back button to return to root", as
   await expect(loginPage.BackButtonLocator).not.toBeVisible();
 
   expect(loginPage.page.url()).toBe(
-    "http://localhost:8081/?artefactId=vaO1190229",
+    "https://curia.netlify.app/?artefactId=vaO1190229",
   );
 });

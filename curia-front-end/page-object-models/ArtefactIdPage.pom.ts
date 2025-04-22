@@ -9,6 +9,6 @@ export class ArtefactIdPage {
     this.BackButtonLocator = page.getByRole("link", { name: "Curia, back" });
   }
   async goto() {
-    await this.page.goto("http://localhost:8081/artefact/vaO1190229");
+    await this.page.goto("https://curia.netlify.app/artefact/vaO1190229");
   }
 }
