@@ -1,6 +1,7 @@
 import React from "react";
 import { Artefact } from "../apis/api.class";
-import { StyleSheet, View } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
+import { useRouter } from "expo-router";
 
 interface Props {
   item: Artefact;
@@ -8,27 +9,31 @@ interface Props {
 
 export default function CollectionObjectListItem({ item }: Props) {
   const {
+    localId,
     title,
     maker,
     objectDate,
     images: { primaryThumbnailUrl },
     apiSource,
   } = item;
+  const router = useRouter();
 
   return (
-    <View role="listitem" style={styles.listItem}>
-      <div style={styles.listItemLeft}>
-        <img src={primaryThumbnailUrl} alt="" style={styles.image} />
-      </div>
-      <div style={styles.listItemRight}>
-        <h2>{title}</h2>
-        <p>
-          {maker && maker + ", "}
-          {objectDate}
-        </p>
-        <p>Source: {apiSource}</p>
-      </div>
-    </View>
+    <Pressable onPress={() => router.push(`/artefact/${localId}`)}>
+      <View role="listitem" style={styles.listItem}>
+        <div style={styles.listItemLeft}>
+          <img src={primaryThumbnailUrl} alt="" style={styles.image} />
+        </div>
+        <div style={styles.listItemRight}>
+          <h2>{title}</h2>
+          <p>
+            {maker && maker + ", "}
+            {objectDate}
+          </p>
+          <p>Source: {apiSource}</p>
+        </div>
+      </View>
+    </Pressable>
   );
 }
 
