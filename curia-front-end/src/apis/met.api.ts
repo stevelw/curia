@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Api, Artefact, SearchFnReturn } from "./api.class";
+import { Api, Artefact, SearchFnReturn, LocalId } from "./api.class";
 
 const name = "MET API";
 const slug = "met";
@@ -46,16 +46,17 @@ interface SearchResponse {
   objectIDs: CollectionObjectId[];
 }
 
-async function fetchObject(
-  collectionObjectId: CollectionObjectId,
-): Promise<Artefact> {
+async function fetch(this: Api, localId: LocalId): Promise<Artefact> {
+  if (!this.isHandled(localId)) {
+    throw new Error("Incorrect API for localId");
+  }
+  const remoteId = this.remoteIdFrom(localId);
   return axios
-    .get<FetchCollectionObjectResponse>(
-      `${BASE_URL}/objects/${collectionObjectId}`,
-    )
+    .get<FetchCollectionObjectResponse>(`${BASE_URL}/objects/${remoteId}`)
     .then(
       ({
         data: {
+          objectID,
           accessionNumber,
           medium,
           title,
@@ -63,13 +64,12 @@ async function fetchObject(
           artistDisplayName,
           primaryImageSmall,
           primaryImage,
-          additionalImages,
           department,
           culture,
         },
       }) => {
         const artefact: Artefact = {
-          localId: slug + collectionObjectId,
+          localId: this.localIdFrom(objectID.toString()),
           accessionNumber,
           objectType: medium,
           title,
@@ -78,7 +78,6 @@ async function fetchObject(
           images: {
             primaryThumbnailUrl: primaryImageSmall,
             primaryImage: primaryImage,
-            additionalImages: additionalImages,
           },
           currentLocation: department + " - The Metropolitan Museum of Art",
           provenance: culture,
@@ -93,6 +92,7 @@ async function fetchObject(
 }
 
 async function search(
+  this: Api,
   searchTerm: string,
   maxResults: number,
 ): Promise<SearchFnReturn> {
@@ -104,7 +104,9 @@ async function search(
       return Promise.all(
         collectionObjectIds
           .slice(0, MAX_RESULTS_LIMIT)
-          .map((collectionObjectId) => fetchObject(collectionObjectId)),
+          .map((collectionObjectId) =>
+            this.fetch(this.localIdFrom(collectionObjectId.toString())),
+          ),
       );
     })
     .then((artefacts) => {
@@ -123,6 +125,6 @@ async function search(
     });
 }
 
-const metApi = new Api(name, search);
+const metApi = new Api(name, slug, fetch, search);
 
 export { metApi, SearchFnReturn };

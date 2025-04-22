@@ -1,33 +1,40 @@
 import { StyleSheet, View } from "react-native";
 
 interface Props {
-  page: number;
+  currentPage: number;
   setPageCbFn: (page: number) => void;
   numOfPages: number;
 }
 
-export default function PagePicker({ page, setPageCbFn, numOfPages }: Props) {
+export default function PagePicker({
+  currentPage,
+  setPageCbFn,
+  numOfPages,
+}: Props) {
   return (
     <View style={styles.picker}>
-      <button onClick={() => setPageCbFn(page - 1)} disabled={page < 2}>
+      <button
+        onClick={() => setPageCbFn(currentPage - 1)}
+        disabled={currentPage < 2}
+      >
         Previous
       </button>
-      {[...Array(numOfPages).keys()].map((num) => {
-        const pageNumber = num + 1;
+      {[...Array(numOfPages).keys()].map((index) => {
+        const pageNumber = index + 1;
         return (
           <button
             key={pageNumber}
-            style={pageNumber === page ? styles.current_page : {}}
+            style={pageNumber === currentPage ? styles.current_page : {}}
             onClick={() => setPageCbFn(pageNumber)}
-            disabled={pageNumber === page}
+            disabled={pageNumber === currentPage}
           >
             {pageNumber}
           </button>
         );
       })}
       <button
-        onClick={() => setPageCbFn(page + 1)}
-        disabled={page >= numOfPages}
+        onClick={() => setPageCbFn(currentPage + 1)}
+        disabled={currentPage >= numOfPages}
       >
         Next
       </button>
