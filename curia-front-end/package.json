@@ -7,7 +7,7 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "test": "npx playwright test",
+    "test": "cucumber-js test",
     "test:debug": "npx playwright test --debug",
     "test:ui": "npx playwright test --ui",
     "test:gen": "npx playwright codegen",
@@ -53,6 +53,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
+    "@cucumber/cucumber": "^11.2.0",
     "@playwright/test": "^1.52.0",
     "@types/jest": "^29.5.12",
     "@types/node": "^22.14.0",
