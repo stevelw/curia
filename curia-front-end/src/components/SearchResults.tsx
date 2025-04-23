@@ -66,7 +66,7 @@ export default function SearchResults() {
   return (
     <>
       <h1 style={styles.h1}>Search</h1>
-      <SearchBox searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+      <SearchBox setSearchTerm={setSearchTerm} />
       {searchTerm !== "" && (
         <>
           <PagePicker
