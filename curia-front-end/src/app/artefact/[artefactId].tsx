@@ -1,5 +1,5 @@
 import { ScrollView } from "react-native";
-import Artefact, { LocalId } from "../../apis/Artefact.interface";
+import { LocalId } from "../../apis/Artefact.interface";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { vaApi } from "../../apis/va.api";
 import { metApi } from "../../apis/met.api";
@@ -17,6 +17,7 @@ export default function ArtefactDetails() {
   const artefact = useQuery({
     queryKey: [artefactId],
     queryFn: () => fetch(artefactId),
+    staleTime: apiHandler?.staleTime,
     gcTime: apiHandler?.garbageCollectionTime,
     enabled: !!apiHandler,
   });
