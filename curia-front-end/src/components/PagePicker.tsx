@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { Button, StyleSheet, View } from "react-native";
 
 interface Props {
   currentPage: number;
@@ -13,31 +13,27 @@ export default function PagePicker({
 }: Props) {
   return (
     <View style={styles.picker}>
-      <button
-        onClick={() => setPageCbFn(currentPage - 1)}
+      <Button
+        title="Previous"
+        onPress={() => setPageCbFn(currentPage - 1)}
         disabled={currentPage < 2}
-      >
-        Previous
-      </button>
+      />
       {[...Array(numOfPages).keys()].map((index) => {
         const pageNumber = index + 1;
         return (
-          <button
+          <Button
             key={pageNumber}
-            style={pageNumber === currentPage ? styles.current_page : {}}
-            onClick={() => setPageCbFn(pageNumber)}
+            title={pageNumber.toString()}
+            onPress={() => setPageCbFn(pageNumber)}
             disabled={pageNumber === currentPage}
-          >
-            {pageNumber}
-          </button>
+          />
         );
       })}
-      <button
-        onClick={() => setPageCbFn(currentPage + 1)}
+      <Button
+        title="Next"
+        onPress={() => setPageCbFn(currentPage + 1)}
         disabled={currentPage >= numOfPages}
-      >
-        Next
-      </button>
+      />
     </View>
   );
 }
@@ -48,8 +44,5 @@ const styles = StyleSheet.create({
     width: "100%",
     justifyContent: "space-evenly",
     flexDirection: "row",
-  },
-  current_page: {
-    fontWeight: "bold",
   },
 });
