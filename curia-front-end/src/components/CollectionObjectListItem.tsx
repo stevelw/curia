@@ -25,7 +25,7 @@ export default function CollectionObjectListItem({ item }: Props) {
         </div>
         <div style={styles.listItemRight}>
           <h2>{title}</h2>
-          <p>{maker}</p>
+          <p>Made by: {maker}</p>
           <p>{objectDate}</p>
           <p>Source: {apiSource}</p>
         </div>
