@@ -45,11 +45,13 @@ export default function SearchResults() {
         queryKey: ["search", searchTerm, page, vaApi.name],
         queryFn: () => vaApi.search(searchTerm, page * RESULTS_PER_PAGE),
         enabled: searchTerm !== "",
+        gcTime: vaApi.garbageCollectionTime,
       },
       {
         queryKey: ["search", searchTerm, page, metApi.name],
         queryFn: () => metApi.search(searchTerm, page * RESULTS_PER_PAGE),
         enabled: searchTerm !== "",
+        gcTime: metApi.garbageCollectionTime,
       },
     ],
     combine: combineResults,
