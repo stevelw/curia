@@ -1,6 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
+
+import { baseUrl } from "./baseUrls.js";
+
 export class ArtefactIdPage {
   page;
   BackButtonLocator;
@@ -10,6 +13,6 @@ export class ArtefactIdPage {
     this.BackButtonLocator = page.getByRole("link", { name: "Curia, back" });
   }
   async goto() {
-    await this.page.goto("http://localhost:8081/artefact/vaO1190229");
+    await this.page.goto(`${baseUrl}/artefact/vaO1190229`);
   }
 }

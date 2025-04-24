@@ -11,6 +11,8 @@ import {
   When,
 } from "@cucumber/cucumber";
 import { ArtefactIdPage } from "../page-object-models/ArtefactIdPage.pom.js";
+import { baseUrl } from "../page-object-models/baseUrls.js";
+
 setDefaultTimeout(60 * 1000);
 
 let browser;
@@ -38,9 +40,7 @@ When("the user clicks the back button", async function () {
 
 Then("the page navigates to root", async function () {
   await expect(artefactIdPage.BackButtonLocator).not.toBeVisible();
-  expect(artefactIdPage.page.url()).toBe(
-    "http://localhost:8081/?artefactId=vaO1190229",
-  );
+  expect(artefactIdPage.page.url()).toBe(`${baseUrl}/?artefactId=vaO1190229`);
 });
 
 After(async function () {
