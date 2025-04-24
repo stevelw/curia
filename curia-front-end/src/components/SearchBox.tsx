@@ -4,7 +4,7 @@ import {
   SetStateAction,
   useCallback,
   useEffect,
-  useState,
+  useMemo,
 } from "react";
 import { StyleSheet, TextInput } from "react-native";
 
@@ -13,20 +13,25 @@ interface Props {
 }
 
 export default function SearchBox({ setSearchTerm }: Props) {
-  const [searchBoxText, setSearchBoxText] = useState("");
-  const debouncedSearch = useCallback(
-    debounce((input: string) => setSearchTerm(input), 300),
+  const handleChange = useCallback(
+    (text: string) => {
+      setSearchTerm(text);
+    },
     [setSearchTerm],
   );
 
+  const debouncedSearch = useMemo(
+    () => debounce(handleChange, 300),
+    [handleChange],
+  );
+
   useEffect(() => {
-    debouncedSearch(searchBoxText);
-  }, [searchBoxText]);
+    return () => debouncedSearch.cancel();
+  }, [debouncedSearch]);
 
   return (
     <TextInput
-      value={searchBoxText}
-      onChangeText={setSearchBoxText}
+      onChangeText={debouncedSearch}
       style={styles.searchInput}
     ></TextInput>
   );
