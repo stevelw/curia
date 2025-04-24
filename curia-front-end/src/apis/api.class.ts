@@ -12,6 +12,10 @@ type SearchFn = (
   maxResults: number,
 ) => Promise<SearchFnReturn>;
 
+enum SortOptions {
+  DateOfProduction = "Date of production",
+}
+
 export class Api {
   name;
   slug;
@@ -49,4 +53,4 @@ export class Api {
   }
 }
 
-export { Artefact, SearchFnReturn, LocalId };
+export { Artefact, SearchFnReturn, LocalId, SortOptions };
