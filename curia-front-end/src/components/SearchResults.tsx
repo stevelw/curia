@@ -32,8 +32,8 @@ export default function SearchResults() {
           .flatMap((result) => result.data?.results)
           .filter((artefact) => !!artefact)
           .sort((a, b) => {
-            if (a.title < b.title) return -1;
-            if (a.title > b.title) return 1;
+            if (a.maker < b.maker) return -1;
+            if (a.maker > b.maker) return 1;
             return 0;
           })
           .slice((page - 1) * RESULTS_PER_PAGE, page * RESULTS_PER_PAGE),
