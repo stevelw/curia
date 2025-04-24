@@ -1,6 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
+
+import { baseUrl } from "./baseUrls.js";
+
 export class RootPage {
   page;
   TanStackQueryDevtoolsLocator;
@@ -10,11 +13,6 @@ export class RootPage {
     this.TanStackQueryDevtoolsLocator = page.getByTestId("devtools");
   }
   async goto() {
-    await this.page.goto("http://localhost:8081", { waitUntil: "networkidle" });
-  }
-  async gotoProduction() {
-    await this.page.goto("https://curia.netlify.app", {
-      waitUntil: "networkidle",
-    });
+    await this.page.goto(baseUrl, { waitUntil: "networkidle" });
   }
 }

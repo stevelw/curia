@@ -8,6 +8,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "test": "cucumber-js test",
+    "test:prod": "CI=1 cucumber-js test",
     "test:gen": "npx playwright codegen",
     "lint": "eslint .",
     "build:web": "expo export -p web && npx workbox-cli generateSW workbox-config.js",

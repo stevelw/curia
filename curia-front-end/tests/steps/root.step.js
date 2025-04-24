@@ -23,11 +23,13 @@ Before(async function () {
   rootPage = new RootPage(await context.newPage());
 });
 
-Given("the environment is production", async function () {
-  await rootPage.gotoProduction();
+Given("the environment is production", function () {
+  if (process.env.CI !== "1") return "pending";
 });
 
-When("the page is displayed", async function () {});
+When("the page is displayed", async function () {
+  await rootPage.goto();
+});
 
 Then("the dev tools should not be visible", async function () {
   await expect(rootPage.TanStackQueryDevtoolsLocator).not.toBeVisible();
