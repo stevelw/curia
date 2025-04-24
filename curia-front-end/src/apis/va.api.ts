@@ -1,5 +1,11 @@
 import axios from "axios";
-import { Api, Artefact, SearchFnReturn, LocalId } from "./api.class";
+import {
+  Api,
+  Artefact,
+  SearchFnReturn,
+  LocalId,
+  SortOptions,
+} from "./api.class";
 
 const name = "V&A API";
 const slug = "va";
@@ -190,27 +196,46 @@ async function fetch(this: Api, localId: LocalId): Promise<Artefact> {
     });
 }
 
+function orderBy(sortBy: SortOptions): string {
+  switch (sortBy) {
+    case SortOptions.Maker:
+      return "artist";
+      break;
+    default:
+      throw new Error("Unknown sort option");
+      break;
+  }
+}
+
 async function search(
   this: Api,
   searchTerm: string,
   maxResults: number,
+  sortBy: SortOptions,
 ): Promise<SearchFnReturn> {
   return axios
     .get<SearchResponse>("https://api.vam.ac.uk/v2/objects/search", {
-      params: { q: searchTerm, page_size: MAX_RESULTS_LIMIT, page: 1 },
+      params: {
+        q: searchTerm,
+        page_size: MAX_RESULTS_LIMIT,
+        page: 1,
+        order_by: orderBy(sortBy),
+      },
     })
     .then(({ data: { records } }) => {
-      const totalResultsAvailable = records.length;
-      const results = records
-        .sort((a, b) => {
-          const titleA =
-            a._primaryTitle === "" ? DEFAULT_TITLE : a._primaryTitle;
-          const titleB =
-            b._primaryTitle === "" ? DEFAULT_TITLE : b._primaryTitle;
-          if (titleA < titleB) return -1;
-          if (titleA > titleB) return 1;
-          return 0;
+      const filteredAndSortedResults = records
+        .filter(({ _primaryMaker }) => {
+          return !!_primaryMaker.name;
         })
+        .sort((a, b) => {
+          const makerA = a._primaryMaker.name;
+          const makerB = b._primaryMaker.name;
+          if (makerA < makerB) return -1;
+          if (makerA > makerB) return 1;
+          return 0;
+        });
+      const totalResultsAvailable = filteredAndSortedResults.length;
+      const results = filteredAndSortedResults
         .slice(0, maxResults)
         .map<Artefact>(
           ({
@@ -230,7 +255,7 @@ async function search(
             objectType,
             title: _primaryTitle === "" ? DEFAULT_TITLE : _primaryTitle,
             objectDate: _primaryDate,
-            maker: _primaryMaker.name + ", " + _primaryMaker.association,
+            maker: _primaryMaker.name,
             images: {
               primaryThumbnailUrl: _images._primary_thumbnail,
               primaryImage: _primaryImageId,

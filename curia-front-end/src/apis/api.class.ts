@@ -10,10 +10,11 @@ type FetchFn = (localId: LocalId) => Promise<Artefact>;
 type SearchFn = (
   searchTerm: string,
   maxResults: number,
+  sortBy: SortOptions,
 ) => Promise<SearchFnReturn>;
 
 enum SortOptions {
-  DateOfProduction = "Date of production",
+  Maker = "Maker",
 }
 
 export class Api {
