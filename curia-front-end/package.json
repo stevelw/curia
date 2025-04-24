@@ -8,14 +8,12 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "test": "cucumber-js test",
-    "test:debug": "npx playwright test --debug",
-    "test:ui": "npx playwright test --ui",
     "test:gen": "npx playwright codegen",
     "lint": "eslint .",
     "build:web": "expo export -p web && npx workbox-cli generateSW workbox-config.js",
     "deploy:dev": "npm run build:web && netlify deploy --dir=dist",
     "deploy:prod": "npm run build:web && netlify deploy --prod --dir=dist",
-    "pre-commit": "eslint . && npx playwright test"
+    "pre-commit": "eslint . && cucumber-js test"
   },
   "jest": {
     "preset": "jest-expo"
