@@ -1,5 +1,11 @@
 import axios from "axios";
-import { Api, Artefact, SearchFnReturn, LocalId } from "./api.class";
+import {
+  Api,
+  Artefact,
+  SearchFnReturn,
+  LocalId,
+  SortOptions,
+} from "./api.class";
 
 const name = "MET API";
 const slug = "met";
@@ -95,6 +101,7 @@ async function search(
   this: Api,
   searchTerm: string,
   maxResults: number,
+  sortBy: SortOptions,
 ): Promise<SearchFnReturn> {
   return axios
     .get<SearchResponse>(`${BASE_URL}/search`, {
@@ -110,14 +117,15 @@ async function search(
       );
     })
     .then((artefacts) => {
-      const totalResultsAvailable = artefacts.length;
-      const results = artefacts
+      const filteredAndSortedResults = artefacts
+        .filter((artefact) => !!artefact.maker)
         .sort((a, b) => {
-          if (a.title < b.title) return -1;
-          if (a.title > b.title) return 1;
+          if (a.maker < b.maker) return -1;
+          if (a.maker > b.maker) return 1;
           return 0;
-        })
-        .slice(0, maxResults);
+        });
+      const totalResultsAvailable = filteredAndSortedResults.length;
+      const results = filteredAndSortedResults.slice(0, maxResults);
       return { totalResultsAvailable, results };
     })
     .catch((err) => {

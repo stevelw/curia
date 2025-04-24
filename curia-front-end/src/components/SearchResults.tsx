@@ -53,8 +53,9 @@ export default function SearchResults() {
         gcTime: vaApi.garbageCollectionTime,
       },
       {
-        queryKey: ["search", searchTerm, page, metApi.name],
-        queryFn: () => metApi.search(searchTerm, page * RESULTS_PER_PAGE),
+        queryKey: ["search", searchTerm, sortBy, page, metApi.name],
+        queryFn: () =>
+          metApi.search(searchTerm, page * RESULTS_PER_PAGE, sortBy),
         enabled: searchTerm !== "",
         staleTime: metApi.staleTime,
         gcTime: metApi.garbageCollectionTime,
