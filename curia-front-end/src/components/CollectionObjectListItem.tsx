@@ -11,6 +11,7 @@ export default function CollectionObjectListItem({ item }: Props) {
     localId,
     title,
     maker,
+    currentLocation,
     objectDate,
     images: { primaryThumbnailUrl },
     apiSource,
@@ -25,10 +26,9 @@ export default function CollectionObjectListItem({ item }: Props) {
         </div>
         <div style={styles.listItemRight}>
           <h2>{title}</h2>
-          <p>
-            {maker && maker + ", "}
-            {objectDate}
-          </p>
+          <p>Made by: {maker}</p>
+          <p>Current location: {currentLocation}</p>
+          <p>{objectDate}</p>
           <p>Source: {apiSource}</p>
         </div>
       </View>

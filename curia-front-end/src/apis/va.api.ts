@@ -1,5 +1,11 @@
 import axios from "axios";
-import { Api, Artefact, SearchFnReturn, LocalId } from "./api.class";
+import {
+  Api,
+  Artefact,
+  SearchFnReturn,
+  LocalId,
+  SortOptions,
+} from "./api.class";
 
 const name = "V&A API";
 const slug = "va";
@@ -111,15 +117,17 @@ interface FetchResponse {
   };
 }
 
+interface CurrentLocation {
+  displayName: string;
+  site: string;
+  onDisplay: boolean;
+}
+
 interface SearchRecord {
   systemNumber: RecordId;
   accessionNumber: string;
   objectType: string;
-  _currentLocation: {
-    displayName: string;
-    site: string;
-    onDisplay: boolean;
-  };
+  _currentLocation: CurrentLocation;
   _primaryTitle: string;
   _primaryMaker: {
     name: string;
@@ -190,27 +198,74 @@ async function fetch(this: Api, localId: LocalId): Promise<Artefact> {
     });
 }
 
+function orderBy(sortBy: SortOptions): string {
+  switch (sortBy) {
+    case SortOptions.Maker:
+      return "artist";
+      break;
+    default:
+      throw new Error("Unknown sort option");
+      break;
+  }
+}
+
 async function search(
   this: Api,
   searchTerm: string,
   maxResults: number,
+  sortBy: SortOptions,
 ): Promise<SearchFnReturn> {
   return axios
     .get<SearchResponse>("https://api.vam.ac.uk/v2/objects/search", {
-      params: { q: searchTerm, page_size: MAX_RESULTS_LIMIT, page: 1 },
+      params: {
+        q: searchTerm,
+        page_size: MAX_RESULTS_LIMIT,
+        page: 1,
+        order_by: orderBy(sortBy),
+      },
     })
     .then(({ data: { records } }) => {
-      const totalResultsAvailable = records.length;
-      const results = records
-        .sort((a, b) => {
-          const titleA =
-            a._primaryTitle === "" ? DEFAULT_TITLE : a._primaryTitle;
-          const titleB =
-            b._primaryTitle === "" ? DEFAULT_TITLE : b._primaryTitle;
-          if (titleA < titleB) return -1;
-          if (titleA > titleB) return 1;
-          return 0;
+      function currentLocationDisplayString({
+        displayName,
+        site,
+        onDisplay,
+      }: CurrentLocation): string {
+        return (
+          site +
+          " - " +
+          displayName +
+          (onDisplay ? " (On display)" : " (Not on display)")
+        );
+      }
+
+      const filteredAndSortedResults = records
+        .filter(({ _primaryMaker }) => {
+          return !!_primaryMaker.name;
         })
+        .sort((a, b) => {
+          let makerAComparitor, makerBComparitor;
+          switch (sortBy) {
+            case SortOptions.Maker:
+              makerAComparitor = a._primaryMaker.name;
+              makerBComparitor = b._primaryMaker.name;
+              break;
+            case SortOptions.Location:
+              makerAComparitor = currentLocationDisplayString(
+                a._currentLocation,
+              );
+              makerBComparitor = currentLocationDisplayString(
+                b._currentLocation,
+              );
+              break;
+            default:
+              throw new Error("Unknown sort option in V&A API");
+          }
+          if (makerAComparitor < makerBComparitor) return -1;
+          if (makerAComparitor > makerBComparitor) return 1;
+          return 0;
+        });
+      const totalResultsAvailable = filteredAndSortedResults.length;
+      const results = filteredAndSortedResults
         .slice(0, maxResults)
         .map<Artefact>(
           ({
@@ -230,7 +285,7 @@ async function search(
             objectType,
             title: _primaryTitle === "" ? DEFAULT_TITLE : _primaryTitle,
             objectDate: _primaryDate,
-            maker: _primaryMaker.name + ", " + _primaryMaker.association,
+            maker: _primaryMaker.name,
             images: {
               primaryThumbnailUrl: _images._primary_thumbnail,
               primaryImage: _primaryImageId,
@@ -238,13 +293,7 @@ async function search(
                 _images._iiif_image_base_url + _primaryImageId,
               additionalImages: [_images._iiif_image_base_url],
             },
-            currentLocation:
-              _currentLocation.site +
-              " - " +
-              _currentLocation.displayName +
-              (_currentLocation.onDisplay
-                ? " (On display)"
-                : " (Not on display)"),
+            currentLocation: currentLocationDisplayString(_currentLocation),
             provenance: _primaryPlace,
             apiSource: name,
           }),

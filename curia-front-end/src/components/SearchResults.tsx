@@ -6,6 +6,8 @@ import { vaApi, SearchFnReturn } from "../apis/va.api";
 import { metApi } from "../apis/met.api";
 import PagePicker from "./PagePicker";
 import SearchBox from "./SearchBox";
+import { SortOptions } from "../apis/api.class";
+import SortPicker from "./SortPicker";
 
 const RESULTS_PER_PAGE = 10;
 const MAX_TO_RENDER_PER_BATCH = 10; // 10
@@ -15,6 +17,7 @@ const WINDOW_SIZE = 5; // 21
 
 export default function SearchResults() {
   const [searchTerm, setSearchTerm] = useState("");
+  const [sortBy, setSortBy] = useState(SortOptions.Maker);
   const [page, setPage] = useState(1);
   const [numberOfPages, setNumberOfPages] = useState(1);
 
@@ -29,28 +32,43 @@ export default function SearchResults() {
           .flatMap((result) => result.data?.results)
           .filter((artefact) => !!artefact)
           .sort((a, b) => {
-            if (a.title < b.title) return -1;
-            if (a.title > b.title) return 1;
+            let makerAComparitor, makerBComparitor;
+            switch (sortBy) {
+              case SortOptions.Maker:
+                makerAComparitor = a.maker;
+                makerBComparitor = b.maker;
+                break;
+              case SortOptions.Location:
+                makerAComparitor = a.currentLocation;
+                makerBComparitor = b.currentLocation;
+                break;
+              default:
+                throw new Error("Unknown sort option in V&A API");
+            }
+            if (makerAComparitor < makerBComparitor) return -1;
+            if (makerAComparitor > makerBComparitor) return 1;
             return 0;
           })
           .slice((page - 1) * RESULTS_PER_PAGE, page * RESULTS_PER_PAGE),
         pending: results.some((result) => result.isPending),
       };
     },
-    [page],
+    [page, sortBy],
   );
   const queryResults = useQueries({
     queries: [
       {
-        queryKey: ["search", searchTerm, page, vaApi.name],
-        queryFn: () => vaApi.search(searchTerm, page * RESULTS_PER_PAGE),
+        queryKey: ["search", searchTerm, sortBy, page, vaApi.name],
+        queryFn: () =>
+          vaApi.search(searchTerm, page * RESULTS_PER_PAGE, sortBy),
         enabled: searchTerm !== "",
         staleTime: vaApi.staleTime,
         gcTime: vaApi.garbageCollectionTime,
       },
       {
-        queryKey: ["search", searchTerm, page, metApi.name],
-        queryFn: () => metApi.search(searchTerm, page * RESULTS_PER_PAGE),
+        queryKey: ["search", searchTerm, sortBy, page, metApi.name],
+        queryFn: () =>
+          metApi.search(searchTerm, page * RESULTS_PER_PAGE, sortBy),
         enabled: searchTerm !== "",
         staleTime: metApi.staleTime,
         gcTime: metApi.garbageCollectionTime,
@@ -73,6 +91,7 @@ export default function SearchResults() {
       <SearchBox setSearchTerm={setSearchTerm} />
       {searchTerm !== "" && (
         <>
+          <SortPicker sortBy={sortBy} setSortBy={setSortBy} />
           <PagePicker
             currentPage={page}
             numOfPages={numberOfPages}

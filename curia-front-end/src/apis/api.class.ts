@@ -10,7 +10,13 @@ type FetchFn = (localId: LocalId) => Promise<Artefact>;
 type SearchFn = (
   searchTerm: string,
   maxResults: number,
+  sortBy: SortOptions,
 ) => Promise<SearchFnReturn>;
+
+enum SortOptions {
+  Maker = "Maker",
+  Location = "Current location",
+}
 
 export class Api {
   name;
@@ -49,4 +55,4 @@ export class Api {
   }
 }
 
-export { Artefact, SearchFnReturn, LocalId };
+export { Artefact, SearchFnReturn, LocalId, SortOptions };
