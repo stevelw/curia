@@ -21,7 +21,10 @@ export class SearchPage {
       name: "Current location",
     });
     this.searchBoxLocator = page.getByRole("textbox");
-    this.makerLocators = page.getByText("Made by:");
+    this.makerLocators = page
+      .getByRole("listitem")
+      .getByRole("paragraph")
+      .getByText("Made by:");
     this.currentLocationLocators = page.getByText("Current location:");
   }
 
