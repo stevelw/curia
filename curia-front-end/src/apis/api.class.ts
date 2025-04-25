@@ -15,6 +15,7 @@ type SearchFn = (
 
 enum SortOptions {
   Maker = "Maker",
+  Location = "Current location",
 }
 
 export class Api {

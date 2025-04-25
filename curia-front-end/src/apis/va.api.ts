@@ -117,15 +117,17 @@ interface FetchResponse {
   };
 }
 
+interface CurrentLocation {
+  displayName: string;
+  site: string;
+  onDisplay: boolean;
+}
+
 interface SearchRecord {
   systemNumber: RecordId;
   accessionNumber: string;
   objectType: string;
-  _currentLocation: {
-    displayName: string;
-    site: string;
-    onDisplay: boolean;
-  };
+  _currentLocation: CurrentLocation;
   _primaryTitle: string;
   _primaryMaker: {
     name: string;
@@ -223,15 +225,43 @@ async function search(
       },
     })
     .then(({ data: { records } }) => {
+      function currentLocationDisplayString({
+        displayName,
+        site,
+        onDisplay,
+      }: CurrentLocation): string {
+        return (
+          site +
+          " - " +
+          displayName +
+          (onDisplay ? " (On display)" : " (Not on display)")
+        );
+      }
+
       const filteredAndSortedResults = records
         .filter(({ _primaryMaker }) => {
           return !!_primaryMaker.name;
         })
         .sort((a, b) => {
-          const makerA = a._primaryMaker.name;
-          const makerB = b._primaryMaker.name;
-          if (makerA < makerB) return -1;
-          if (makerA > makerB) return 1;
+          let makerAComparitor, makerBComparitor;
+          switch (sortBy) {
+            case SortOptions.Maker:
+              makerAComparitor = a._primaryMaker.name;
+              makerBComparitor = b._primaryMaker.name;
+              break;
+            case SortOptions.Location:
+              makerAComparitor = currentLocationDisplayString(
+                a._currentLocation,
+              );
+              makerBComparitor = currentLocationDisplayString(
+                b._currentLocation,
+              );
+              break;
+            default:
+              throw new Error("Unknown sort option in V&A API");
+          }
+          if (makerAComparitor < makerBComparitor) return -1;
+          if (makerAComparitor > makerBComparitor) return 1;
           return 0;
         });
       const totalResultsAvailable = filteredAndSortedResults.length;
@@ -263,13 +293,7 @@ async function search(
                 _images._iiif_image_base_url + _primaryImageId,
               additionalImages: [_images._iiif_image_base_url],
             },
-            currentLocation:
-              _currentLocation.site +
-              " - " +
-              _currentLocation.displayName +
-              (_currentLocation.onDisplay
-                ? " (On display)"
-                : " (Not on display)"),
+            currentLocation: currentLocationDisplayString(_currentLocation),
             provenance: _primaryPlace,
             apiSource: name,
           }),

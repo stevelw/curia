@@ -32,15 +32,28 @@ export default function SearchResults() {
           .flatMap((result) => result.data?.results)
           .filter((artefact) => !!artefact)
           .sort((a, b) => {
-            if (a.maker < b.maker) return -1;
-            if (a.maker > b.maker) return 1;
+            let makerAComparitor, makerBComparitor;
+            switch (sortBy) {
+              case SortOptions.Maker:
+                makerAComparitor = a.maker;
+                makerBComparitor = b.maker;
+                break;
+              case SortOptions.Location:
+                makerAComparitor = a.currentLocation;
+                makerBComparitor = b.currentLocation;
+                break;
+              default:
+                throw new Error("Unknown sort option in V&A API");
+            }
+            if (makerAComparitor < makerBComparitor) return -1;
+            if (makerAComparitor > makerBComparitor) return 1;
             return 0;
           })
           .slice((page - 1) * RESULTS_PER_PAGE, page * RESULTS_PER_PAGE),
         pending: results.some((result) => result.isPending),
       };
     },
-    [page],
+    [page, sortBy],
   );
   const queryResults = useQueries({
     queries: [

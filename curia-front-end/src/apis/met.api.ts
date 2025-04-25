@@ -14,6 +14,7 @@ const BASE_URL = "https://collectionapi.metmuseum.org/public/collection/v1";
 const MAX_RESULTS_LIMIT = 100;
 
 type CollectionObjectId = number;
+type Department = string;
 
 interface FetchCollectionObjectResponse {
   objectID: CollectionObjectId;
@@ -24,7 +25,7 @@ interface FetchCollectionObjectResponse {
   primaryImage: string;
   primaryImageSmall: string;
   additionalImages: string[];
-  department: string;
+  department: Department;
   objectName: string;
   culture: string;
   artistDisplayName: string;
@@ -56,7 +57,13 @@ async function fetch(this: Api, localId: LocalId): Promise<Artefact> {
   if (!this.isHandled(localId)) {
     throw new Error("Incorrect API for localId");
   }
+
   const remoteId = this.remoteIdFrom(localId);
+
+  function currentLocationDisplayString(department: Department): string {
+    return "The Metropolitan Museum of Art - " + department;
+  }
+
   return axios
     .get<FetchCollectionObjectResponse>(`${BASE_URL}/objects/${remoteId}`)
     .then(
@@ -85,7 +92,7 @@ async function fetch(this: Api, localId: LocalId): Promise<Artefact> {
             primaryThumbnailUrl: primaryImageSmall,
             primaryImage: primaryImage,
           },
-          currentLocation: department + " - The Metropolitan Museum of Art",
+          currentLocation: currentLocationDisplayString(department),
           provenance: culture,
           apiSource: name,
         };
@@ -120,8 +127,21 @@ async function search(
       const filteredAndSortedResults = artefacts
         .filter((artefact) => !!artefact.maker)
         .sort((a, b) => {
-          if (a.maker < b.maker) return -1;
-          if (a.maker > b.maker) return 1;
+          let makerAComparitor, makerBComparitor;
+          switch (sortBy) {
+            case SortOptions.Maker:
+              makerAComparitor = a.maker;
+              makerBComparitor = b.maker;
+              break;
+            case SortOptions.Location:
+              makerAComparitor = a.currentLocation;
+              makerBComparitor = b.currentLocation;
+              break;
+            default:
+              throw new Error("Unknown sort option in V&A API");
+          }
+          if (makerAComparitor < makerBComparitor) return -1;
+          if (makerAComparitor > makerBComparitor) return 1;
           return 0;
         });
       const totalResultsAvailable = filteredAndSortedResults.length;
