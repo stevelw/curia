@@ -93,7 +93,7 @@ export default function SearchResults() {
   const queryResults = useQueries({
     queries: [
       {
-        queryKey: ["search", searchTerm, sortBy, page, vaApi.name],
+        queryKey: ["search", searchTerm, sortBy, vaApi.name],
         queryFn: () =>
           vaApi.search(
             searchTerm,
@@ -107,7 +107,7 @@ export default function SearchResults() {
         gcTime: vaApi.garbageCollectionTime,
       },
       {
-        queryKey: ["search", searchTerm, sortBy, page, metApi.name],
+        queryKey: ["search", searchTerm, sortBy, metApi.name],
         queryFn: () =>
           metApi.search(
             searchTerm,
