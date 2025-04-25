@@ -33,6 +33,13 @@ Given("maker is selected for sort order", async () => {
     await searchPage.sortByMakerButtonLocator.click();
 });
 
+Given("current location is selected for sort order", async () => {
+  await searchPage.goto();
+  await searchPage.search("China");
+  if (await searchPage.sortByCurrentLocationButtonLocator.isEnabled())
+    await searchPage.sortByCurrentLocationButtonLocator.click();
+});
+
 When("the results are displayed", async () => {
   await expect(searchPage.makerLocators.first()).toBeVisible({
     timeout: 10000,
@@ -46,6 +53,15 @@ Then("the results are ordered by maker", async () => {
   );
   for (let i = 1; i < makers.length - 1; i++) {
     expect(makers[i] >= makers[i - 1]).toBeTruthy();
+  }
+});
+
+Then("the results are ordered by current location", async () => {
+  const currentLocations = await searchPage.currentLocationLocators.evaluateAll(
+    (locators) => locators.map((locator) => locator.textContent),
+  );
+  for (let i = 1; i < currentLocations.length - 1; i++) {
+    expect(currentLocations[i] >= currentLocations[i - 1]).toBeTruthy();
   }
 });
 

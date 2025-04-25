@@ -7,16 +7,22 @@ import { baseUrl } from "./baseUrls.js";
 export class SearchPage {
   page;
   sortByMakerButtonLocator;
+  sortByCurrentLocationButtonLocator;
   searchBoxLocator;
   makerLocators;
+  currentLocationLocators;
 
   constructor(page) {
     this.page = page;
     this.sortByMakerButtonLocator = page.getByRole("button", {
       name: "Maker",
-    })
+    });
+    this.sortByCurrentLocationButtonLocator = page.getByRole("button", {
+      name: "Current location",
+    });
     this.searchBoxLocator = page.getByRole("textbox");
-    this.makerLocators = page.getByText("Made by:")
+    this.makerLocators = page.getByText("Made by:");
+    this.currentLocationLocators = page.getByText("Current location:");
   }
 
   async goto() {
