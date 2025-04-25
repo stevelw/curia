@@ -1,7 +1,9 @@
-import Artefact, { LocalId } from "./Artefact.interface";
+import Artefact, { LocalId, ObjectType } from "./Artefact.interface";
 
 interface SearchFnReturn {
   totalResultsAvailable: number;
+  objectTypes: ObjectType[];
+  currentLocations: string[];
   results: Artefact[];
 }
 
@@ -9,8 +11,9 @@ type FetchFn = (localId: LocalId) => Promise<Artefact>;
 
 type SearchFn = (
   searchTerm: string,
-  maxResults: number,
   sortBy: SortOptions,
+  objectTypeFilters: ObjectType[],
+  currentLocationFilters: string[],
 ) => Promise<SearchFnReturn>;
 
 enum SortOptions {

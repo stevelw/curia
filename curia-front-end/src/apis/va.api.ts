@@ -212,7 +212,6 @@ function orderBy(sortBy: SortOptions): string {
 async function search(
   this: Api,
   searchTerm: string,
-  maxResults: number,
   sortBy: SortOptions,
 ): Promise<SearchFnReturn> {
   return axios
@@ -239,9 +238,9 @@ async function search(
       }
 
       const filteredAndSortedResults = records
-        .filter(({ _primaryMaker }) => {
-          return !!_primaryMaker.name;
-        })
+        // .filter((record) => {
+        //   return !!record._primaryMaker.name;
+        // })
         .sort((a, b) => {
           let makerAComparitor, makerBComparitor;
           switch (sortBy) {
@@ -264,44 +263,62 @@ async function search(
           if (makerAComparitor > makerBComparitor) return 1;
           return 0;
         });
+
       const totalResultsAvailable = filteredAndSortedResults.length;
-      const results = filteredAndSortedResults
-        .slice(0, maxResults)
-        .map<Artefact>(
-          ({
-            systemNumber,
-            accessionNumber,
-            objectType,
-            _currentLocation,
-            _primaryTitle,
-            _primaryMaker,
-            _primaryImageId,
-            _primaryDate,
-            _primaryPlace,
-            _images,
-          }) => ({
-            localId: this.localIdFrom(systemNumber),
-            accessionNumber,
-            objectType,
-            title: _primaryTitle === "" ? DEFAULT_TITLE : _primaryTitle,
-            objectDate: _primaryDate,
-            maker: _primaryMaker.name,
-            images: {
-              primaryThumbnailUrl: _images._primary_thumbnail,
-              primaryImage: _primaryImageId,
-              iiif_image_base_url:
-                _images._iiif_image_base_url + _primaryImageId,
-              additionalImages: [_images._iiif_image_base_url],
-            },
-            currentLocation: currentLocationDisplayString(_currentLocation),
-            provenance: _primaryPlace,
-            apiSource: name,
-          }),
-        );
-      return {
+      const objectTypes = [
+        ...new Set(
+          filteredAndSortedResults
+            .map((artefact) => artefact.objectType)
+            .filter((objectType) => objectType !== ""),
+        ),
+      ];
+      const currentLocations = [
+        ...new Set(
+          filteredAndSortedResults
+            .map((artefact) =>
+              currentLocationDisplayString(artefact._currentLocation),
+            )
+            .filter((currentLocation) => currentLocation !== ""),
+        ),
+      ];
+
+      const results = filteredAndSortedResults.map<Artefact>(
+        ({
+          systemNumber,
+          accessionNumber,
+          objectType,
+          _currentLocation,
+          _primaryTitle,
+          _primaryMaker,
+          _primaryImageId,
+          _primaryDate,
+          _primaryPlace,
+          _images,
+        }) => ({
+          localId: this.localIdFrom(systemNumber),
+          accessionNumber,
+          objectType,
+          title: _primaryTitle === "" ? DEFAULT_TITLE : _primaryTitle,
+          objectDate: _primaryDate,
+          maker: _primaryMaker.name,
+          images: {
+            primaryThumbnailUrl: _images._primary_thumbnail,
+            primaryImage: _primaryImageId,
+            iiif_image_base_url: _images._iiif_image_base_url + _primaryImageId,
+            additionalImages: [_images._iiif_image_base_url],
+          },
+          currentLocation: currentLocationDisplayString(_currentLocation),
+          provenance: _primaryPlace,
+          apiSource: name,
+        }),
+      );
+      const result: SearchFnReturn = {
         totalResultsAvailable,
+        objectTypes,
+        currentLocations,
         results,
       };
+      return result;
     })
     .catch(() => {
       throw new Error("API error - V&A");

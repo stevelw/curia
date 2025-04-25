@@ -107,7 +107,6 @@ async function fetch(this: Api, localId: LocalId): Promise<Artefact> {
 async function search(
   this: Api,
   searchTerm: string,
-  maxResults: number,
   sortBy: SortOptions,
 ): Promise<SearchFnReturn> {
   return axios
@@ -124,7 +123,7 @@ async function search(
       );
     })
     .then((artefacts) => {
-      const filteredAndSortedResults = artefacts
+      const results = artefacts
         .filter((artefact) => !!artefact.maker)
         .sort((a, b) => {
           let makerAComparitor, makerBComparitor;
@@ -144,9 +143,29 @@ async function search(
           if (makerAComparitor > makerBComparitor) return 1;
           return 0;
         });
-      const totalResultsAvailable = filteredAndSortedResults.length;
-      const results = filteredAndSortedResults.slice(0, maxResults);
-      return { totalResultsAvailable, results };
+
+      const totalResultsAvailable = results.length;
+      const objectTypes = [
+        ...new Set(
+          results
+            .map((artefact) => artefact.objectType)
+            .filter((objectType) => objectType !== ""),
+        ),
+      ];
+      const currentLocations = [
+        ...new Set(
+          results
+            .map((artefact) => artefact.currentLocation)
+            .filter((currentLocation) => currentLocation !== ""),
+        ),
+      ];
+      const result: SearchFnReturn = {
+        totalResultsAvailable,
+        objectTypes,
+        currentLocations,
+        results,
+      };
+      return result;
     })
     .catch((err) => {
       throw new Error(`MET: ${err}`);
