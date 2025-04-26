@@ -1,10 +1,10 @@
-name: Lint
+name: Test
 on:
   pull_request:
     branches: main
 jobs:
   linting:
-    name: Linting
+    name: Testing
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
@@ -14,9 +14,5 @@ jobs:
           node-version: lts/*
       - name: Install back end dependencies
         run: npm ci --prefix curia-back-end
-      - name: Run ESLint on back end
-        run: npm run lint --prefix curia-back-end
-      - name: Install front end dependencies
-        run: npm ci --prefix curia-front-end
-      - name: Run ESLint on front end
-        run: npm run lint --prefix curia-front-end
+      - name: Run tests on back end
+        run: CI=1 npm t --prefix curia-back-end
