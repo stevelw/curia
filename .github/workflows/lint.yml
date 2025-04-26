@@ -12,7 +12,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: lts/*
-      - name: Install dependencies
+      - name: Install back end dependencies
+        run: npm ci --prefix curia-back-end
+      - name: Run ESLint on back end
+        run: npm run lint --prefix curia-back-end
+      - name: Install front end dependencies
         run: npm ci --prefix curia-front-end
-      - name: Run ESLint on frontend
+      - name: Run ESLint on front end
         run: npm run lint --prefix curia-front-end
