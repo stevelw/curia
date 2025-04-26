@@ -1,0 +1,18 @@
+name: Test
+on:
+  pull_request:
+    branches: main
+jobs:
+  linting:
+    name: Testing
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+      - name: Install back end dependencies
+        run: npm ci --prefix curia-back-end
+      - name: Run tests on back end
+        run: CI=1 npm t --prefix curia-back-end
