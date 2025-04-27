@@ -15,4 +15,9 @@ describe("UsersService", () => {
   it("should be defined", () => {
     expect(service).toBeDefined();
   });
+
+  describe("POST", () => {
+    it("returns a JWT, GIVEN username is unique", () => {});
+    it.skip("returns an error, GIVEN username already exists", () => {});
+  });
 });
