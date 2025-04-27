@@ -6,6 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "main": "dist/src/main.js",
+  "type": "module",
   "scripts": {
     "build": "npm install --dev && npx @nestjs/cli build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
@@ -20,9 +21,7 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "pre-commit": "eslint . && jest",
-    "setup-db:dev": "NODE_ENV=development node ./db/setup.js",
-    "setup-db:prod": "NODE_ENV=production node ./db/setup.js",
-    "seed-dev": "NODE_ENV=development node ./db/dev.seed.js"
+    "seed-dev": "NODE_ENV=development node ./db/run-seed.js"
   },
   "dependencies": {
     "@nestjs/swagger": "^11.1.5",
