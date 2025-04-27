@@ -1,2 +1,2 @@
-import usersData from "./users.json";
-export default { usersData };
+import userData from "./users.json";
+export default { userData };
