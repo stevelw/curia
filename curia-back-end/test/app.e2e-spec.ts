@@ -8,6 +8,7 @@ import { AppModule } from "./../src/app.module";
 import { seed } from "../db/seed";
 import testData from "../db/data/test-data/data.index";
 import { client } from "../db/connection";
+import User from "src/users/user.interface";
 
 let app: INestApplication<App>;
 
@@ -19,7 +20,8 @@ beforeEach(async () => {
   app = moduleFixture.createNestApplication();
   await app.init();
 
-  await seed(testData);
+  const userData: User[] = await testData.userData;
+  await seed({ userData });
 });
 
 afterAll(() => {
