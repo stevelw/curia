@@ -15,20 +15,19 @@
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist//src/main",
     "lint": "eslint",
-    "test": "jest",
+    "test": "dotenvx run -f .env.test -- jest --config ./test/jest-e2e.json",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json",
     "pre-commit": "eslint . && jest",
-    "seed-dev": "NODE_ENV=development node ./db/run-seed.js"
+    "seed-dev": "dotenvx run -f .env.development -- node ./db/run-seed.js"
   },
   "dependencies": {
-    "@nestjs/swagger": "^11.1.5",
+    "@dotenvx/dotenvx": "^1.41.0",
     "@nestjs/common": "^11.0.1",
     "@nestjs/core": "^11.0.1",
     "@nestjs/platform-express": "^11.0.1",
-    "dotenv": "^16.5.0",
+    "@nestjs/swagger": "^11.1.5",
     "mongodb": "6.16",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1"
