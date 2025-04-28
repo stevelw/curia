@@ -15,10 +15,11 @@ jobs:
           node-version: lts/*
       - name: Install back end dependencies
         run: npm ci --prefix curia-back-end
-      - name: Run tests on back end
+      - name: Install dotenvx
         working-directory: ./curia-back-end
         run: curl -fsS https://dotenvx.sh/install.sh | sh
+      - name: Run tests on back end
+        working-directory: ./curia-back-end
         run: dotenvx run -- npx jest
         env:
           DOTENV_PRIVATE_KEY_CI: ${{ secrets.DOTENV_PRIVATE_KEY_CI }}
-      run: "npx jest"
