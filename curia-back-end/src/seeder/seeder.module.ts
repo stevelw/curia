@@ -1,5 +1,6 @@
 import { Logger, Module } from "@nestjs/common";
 import { UsersModule } from "src/users/users.module";
+import { SeederService } from "./seeder.service";
 import { MongooseModule } from "@nestjs/mongoose";
 
 if (!process.env.MONGO_CONNECTION_STRING) {
@@ -8,15 +9,11 @@ if (!process.env.MONGO_CONNECTION_STRING) {
   );
 }
 
-if (!process.env.DB_NAME) {
-  throw new Error("DB_NAME needs to be set for this environment.");
-}
-
 @Module({
   imports: [
     UsersModule,
     MongooseModule.forRoot(process.env.MONGO_CONNECTION_STRING),
   ],
-  providers: [Logger],
+  providers: [Logger, SeederService],
 })
 export class SeederModule {}
