@@ -16,6 +16,7 @@ jobs:
       - name: Install back end dependencies
         run: npm ci --prefix curia-back-end
       - name: Run tests on back end
-        run: npm t --prefix curia-back-end
+        working-directory: ./curia-back-end
+        run: "jest"
         env:
           DOTENV_PRIVATE_KEY_CI: ${{ secrets.DOTENV_PRIVATE_KEY_CI }}
