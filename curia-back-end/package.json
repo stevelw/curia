@@ -20,9 +20,7 @@
     "test:debug": "dotenvx run -f .env.test -- node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "dotenvx run -f .env.test -- jest --config ./test/jest-e2e.json",
     "pre-commit": "eslint . && dotenvx run -f .env.test -- jest",
-    "setup-db:dev": "dotenvx run -f .env.development -- node ./db/setup.js",
-    "setup-db:prod": "dotenvx run -f .env.production -- node ./db/setup.js",
-    "seed-dev": "dotenvx run -f .env.development -- node ./db/dev.seed.js"
+    "seed-dev": "dotenvx run -f .env.development -- ts-node -r tsconfig-paths/register src/seed.ts"
   },
   "dependencies": {
     "@dotenvx/dotenvx": "^1.41.0",
