@@ -5,4 +5,3 @@ node_modules/
 .netlify
 curia-front-end/cucumber-report.json
 curia-front-end/cucumber-report.html
-.env.keys
