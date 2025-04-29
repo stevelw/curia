@@ -13,7 +13,7 @@
     "start:dev": "dotenvx run -f .env.development -- nest start --watch",
     "start:debug": "dotenvx run -f .env.development -- nest start --debug --watch",
     "lint": "eslint",
-    "test": "dotenvx run -f .env.test -- jest",
+    "test": "dotenvx run -f .env.test -- jest && dotenvx run -f .env.test -- jest --config ./test/jest-e2e.json",
     "test:watch": "dotenvx run -f .env.test -- jest --watch",
     "test:cov": "dotenvx run -f .env.test -- jest --coverage",
     "test:debug": "dotenvx run -f .env.test -- node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
