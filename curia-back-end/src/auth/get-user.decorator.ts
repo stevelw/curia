@@ -1,7 +1,7 @@
 import { createParamDecorator } from "@nestjs/common";
-import { User } from "src/users/schemas/user.schema";
+import { PrivateUser } from "src/users/schemas/user.schema";
 
-export const GetUser = createParamDecorator((data, context): User => {
-  const req: { user: User } = context.switchToHttp().getRequest();
+export const GetUser = createParamDecorator((data, context): PrivateUser => {
+  const req: { user: PrivateUser } = context.switchToHttp().getRequest();
   return req.user;
 });

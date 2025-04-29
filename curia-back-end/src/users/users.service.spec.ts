@@ -1,7 +1,7 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { UsersService } from "./users.service";
 import { MongooseModule } from "@nestjs/mongoose";
-import { User, UserSchema } from "./schemas/user.schema";
+import { PrivateUser, UserSchema } from "./schemas/user.schema";
 import { disconnect } from "mongoose";
 
 if (!process.env.MONGO_CONNECTION_STRING) {
@@ -17,7 +17,9 @@ describe("UsersService", () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
         MongooseModule.forRoot(process.env.MONGO_CONNECTION_STRING!),
-        MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+        MongooseModule.forFeature([
+          { name: PrivateUser.name, schema: UserSchema },
+        ]),
       ],
       providers: [UsersService],
     }).compile();

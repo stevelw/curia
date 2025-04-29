@@ -1,4 +1,4 @@
-export class CreateUserReqDto {
+export class SigninReqDto {
   username: string;
   password: string;
 }
