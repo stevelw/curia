@@ -48,7 +48,7 @@ describe("AppController (e2e)", () => {
     });
   });
 
-  describe.skip("/signin (POST)", () => {
+  describe("/signin (POST)", () => {
     it("returns a JWT access token, GIVEN valid login details", () => {
       return request(app.getHttpServer())
         .post("/auth/signin")
@@ -60,13 +60,13 @@ describe("AppController (e2e)", () => {
           });
         });
     });
-    it.skip("returns an error, GIVEN an incorrect password", () => {
+    it("returns an error, GIVEN an incorrect password", () => {
       return request(app.getHttpServer())
         .post("/auth/signin")
         .send({ username: "user1", password: "wrong-password" })
         .expect(401);
     });
-    it.skip("returns an error, GIVEN a non-existent user", () => {
+    it("returns an error, GIVEN a non-existent user", () => {
       return request(app.getHttpServer())
         .post("/auth/signin")
         .send({ username: "not-a-user", password: "password123" })

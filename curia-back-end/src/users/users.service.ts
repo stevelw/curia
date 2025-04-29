@@ -21,6 +21,11 @@ export class UsersService {
     return await createdUser.save();
   }
 
+  async fetch(username: string): Promise<PrivateUser> {
+    const user = await this.userModel.findOne<PrivateUser>({ username });
+    return user ? user : Promise.reject(new Error("User not found"));
+  }
+
   async _deleteAll(): Promise<DeleteResult> {
     return await this.userModel.deleteMany();
   }
