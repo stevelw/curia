@@ -6,5 +6,4 @@ export class SignupReqDto extends CreateUserReqDto {}
 export class SignupResDto {
   user: User;
   accessToken: string;
-  refreshToken: string;
 }
