@@ -12,7 +12,6 @@
     "start": "dotenvx run -f .env.production -- nest start",
     "start:dev": "dotenvx run -f .env.development -- nest start --watch",
     "start:debug": "dotenvx run -f .env.development -- nest start --debug --watch",
-    "start:prod": "dotenvx run -f .env.production -- node dist//src/main",
     "lint": "eslint",
     "test": "dotenvx run -f .env.test -- jest",
     "test:watch": "dotenvx run -f .env.test -- jest --watch",
