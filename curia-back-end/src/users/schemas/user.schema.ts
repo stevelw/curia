@@ -10,9 +10,6 @@ export class PrivateUser {
 
   @Prop({ required: true })
   hashedPassword: string;
-
-  @Prop({ required: true })
-  salt: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(PrivateUser);
