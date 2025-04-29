@@ -1,5 +1,5 @@
 import { Logger, Module } from "@nestjs/common";
-import { UsersModule } from "src/users/users.module";
+import { UsersModule } from "../users/users.module";
 import { SeederService } from "./seeder.service";
 import { MongooseModule } from "@nestjs/mongoose";
 

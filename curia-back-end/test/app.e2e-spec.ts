@@ -3,6 +3,7 @@ import { INestApplication } from "@nestjs/common";
 import * as request from "supertest";
 import { App } from "supertest/types";
 import { AppModule } from "./../src/app.module";
+import { disconnect } from "mongoose";
 
 describe("AppController (e2e)", () => {
   let app: INestApplication<App>;
@@ -22,4 +23,8 @@ describe("AppController (e2e)", () => {
       .expect(200)
       .expect("Hello World!");
   });
+});
+
+afterAll(async () => {
+  await disconnect();
 });
