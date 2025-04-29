@@ -18,7 +18,7 @@
     "test:cov": "dotenvx run -f .env.test -- jest --coverage",
     "test:debug": "dotenvx run -f .env.test -- node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "dotenvx run -f .env.test -- jest --config ./test/jest-e2e.json",
-    "pre-commit": "eslint . && dotenvx run -f .env.test -- jest",
+    "pre-commit": "eslint . && dotenvx run -f .env.test -- jest && dotenvx run -f .env.test -- jest --config ./test/jest-e2e.json",
     "seed-dev": "dotenvx run -f .env.development -- ts-node -r tsconfig-paths/register src/seed.ts"
   },
   "dependencies": {
