@@ -8,6 +8,8 @@ export class AuthController {
 
   @Post("/signup")
   signup(@Body() SignupReqDto: SignupReqDto): Promise<SignupResDto> {
-    return this.authService.signup(SignupReqDto);
+    return this.authService
+      .signup(SignupReqDto)
+      .then(({ accessToken }) => ({ accessToken }));
   }
 }

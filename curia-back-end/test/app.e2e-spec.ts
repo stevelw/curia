@@ -36,7 +36,6 @@ describe("AppController (e2e)", () => {
         .expect(201)
         .then((res) => {
           expect(res.body).toMatchObject({
-            user: { username: expect.any(String) },
             accessToken: expect.any(String),
           });
         });
