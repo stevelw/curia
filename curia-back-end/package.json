@@ -27,6 +27,7 @@
     "@nestjs/core": "^11.0.1",
     "@nestjs/mongoose": "^11.0.3",
     "@nestjs/platform-express": "^11.0.1",
+    "@nestjs/swagger": "^11.1.5",
     "mongodb": "6.16",
     "mongoose": "^8.14.0",
     "reflect-metadata": "^0.2.2",
