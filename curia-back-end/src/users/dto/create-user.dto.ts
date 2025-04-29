@@ -1,3 +1,3 @@
-export class CreateUserDto {
+export class CreateUserReqDto {
   username: string;
 }
