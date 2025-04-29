@@ -6,6 +6,7 @@ import { MongooseModule } from "@nestjs/mongoose";
 import { User, UserSchema } from "../users/schemas/user.schema";
 import { PassportModule } from "@nestjs/passport";
 import { JwtModule } from "@nestjs/jwt";
+import { JwtStrategy } from "./jwt.strategy";
 
 if (!process.env.JWT_SECRET_KEY) {
   throw new Error("JWT_SECRET_KEY needs to be set for this environment.");
@@ -21,6 +22,7 @@ if (!process.env.JWT_SECRET_KEY) {
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, UsersService],
+  providers: [AuthService, UsersService, JwtStrategy],
+  exports: [JwtStrategy, PassportModule],
 })
 export class AuthModule {}
