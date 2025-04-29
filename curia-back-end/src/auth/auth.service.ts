@@ -17,9 +17,8 @@ export class AuthService {
       .create(addUserDto)
       .then((user) => {
         const payload: JwtPayload = { username: user.username };
-        const refreshToken = this.jwtService.sign(payload);
         const accessToken = this.jwtService.sign(payload);
-        return { user, refreshToken, accessToken };
+        return { accessToken };
       })
       .catch((err: MongoServerError) => {
         if (err.code === 11000) {

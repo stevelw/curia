@@ -29,15 +29,13 @@ describe("AppController (e2e)", () => {
   });
 
   describe("/signup (POST)", () => {
-    it("returns a JWT refresh token, GIVEN unique username is provided", () => {
+    it("returns a JWT access token, GIVEN unique username is provided", () => {
       return request(app.getHttpServer())
         .post("/auth/signup")
         .send({ username: "Unique" })
         .expect(201)
         .then((res) => {
           expect(res.body).toMatchObject({
-            user: { username: expect.any(String) },
-            refreshToken: expect.any(String),
             accessToken: expect.any(String),
           });
         });
