@@ -7,11 +7,18 @@ import { User, UserSchema } from "../users/schemas/user.schema";
 import { PassportModule } from "@nestjs/passport";
 import { JwtModule } from "@nestjs/jwt";
 
+if (!process.env.JWT_SECRET_KEY) {
+  throw new Error("JWT_SECRET_KEY needs to be set for this environment.");
+}
+
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
     PassportModule.register({ defaultStrategy: "jwt" }),
-    JwtModule.register({ secret: "", signOptions: { expiresIn: 900 } }),
+    JwtModule.register({
+      secret: process.env.JWT_SECRET_KEY,
+      signOptions: { expiresIn: 900 },
+    }),
   ],
   controllers: [AuthController],
   providers: [AuthService, UsersService],

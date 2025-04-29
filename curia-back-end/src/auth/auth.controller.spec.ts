@@ -5,6 +5,7 @@ import { UsersService } from "../users/users.service";
 import { MongooseModule } from "@nestjs/mongoose";
 import { User, UserSchema } from "../users/schemas/user.schema";
 import { disconnect } from "mongoose";
+import { JwtService } from "@nestjs/jwt";
 
 describe("SignupController", () => {
   let controller: AuthController;
@@ -16,7 +17,7 @@ describe("SignupController", () => {
         MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
       ],
       controllers: [AuthController],
-      providers: [AuthService, UsersService],
+      providers: [AuthService, UsersService, JwtService],
     }).compile();
 
     controller = module.get<AuthController>(AuthController);
