@@ -2,7 +2,7 @@ import { Injectable, Logger } from "@nestjs/common";
 import { UsersService } from "../users/users.service";
 import { users as usersDevData } from "../users/data/users.dev.data";
 import { users as usersTestData } from "../users/data/users.test.data";
-import { User } from "src/users/schemas/user.schema";
+import { PrivateUser } from "src/users/schemas/user.schema";
 
 @Injectable()
 export class SeederService {
@@ -21,7 +21,7 @@ export class SeederService {
     }
   }
 
-  users(): Promise<User[]> {
+  users(): Promise<PrivateUser[]> {
     const users =
       process.env.NODE_ENV === "test" ? usersTestData : usersDevData;
     return this.usersService

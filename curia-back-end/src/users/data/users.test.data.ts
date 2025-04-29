@@ -1,3 +1,6 @@
-import { User } from "src/users/schemas/user.schema";
+import { CreateUserReqDto } from "../dto/create-user.dto";
 
-export const users: User[] = [{ username: "user1" }, { username: "user2" }];
+export const users: CreateUserReqDto[] = [
+  { username: "user1", password: "password123" },
+  { username: "user2", password: "password123" },
+];

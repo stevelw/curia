@@ -32,7 +32,7 @@ describe("AppController (e2e)", () => {
     it("returns a JWT access token, GIVEN unique username is provided", () => {
       return request(app.getHttpServer())
         .post("/auth/signup")
-        .send({ username: "Unique" })
+        .send({ username: "Unique", password: "password123" })
         .expect(201)
         .then((res) => {
           expect(res.body).toMatchObject({
@@ -43,8 +43,34 @@ describe("AppController (e2e)", () => {
     it("returns an error, GIVEN provided username already exists", () => {
       return request(app.getHttpServer())
         .post("/auth/signup")
-        .send({ username: "user1" })
+        .send({ username: "user1", password: "password123" })
         .expect(409);
+    });
+  });
+
+  describe.skip("/signin (POST)", () => {
+    it("returns a JWT access token, GIVEN valid login details", () => {
+      return request(app.getHttpServer())
+        .post("/auth/signin")
+        .send({ username: "user1", password: "password123" })
+        .expect(200)
+        .then((res) => {
+          expect(res.body).toMatchObject({
+            accessToken: expect.any(String),
+          });
+        });
+    });
+    it.skip("returns an error, GIVEN an incorrect password", () => {
+      return request(app.getHttpServer())
+        .post("/auth/signin")
+        .send({ username: "user1", password: "wrong-password" })
+        .expect(401);
+    });
+    it.skip("returns an error, GIVEN a non-existent user", () => {
+      return request(app.getHttpServer())
+        .post("/auth/signin")
+        .send({ username: "not-a-user", password: "password123" })
+        .expect(401);
     });
   });
 
