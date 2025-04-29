@@ -26,6 +26,10 @@ export default function RootLayout() {
       <SessionContext.Provider value={[session, setSession]}>
         <Stack>
           <Stack.Screen name="index" options={{ headerTitle: "Curia" }} />
+          <Stack.Screen
+            name="signup/index"
+            options={{ headerTitle: "Create new account" }}
+          />
         </Stack>
       </SessionContext.Provider>
       {__DEV__ && <DevToolsBubble onCopy={onCopy} data-testid="devtools" />}
