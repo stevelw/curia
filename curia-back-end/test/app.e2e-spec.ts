@@ -11,6 +11,7 @@ import { SeederService } from "../src/seeder/seeder.service";
 
 describe("AppController (e2e)", () => {
   let app: INestApplication<App>;
+  let bearerToken: string;
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -21,11 +22,15 @@ describe("AppController (e2e)", () => {
     await app.init();
 
     const appContext = await NestFactory.createApplicationContext(SeederModule);
-    try {
-      await appContext.get(SeederService).seed();
-    } finally {
-      await appContext.close();
-    }
+    await appContext.get(SeederService).seed();
+
+    bearerToken = await request(app.getHttpServer())
+      .post("/auth/signin")
+      .send({ username: "user1", password: "password123" })
+      .then(({ body }) => {
+        const { accessToken }: { accessToken: string } = body;
+        return accessToken;
+      });
   });
 
   describe("/signup (POST)", () => {
@@ -71,6 +76,41 @@ describe("AppController (e2e)", () => {
         .post("/auth/signin")
         .send({ username: "not-a-user", password: "password123" })
         .expect(401);
+    });
+  });
+
+  describe("/users/favourites (PATCH)", () => {
+    describe("add new favourite", () => {
+      it("200: returns an updated list of favourites, GIVEN the user is signed in, WHEN a favourite is added", () => {
+        return request(app.getHttpServer())
+          .patch("/users/favourites")
+          .set("Authorization", "bearer " + bearerToken)
+          .send({ add: ["vaO76817"] })
+          .expect(200)
+          .then((res) => {
+            expect(res.body).toMatchObject({
+              favourites: expect.arrayContaining(["vaO76817"]),
+            });
+          })
+          .then(() => {
+            return request(app.getHttpServer())
+              .patch("/users/favourites")
+              .set("Authorization", "bearer " + bearerToken)
+              .send({ add: ["vaO76818"] })
+              .expect(200)
+              .then((res) => {
+                expect(res.body).toMatchObject({
+                  favourites: expect.arrayContaining(["vaO76817", "vaO76818"]),
+                });
+              });
+          });
+      });
+      it("401: GIVEN the user is not signed in", () => {
+        return request(app.getHttpServer())
+          .patch("/users/favourites")
+          .send({ add: ["vaO76817"] })
+          .expect(401);
+      });
     });
   });
 
