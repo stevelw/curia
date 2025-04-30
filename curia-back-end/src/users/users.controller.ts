@@ -1,4 +1,4 @@
-import { Body, Controller, Patch, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, Patch, UseGuards } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { UsersService } from "./users.service";
@@ -8,6 +8,7 @@ import {
 } from "./dto/update-favourites.dto";
 import { GetUser } from "../auth/decorators/get-user.decorator";
 import { PrivateUser } from "./schemas/user.schema";
+import { FavouritesResDto } from "./dto/favourites.dto";
 
 @ApiTags("Users")
 @Controller("users")
@@ -15,11 +16,26 @@ import { PrivateUser } from "./schemas/user.schema";
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  @Get("/favourites")
+  @ApiOperation({ summary: "Fetch the logged in user's favourites" })
+  @ApiResponse({
+    status: 200,
+    description: "Returns the list of favourites",
+  })
+  @ApiResponse({
+    status: 409,
+    description: "User not signed in",
+  })
+  async getFavourites(@GetUser() user: PrivateUser): Promise<FavouritesResDto> {
+    const localUser = await this.usersService.fetch(user.username);
+    return { favourites: localUser.favourites };
+  }
+
   @Patch("/favourites")
   @ApiOperation({ summary: "Update the logged in user's favourites" })
   @ApiResponse({
     status: 200,
-    description: "Returns teh updated list of favourites",
+    description: "Returns the updated list of favourites",
   })
   @ApiResponse({
     status: 409,
