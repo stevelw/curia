@@ -15,6 +15,7 @@ export class SeederService {
   async seed(): Promise<void> {
     try {
       await this.users();
+      await this.favourites();
       this.logger.debug(`Seeded users`);
     } catch (err) {
       this.logger.error("Failed seeding users.");
