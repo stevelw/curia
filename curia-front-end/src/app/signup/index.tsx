@@ -1,4 +1,4 @@
-import { signup } from "@/src/apis/signup.api";
+import { signup } from "@/src/apis/backEnd.api";
 import { SessionContext } from "@/src/contexts/session.context";
 import { useRouter } from "expo-router";
 import { FormEventHandler, useContext, useEffect, useState } from "react";
