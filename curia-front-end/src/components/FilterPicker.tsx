@@ -1,12 +1,22 @@
 import { StyleSheet, View } from "react-native";
 import { ObjectType } from "../apis/Artefact.interface";
 import { Dispatch, SetStateAction, useCallback } from "react";
+import { availableApis } from "../apis/gateway.api";
 
 export interface FilterOptions {
   objectType: { valid: ObjectType[]; selected: ObjectType[] };
   currentLocation: { valid: string[]; selected: string[] };
   api: { valid: string[]; selected: string[] };
 }
+
+export const defaultFilterOptions: FilterOptions = {
+  objectType: { valid: [], selected: [] },
+  currentLocation: { valid: [], selected: [] },
+  api: {
+    valid: availableApis.map((api) => api.name).sort(),
+    selected: availableApis.map((api) => api.name),
+  },
+};
 
 interface Props {
   filterOptions: FilterOptions;
