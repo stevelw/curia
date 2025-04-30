@@ -1,7 +1,16 @@
 .DS_Store
 **/.DS_Store
 node_modules/
+
 # Local Netlify folder
 .netlify
 curia-front-end/cucumber-report.json
 curia-front-end/cucumber-report.html
+
+# dotenv environment variable files
+.env.*
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
+!.env.ci
