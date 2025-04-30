@@ -20,13 +20,19 @@ export default function Index() {
           />
         </>
       ) : (
-        <Button
-          title="Sign out"
-          color={"red"}
-          onPress={() =>
-            setSession({ accessToken: "", cachedFavourites: null })
-          }
-        />
+        <>
+          <Button
+            title="My Favourites"
+            onPress={() => router.navigate("/favourites")}
+          />
+          <Button
+            title="Sign out"
+            color={"red"}
+            onPress={() =>
+              setSession({ accessToken: "", cachedFavourites: null })
+            }
+          />
+        </>
       )}
       <SearchResults />
     </View>
