@@ -10,7 +10,6 @@ async function bootstrap() {
     .setTitle("Curia")
     .setDescription(`API endpoints for Curia's backend`)
     .setVersion("1.0")
-    .addTag("Curia")
     .build();
   const swaggerDocument = () =>
     SwaggerModule.createDocument(app, swaggerConfig);

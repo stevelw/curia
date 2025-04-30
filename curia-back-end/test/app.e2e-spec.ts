@@ -29,7 +29,7 @@ describe("AppController (e2e)", () => {
   });
 
   describe("/signup (POST)", () => {
-    it("returns a JWT access token, GIVEN unique username is provided", () => {
+    it("201: returns a JWT access token, GIVEN unique username is provided", () => {
       return request(app.getHttpServer())
         .post("/auth/signup")
         .send({ username: "Unique", password: "password123" })
@@ -40,7 +40,7 @@ describe("AppController (e2e)", () => {
           });
         });
     });
-    it("returns an error, GIVEN provided username already exists", () => {
+    it("409: returns an error, GIVEN provided username already exists", () => {
       return request(app.getHttpServer())
         .post("/auth/signup")
         .send({ username: "user1", password: "password123" })
@@ -49,7 +49,7 @@ describe("AppController (e2e)", () => {
   });
 
   describe("/signin (POST)", () => {
-    it("returns a JWT access token, GIVEN valid login details", () => {
+    it("200: returns a JWT access token, GIVEN valid login details", () => {
       return request(app.getHttpServer())
         .post("/auth/signin")
         .send({ username: "user1", password: "password123" })
@@ -60,13 +60,13 @@ describe("AppController (e2e)", () => {
           });
         });
     });
-    it("returns an error, GIVEN an incorrect password", () => {
+    it("401: returns an error, GIVEN an incorrect password", () => {
       return request(app.getHttpServer())
         .post("/auth/signin")
         .send({ username: "user1", password: "wrong-password" })
         .expect(401);
     });
-    it("returns an error, GIVEN a non-existent user", () => {
+    it("401: returns an error, GIVEN a non-existent user", () => {
       return request(app.getHttpServer())
         .post("/auth/signin")
         .send({ username: "not-a-user", password: "password123" })
