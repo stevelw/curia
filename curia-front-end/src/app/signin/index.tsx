@@ -1,4 +1,4 @@
-import { signin as apiSignIn } from "@/src/apis/signin.api";
+import { signin as apiSignIn } from "@/src/apis/backEnd.api";
 import { SessionContext } from "@/src/contexts/session.context";
 import { useRouter } from "expo-router";
 import {
@@ -26,7 +26,7 @@ export default function Index() {
       const signin = async () => {
         try {
           const accessToken = await apiSignIn(username, password);
-          setSession({ accessToken });
+          setSession((prev) => ({ ...prev, accessToken }));
           router.back();
         } catch (err) {
           setError((err as Error).message);

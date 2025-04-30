@@ -1,4 +1,4 @@
-import { signup } from "@/src/apis/signup.api";
+import { signup } from "@/src/apis/backEnd.api";
 import { SessionContext } from "@/src/contexts/session.context";
 import { useRouter } from "expo-router";
 import { FormEventHandler, useContext, useEffect, useState } from "react";
@@ -26,7 +26,7 @@ export default function Index() {
     const signin = async () => {
       try {
         const accessToken = await signup(username, password);
-        setSession({ accessToken });
+        setSession((prev) => ({ ...prev, accessToken }));
         router.back();
       } catch (err) {
         setError((err as Error).message);
