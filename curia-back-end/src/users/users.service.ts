@@ -4,6 +4,10 @@ import { InjectModel, InjectConnection } from "@nestjs/mongoose";
 import { PrivateUser } from "./schemas/user.schema";
 import { CreateUserReqDto } from "./dto/create-user.dto";
 import * as bcrypt from "bcrypt";
+import {
+  UpdateFavouritesReqDto,
+  UpdateFavouritesResDto,
+} from "./dto/update-favourites.dto";
 
 @Injectable()
 export class UsersService {
@@ -24,6 +28,25 @@ export class UsersService {
   async fetch(username: string): Promise<PrivateUser> {
     const user = await this.userModel.findOne<PrivateUser>({ username });
     return user ? user : Promise.reject(new Error("User not found"));
+  }
+
+  async updateFavourites(
+    updateFavouritesReqDto: UpdateFavouritesReqDto,
+    username: string,
+  ): Promise<UpdateFavouritesResDto> {
+    const user = await this.userModel.findOne({ username });
+    if (!user) {
+      throw new Error("User not found");
+    }
+    let favourites = user.favourites ?? [];
+    if (updateFavouritesReqDto.add?.length) {
+      favourites = [
+        ...new Set<string>([...favourites, ...updateFavouritesReqDto.add]),
+      ];
+    }
+    user?.set("favourites", favourites);
+    await user?.save();
+    return { favourites };
   }
 
   async _deleteAll(): Promise<DeleteResult> {
