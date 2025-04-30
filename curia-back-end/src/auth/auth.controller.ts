@@ -25,8 +25,8 @@ export class AuthController {
     status: 409,
     description: "User already exists",
   })
-  async signup(@Body() SignupReqDto: SignupReqDto): Promise<SignupResDto> {
-    return await this.authService.signup(SignupReqDto);
+  async signup(@Body() signupReqDto: SignupReqDto): Promise<SignupResDto> {
+    return await this.authService.signup(signupReqDto);
   }
 
   @Post("/signin")
