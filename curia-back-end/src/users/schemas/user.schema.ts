@@ -2,6 +2,7 @@ import { HydratedDocument } from "mongoose";
 import { Schema, Prop, SchemaFactory } from "@nestjs/mongoose";
 
 export type UserDocument = HydratedDocument<PrivateUser>;
+export type Favourites = string[];
 
 @Schema()
 export class PrivateUser {
@@ -10,6 +11,9 @@ export class PrivateUser {
 
   @Prop({ required: true })
   hashedPassword: string;
+
+  @Prop()
+  favourites: string[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(PrivateUser);
