@@ -8,6 +8,7 @@ import { disconnect } from "mongoose";
 import { NestFactory } from "@nestjs/core";
 import { SeederModule } from "../src/seeder/seeder.module";
 import { SeederService } from "../src/seeder/seeder.service";
+import { FavouritesResDto } from "src/users/dto/favourites.dto";
 
 describe("AppController (e2e)", () => {
   let app: INestApplication<App>;
@@ -79,37 +80,62 @@ describe("AppController (e2e)", () => {
     });
   });
 
-  describe("/users/favourites (PATCH)", () => {
-    describe("add new favourite", () => {
-      it("200: returns an updated list of favourites, GIVEN the user is signed in, WHEN a favourite is added", () => {
+  describe("/users/favourites", () => {
+    describe("(GET)", () => {
+      it("200: returns list of favourites, GIVEN the user is signed in", () => {
         return request(app.getHttpServer())
-          .patch("/users/favourites")
+          .get("/users/favourites")
           .set("Authorization", "bearer " + bearerToken)
-          .send({ add: ["vaO76817"] })
           .expect(200)
           .then((res) => {
             expect(res.body).toMatchObject({
-              favourites: expect.arrayContaining(["vaO76817"]),
+              favourites: expect.any(Array),
             });
-          })
-          .then(() => {
-            return request(app.getHttpServer())
-              .patch("/users/favourites")
-              .set("Authorization", "bearer " + bearerToken)
-              .send({ add: ["vaO76818"] })
-              .expect(200)
-              .then((res) => {
-                expect(res.body).toMatchObject({
-                  favourites: expect.arrayContaining(["vaO76817", "vaO76818"]),
-                });
-              });
+            const body: FavouritesResDto = res.body;
+            expect(body.favourites).toEqual(["artefact1", "artefact2"]);
           });
       });
       it("401: GIVEN the user is not signed in", () => {
         return request(app.getHttpServer())
-          .patch("/users/favourites")
-          .send({ add: ["vaO76817"] })
+          .get("/users/favourites")
           .expect(401);
+      });
+    });
+    describe("(PATCH)", () => {
+      describe("add new favourite", () => {
+        it("200: returns an updated list of favourites, GIVEN the user is signed in, WHEN a favourite is added", () => {
+          return request(app.getHttpServer())
+            .patch("/users/favourites")
+            .set("Authorization", "bearer " + bearerToken)
+            .send({ add: ["vaO76817"] })
+            .expect(200)
+            .then((res) => {
+              expect(res.body).toMatchObject({
+                favourites: expect.arrayContaining(["vaO76817"]),
+              });
+            })
+            .then(() => {
+              return request(app.getHttpServer())
+                .patch("/users/favourites")
+                .set("Authorization", "bearer " + bearerToken)
+                .send({ add: ["vaO76818"] })
+                .expect(200)
+                .then((res) => {
+                  expect(res.body).toMatchObject({
+                    favourites: expect.arrayContaining([
+                      "vaO76817",
+                      "vaO76818",
+                    ]),
+                  });
+                });
+            });
+        });
+        it("401: GIVEN the user is not signed in", () => {
+          return request(app.getHttpServer())
+            .patch("/users/favourites")
+            .send({ add: ["vaO76817"] })
+            .expect(401);
+        });
       });
     });
   });
