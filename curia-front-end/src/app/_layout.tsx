@@ -30,6 +30,10 @@ export default function RootLayout() {
             name="signup/index"
             options={{ headerTitle: "Create new account" }}
           />
+          <Stack.Screen
+            name="signin/index"
+            options={{ headerTitle: "Sign in" }}
+          />
         </Stack>
       </SessionContext.Provider>
       {__DEV__ && <DevToolsBubble onCopy={onCopy} data-testid="devtools" />}

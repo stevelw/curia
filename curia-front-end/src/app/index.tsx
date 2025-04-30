@@ -11,11 +11,14 @@ export default function Index() {
   return (
     <View>
       {!session.accessToken ? (
-        <Button
-          title="Create account"
-          color={"green"}
-          onPress={() => router.navigate("/signup")}
-        />
+        <>
+          <Button title="Sign in" onPress={() => router.navigate("/signin")} />
+          <Button
+            title="Create account"
+            color={"green"}
+            onPress={() => router.navigate("/signup")}
+          />
+        </>
       ) : (
         <Button
           title="Sign out"
