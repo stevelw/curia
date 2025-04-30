@@ -1,6 +1,6 @@
-import { CreateUserReqDto } from "../dto/create-user.dto";
+import { SeedUserDto } from "./users.test.data";
 
-export const users: CreateUserReqDto[] = [
-  { username: "Steve", password: "secret123" },
-  { username: "Sam", password: "youwontguessthis" },
+export const users: SeedUserDto[] = [
+  { username: "Steve", password: "secret123", favourites: [] },
+  { username: "Sam", password: "youwontguessthis", favourites: [] },
 ];

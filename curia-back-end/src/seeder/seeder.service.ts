@@ -3,6 +3,7 @@ import { UsersService } from "../users/users.service";
 import { users as usersDevData } from "../users/data/users.dev.data";
 import { users as usersTestData } from "../users/data/users.test.data";
 import { PrivateUser } from "src/users/schemas/user.schema";
+import { UpdateFavouritesResDto } from "src/users/dto/update-favourites.dto";
 
 @Injectable()
 export class SeederService {
@@ -33,5 +34,20 @@ export class SeederService {
       .catch((err) => {
         throw err;
       });
+  }
+
+  favourites(): Promise<UpdateFavouritesResDto[]> {
+    const users =
+      process.env.NODE_ENV === "test" ? usersTestData : usersDevData;
+    return Promise.all(
+      users.map((user) =>
+        this.usersService.updateFavourites(
+          { add: user.favourites },
+          user.username,
+        ),
+      ),
+    ).catch((err) => {
+      throw err;
+    });
   }
 }
