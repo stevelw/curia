@@ -1,6 +1,11 @@
 import axios, { AxiosError, CreateAxiosDefaults } from "axios";
 import { SignupReqDto, SignupResDto } from "../interfaces/signup.interface";
 import { SigninReqDto, SigninResDto } from "../interfaces/signin.interface";
+import { LocalId } from "./Artefact.interface";
+import {
+  UpdateFavouritesReqDto,
+  UpdateFavouritesResDto,
+} from "../interfaces/update-favourites.interface";
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 if (!process.env.EXPO_PUBLIC_BACK_END_URL) {
@@ -36,6 +41,23 @@ export function signin(username: string, password: string): Promise<string> {
     .post<SigninResDto>("/auth/signin", body)
     .then(({ data }) => {
       return data.accessToken;
+    })
+    .catch(() => {
+      throw new Error("Incorrect username or password");
+    });
+}
+
+export function addToFavourites(
+  accessToken: string,
+  artefactId: LocalId,
+): Promise<LocalId[]> {
+  const body: UpdateFavouritesReqDto = { add: [artefactId] };
+  return network
+    .patch<UpdateFavouritesResDto>("/users/favourites", body, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    })
+    .then(({ data }) => {
+      return data.favourites;
     })
     .catch(() => {
       throw new Error("Incorrect username or password");
