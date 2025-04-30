@@ -7,7 +7,7 @@ import {
 } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { SignupReqDto, SignupResDto } from "./dto/signup.dto";
-import { SigninReqDto } from "./dto/signin.dto";
+import { SigninReqDto, SigninResDto } from "./dto/signin.dto";
 
 @Controller("auth")
 export class AuthController {
@@ -20,9 +20,7 @@ export class AuthController {
 
   @Post("/signin")
   @HttpCode(200)
-  async signin(
-    @Body() signinReqDto: SigninReqDto,
-  ): Promise<{ accessToken: string }> {
+  async signin(@Body() signinReqDto: SigninReqDto): Promise<SigninResDto> {
     try {
       return await this.authService.signin(signinReqDto);
     } catch (_err) {
