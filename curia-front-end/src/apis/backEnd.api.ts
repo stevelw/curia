@@ -6,6 +6,7 @@ import {
   UpdateFavouritesReqDto,
   UpdateFavouritesResDto,
 } from "../interfaces/update-favourites.interface";
+import { FavouritesResDto } from "../../../curia-back-end/src/users/dto/favourites.dto";
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 if (!process.env.EXPO_PUBLIC_BACK_END_URL) {
@@ -41,6 +42,21 @@ export function signin(username: string, password: string): Promise<string> {
     .post<SigninResDto>("/auth/signin", body)
     .then(({ data }) => {
       return data.accessToken;
+    })
+    .catch(() => {
+      throw new Error("Incorrect username or password");
+    });
+}
+
+export function fetchFavourites(
+  accessToken: string,
+): Promise<{ favourites: LocalId[] }> {
+  return network
+    .get<FavouritesResDto>("/users/favourites", {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    })
+    .then(({ data }) => {
+      return data;
     })
     .catch(() => {
       throw new Error("Incorrect username or password");
