@@ -26,7 +26,7 @@ export default function Index() {
     const signin = async () => {
       try {
         const accessToken = await signup(username, password);
-        setSession({ accessToken });
+        setSession((prev) => ({ ...prev, accessToken }));
         router.back();
       } catch (err) {
         setError((err as Error).message);

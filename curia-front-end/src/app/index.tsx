@@ -23,7 +23,9 @@ export default function Index() {
         <Button
           title="Sign out"
           color={"red"}
-          onPress={() => setSession({ accessToken: "" })}
+          onPress={() =>
+            setSession({ accessToken: "", cachedFavourites: null })
+          }
         />
       )}
       <SearchResults />
