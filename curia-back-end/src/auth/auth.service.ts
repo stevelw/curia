@@ -8,7 +8,7 @@ import { SignupReqDto, SignupResDto } from "./dto/signup.dto";
 import { MongoServerError } from "mongodb";
 import { JwtService } from "@nestjs/jwt";
 import JwtPayload from "./interfaces/jwtpayload.interface";
-import { SigninReqDto } from "./dto/signin.dto";
+import { SigninReqDto, SigninResDto } from "./dto/signin.dto";
 import * as bcrypt from "bcrypt";
 
 @Injectable()
@@ -34,7 +34,7 @@ export class AuthService {
       });
   }
 
-  signin(signinReqDto: SigninReqDto): Promise<{ accessToken: string }> {
+  signin(signinReqDto: SigninReqDto): Promise<SigninResDto> {
     const { username, password } = signinReqDto;
 
     return this.usersService
