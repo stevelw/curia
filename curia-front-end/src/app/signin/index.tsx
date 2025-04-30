@@ -1,7 +1,13 @@
 import { signin as apiSignIn } from "@/src/apis/signin.api";
 import { SessionContext } from "@/src/contexts/session.context";
 import { useRouter } from "expo-router";
-import { FormEventHandler, useContext, useEffect, useState } from "react";
+import {
+  FormEventHandler,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { StyleSheet, View } from "react-native";
 
 export default function Index() {
@@ -13,27 +19,30 @@ export default function Index() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
+  const handleSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
+    (e) => {
+      setError("");
+      e.preventDefault();
+      const signin = async () => {
+        try {
+          const accessToken = await apiSignIn(username, password);
+          setSession({ accessToken });
+          router.back();
+        } catch (err) {
+          setError((err as Error).message);
+        }
+      };
+      void signin();
+    },
+    [username, password, router, setSession],
+  );
+
   useEffect(() => {
     if (!initialised && session.accessToken) {
       router.back();
     }
     setInitialised(true);
   }, [initialised, session.accessToken, router]);
-
-  const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
-    setError("");
-    e.preventDefault();
-    const signin = async () => {
-      try {
-        const accessToken = await apiSignIn(username, password);
-        setSession({ accessToken });
-        router.back();
-      } catch (err) {
-        setError((err as Error).message);
-      }
-    };
-    void signin();
-  };
 
   return (
     <View style={styles.view}>
