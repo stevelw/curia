@@ -39,6 +39,14 @@ export default function RootLayout() {
             name="favourites/index"
             options={{ headerTitle: "Favourites" }}
           />
+          <Stack.Screen
+            name="exhibitions/index"
+            options={{ headerTitle: "Exhibitions" }}
+          />
+          <Stack.Screen
+            name="exhibitions/new/index"
+            options={{ headerTitle: "Create a new exhibition" }}
+          />
         </Stack>
       </SessionContext.Provider>
       {__DEV__ && <DevToolsBubble onCopy={onCopy} data-testid="devtools" />}
