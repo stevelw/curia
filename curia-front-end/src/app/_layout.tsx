@@ -35,6 +35,10 @@ export default function RootLayout() {
             name="signin/index"
             options={{ headerTitle: "Sign in" }}
           />
+          <Stack.Screen
+            name="favourites/index"
+            options={{ headerTitle: "Favourites" }}
+          />
         </Stack>
       </SessionContext.Provider>
       {__DEV__ && <DevToolsBubble onCopy={onCopy} data-testid="devtools" />}

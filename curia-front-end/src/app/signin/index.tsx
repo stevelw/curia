@@ -1,4 +1,4 @@
-import { signin as apiSignIn } from "@/src/apis/backEnd.api";
+import { signin as apiSignIn, fetchFavourites } from "@/src/apis/backEnd.api";
 import { SessionContext } from "@/src/contexts/session.context";
 import { useRouter } from "expo-router";
 import {
@@ -14,7 +14,6 @@ export default function Index() {
   const [session, setSession] = useContext(SessionContext);
   const router = useRouter();
 
-  const [initialised, setInitialised] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -26,23 +25,26 @@ export default function Index() {
       const signin = async () => {
         try {
           const accessToken = await apiSignIn(username, password);
-          setSession((prev) => ({ ...prev, accessToken }));
-          router.back();
+          const cachedFavourites = await fetchFavourites(accessToken);
+          setSession((prev) => ({
+            ...prev,
+            accessToken,
+            cachedFavourites,
+          }));
         } catch (err) {
           setError((err as Error).message);
         }
       };
       void signin();
     },
-    [username, password, router, setSession],
+    [username, password, setSession],
   );
 
   useEffect(() => {
-    if (!initialised && session.accessToken) {
+    if (session.accessToken) {
       router.back();
     }
-    setInitialised(true);
-  }, [initialised, session.accessToken, router]);
+  }, [session.accessToken, router]);
 
   return (
     <View style={styles.view}>
