@@ -4,6 +4,11 @@ import { Logger } from "@nestjs/common";
 import { UsersModule } from "../users/users.module";
 import { MongooseModule } from "@nestjs/mongoose";
 import { disconnect } from "mongoose";
+import { ExhibitionsService } from "../exhibitions/exhibitions.service";
+import {
+  Exhibition,
+  ExhibitionSchema,
+} from "../exhibitions/schemas/exhibition.schema";
 
 if (!process.env.MONGO_CONNECTION_STRING) {
   throw new Error(
@@ -19,8 +24,11 @@ describe("SeederService", () => {
       imports: [
         UsersModule,
         MongooseModule.forRoot(process.env.MONGO_CONNECTION_STRING!),
+        MongooseModule.forFeature([
+          { name: Exhibition.name, schema: ExhibitionSchema },
+        ]),
       ],
-      providers: [Logger, SeederService],
+      providers: [Logger, SeederService, ExhibitionsService],
     }).compile();
 
     service = module.get<SeederService>(SeederService);

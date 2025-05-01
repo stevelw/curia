@@ -34,6 +34,7 @@ export class ExhibitionsService {
       ...(userDocument.exhibitions ?? []),
       exhibitionDocument._id,
     ]);
+    await userDocument?.save();
     return exhibitionDocument;
   }
 
