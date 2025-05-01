@@ -9,6 +9,9 @@ import { NestFactory } from "@nestjs/core";
 import { SeederModule } from "../src/seeder/seeder.module";
 import { SeederService } from "../src/seeder/seeder.service";
 import { FavouritesResDto } from "src/users/dto/favourites.dto";
+import { CreateExhibitionResDto } from "../src/exhibitions/dto/create-exhibition.dto";
+
+let validExhibition: CreateExhibitionResDto;
 
 describe("AppController (e2e)", () => {
   let app: INestApplication<App>;
@@ -23,7 +26,9 @@ describe("AppController (e2e)", () => {
     await app.init();
 
     const appContext = await NestFactory.createApplicationContext(SeederModule);
-    await appContext.get(SeederService).seed();
+    const seedingResults = await appContext.get(SeederService).seed();
+
+    validExhibition = seedingResults.validExhibition;
 
     bearerToken = await request(app.getHttpServer())
       .post("/auth/signin")
@@ -166,6 +171,33 @@ describe("AppController (e2e)", () => {
             title: "A journey through time",
             description: "A great exhibition",
           })
+          .expect(401);
+      });
+    });
+  });
+
+  describe("/exhibitions/:exhibitionId", () => {
+    describe("(GET)", () => {
+      it("200: returns details of exhibition, GIVEN a valid exhibitionId", () => {
+        return request(app.getHttpServer())
+          .get(`/exhibitions/${validExhibition._id.toString()}`)
+          .expect(200)
+          .then(({ body }) => {
+            expect(body).toMatchObject({
+              title: expect.any(String),
+              description: expect.any(String),
+              artefacts: expect.any(Array),
+            });
+            const { title, description, artefacts } =
+              body as CreateExhibitionResDto;
+            expect(title).toEqual(validExhibition.title);
+            expect(description).toEqual(validExhibition.description);
+            expect(artefacts).toEqual(validExhibition.artefacts);
+          });
+      });
+      it("404: GIVEN an invalid exhibitionId", () => {
+        return request(app.getHttpServer())
+          .get("/users/favourites")
           .expect(401);
       });
     });

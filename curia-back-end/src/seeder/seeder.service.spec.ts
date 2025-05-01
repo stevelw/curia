@@ -9,6 +9,7 @@ import {
   Exhibition,
   ExhibitionSchema,
 } from "../exhibitions/schemas/exhibition.schema";
+import { PrivateUser, UserSchema } from "../users/schemas/user.schema";
 
 if (!process.env.MONGO_CONNECTION_STRING) {
   throw new Error(
@@ -26,6 +27,7 @@ describe("SeederService", () => {
         MongooseModule.forRoot(process.env.MONGO_CONNECTION_STRING!),
         MongooseModule.forFeature([
           { name: Exhibition.name, schema: ExhibitionSchema },
+          { name: PrivateUser.name, schema: UserSchema },
         ]),
       ],
       providers: [Logger, SeederService, ExhibitionsService],

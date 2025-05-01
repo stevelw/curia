@@ -99,7 +99,6 @@ export function createExhibition(
       headers: { Authorization: `Bearer ${accessToken}` },
     })
     .then(({ data }) => {
-      console.log(data);
       return data;
     })
     .catch(() => {
@@ -118,6 +117,8 @@ export function fetchExhibition(
       return data;
     })
     .catch(() => {
-      throw new Error("Incorrect username or password");
+      throw new Error(
+        "That exhibition doesn't seem to exist. Perhaps it was deleted.",
+      );
     });
 }

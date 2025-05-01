@@ -16,7 +16,6 @@ export default function Index() {
     (e) => {
       setError("");
       e.preventDefault();
-      console.log(`HERE`);
       const create = async () => {
         try {
           const newExhibition = await createExhibition(
@@ -24,7 +23,6 @@ export default function Index() {
             title,
             description !== "" ? description : undefined,
           );
-          console.log(newExhibition);
           router.replace(`/exhibitions/${newExhibition._id}`);
         } catch (err) {
           setError((err as Error).message);
