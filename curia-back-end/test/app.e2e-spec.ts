@@ -140,6 +140,37 @@ describe("AppController (e2e)", () => {
     });
   });
 
+  describe("/exhibitions/", () => {
+    describe("(POST)", () => {
+      it("201: returns new exhibition, GIVEN user is logged in", () => {
+        return request(app.getHttpServer())
+          .post(`/exhibitions/`)
+          .send({
+            title: "A journey through time",
+            options: { description: "A great exhibition" },
+          })
+          .set("Authorization", "bearer " + bearerToken)
+          .expect(201)
+          .then(({ body }) => {
+            expect(body).toMatchObject({
+              _id: expect.any(String),
+              title: "A journey through time",
+              description: "A great exhibition",
+            });
+          });
+      });
+      it("401: GIVEN user isn't logged in", () => {
+        return request(app.getHttpServer())
+          .post(`/exhibitions/`)
+          .send({
+            title: "A journey through time",
+            description: "A great exhibition",
+          })
+          .expect(401);
+      });
+    });
+  });
+
   afterEach(async () => {
     await disconnect();
   });
