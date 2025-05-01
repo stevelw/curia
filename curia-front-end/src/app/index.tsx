@@ -1,4 +1,4 @@
-import { Button, View } from "react-native";
+import { Button, StyleSheet, View } from "react-native";
 import SearchResults from "../components/SearchResults";
 import { useRouter } from "expo-router";
 import { useContext } from "react";
@@ -9,7 +9,7 @@ export default function Index() {
   const [session, setSession] = useContext(SessionContext);
 
   return (
-    <View>
+    <View style={styles.appView}>
       {!session.accessToken ? (
         <>
           <Button title="Sign in" onPress={() => router.navigate("/signin")} />
@@ -32,3 +32,9 @@ export default function Index() {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  appView: {
+    height: "100%",
+  },
+});

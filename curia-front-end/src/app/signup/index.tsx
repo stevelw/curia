@@ -1,24 +1,16 @@
 import { signup } from "@/src/apis/backEnd.api";
 import { SessionContext } from "@/src/contexts/session.context";
 import { useRouter } from "expo-router";
-import { FormEventHandler, useContext, useEffect, useState } from "react";
+import { FormEventHandler, useContext, useState } from "react";
 import { StyleSheet, View } from "react-native";
 
 export default function Index() {
-  const [session, setSession] = useContext(SessionContext);
+  const [_session, setSession] = useContext(SessionContext);
   const router = useRouter();
 
-  const [initialised, setInitialised] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-
-  useEffect(() => {
-    if (!initialised && session.accessToken) {
-      router.back();
-    }
-    setInitialised(true);
-  }, [initialised, session.accessToken, router]);
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     setError("");
