@@ -5,6 +5,7 @@ import { MongooseModule } from "@nestjs/mongoose";
 import { UsersModule } from "./users/users.module";
 import { SeederModule } from "./seeder/seeder.module";
 import { AuthModule } from "./auth/auth.module";
+import { ExhibitionsModule } from "./exhibitions/exhibitions.module";
 
 if (!process.env.MONGO_CONNECTION_STRING) {
   throw new Error(
@@ -18,6 +19,7 @@ if (!process.env.MONGO_CONNECTION_STRING) {
     UsersModule,
     SeederModule,
     AuthModule,
+    ExhibitionsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

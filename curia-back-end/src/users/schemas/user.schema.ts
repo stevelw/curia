@@ -1,5 +1,6 @@
-import { HydratedDocument } from "mongoose";
+import { HydratedDocument, Types } from "mongoose";
 import { Schema, Prop, SchemaFactory } from "@nestjs/mongoose";
+import { LocalId } from "src/types";
 
 export type UserDocument = HydratedDocument<PrivateUser>;
 export type Favourites = string[];
@@ -13,7 +14,10 @@ export class PrivateUser {
   hashedPassword: string;
 
   @Prop()
-  favourites: string[];
+  favourites: LocalId[];
+
+  @Prop()
+  exhibitions: Types.ObjectId[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(PrivateUser);
