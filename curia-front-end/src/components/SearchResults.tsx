@@ -133,10 +133,6 @@ export default function SearchResults() {
     queryResults.currentLocations,
   ]);
 
-  useEffect(() => {
-    console.log("queryResults is ", queryResults);
-  }, [queryResults]);
-
   return (
     <>
       <h1 style={styles.h1}>Search</h1>
