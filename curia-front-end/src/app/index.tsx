@@ -34,6 +34,10 @@ export default function Index() {
           />
         </>
       )}
+      <Button
+        title="Exhibitions"
+        onPress={() => router.navigate("/exhibitions")}
+      />
       <SearchResults />
     </View>
   );
