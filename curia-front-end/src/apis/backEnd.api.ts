@@ -7,6 +7,14 @@ import {
   UpdateFavouritesResDto,
 } from "../interfaces/update-favourites.interface";
 import { FavouritesResDto } from "../../../curia-back-end/src/users/dto/favourites.dto";
+import {
+  CreateExhibitionReqDto,
+  CreateExhibitionResDto,
+} from "../interfaces/create-exhibition.interface";
+import {
+  ExhibitionId,
+  GetExhibitionResDto,
+} from "../interfaces/get-exhibitions.interface";
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 if (!process.env.EXPO_PUBLIC_BACK_END_URL) {
@@ -77,5 +85,40 @@ export function addToFavourites(
     })
     .catch(() => {
       throw new Error("Incorrect username or password");
+    });
+}
+
+export function createExhibition(
+  accessToken: string,
+  title: string,
+  description?: string,
+): Promise<CreateExhibitionResDto> {
+  const body: CreateExhibitionReqDto = { title, options: { description } };
+  return network
+    .post<CreateExhibitionResDto>("/exhibitions", body, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    })
+    .then(({ data }) => {
+      return data;
+    })
+    .catch(() => {
+      throw new Error(
+        "Error creating exhibition. Check your internet connection.",
+      );
+    });
+}
+
+export function fetchExhibition(
+  exhibitionId: ExhibitionId,
+): Promise<GetExhibitionResDto> {
+  return network
+    .get<GetExhibitionResDto>(`/exhibitions/${exhibitionId}`, {})
+    .then(({ data }) => {
+      return data;
+    })
+    .catch(() => {
+      throw new Error(
+        "That exhibition doesn't seem to exist. Perhaps it was deleted.",
+      );
     });
 }

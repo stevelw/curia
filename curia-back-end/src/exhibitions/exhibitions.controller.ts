@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, UseGuards } from "@nestjs/common";
 import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { ExhibitionsService } from "./exhibitions.service";
 import {
@@ -8,6 +8,7 @@ import {
 import { GetUser } from "../auth/decorators/get-user.decorator";
 import { PrivateUser } from "../users/schemas/user.schema";
 import { AuthGuard } from "@nestjs/passport";
+import { ExhibitionId } from "./dto/get-exhibition.dto";
 
 @ApiTags("Exhibitions")
 @Controller("exhibitions")
@@ -31,5 +32,21 @@ export class ExhibitionsController {
   ): Promise<CreateExhibitionResDto> {
     const { title, options } = createExhibitionReqDto;
     return await this.exhibitionsService.create(user.username, title, options);
+  }
+
+  @Get("/:exhibitionId")
+  @ApiOperation({ summary: "Fetch the exhibition" })
+  @ApiResponse({
+    status: 200,
+    description: "Returns the exhibition",
+  })
+  @ApiResponse({
+    status: 404,
+    description: "Exhibition doesn't exist",
+  })
+  async getExhibition(
+    @Param("exhibitionId") exhibitionId: ExhibitionId,
+  ): Promise<CreateExhibitionResDto> {
+    return await this.exhibitionsService.getExhibition(exhibitionId);
   }
 }

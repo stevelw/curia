@@ -1,8 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Types } from "mongoose";
 import { LocalId } from "src/types";
-
-export type ExhibitionId = Types.ObjectId;
+import { GetExhibitionResDto } from "./get-exhibition.dto";
 
 export class CreateExhibitionReqDto {
   @ApiProperty()
@@ -15,16 +13,4 @@ export class CreateExhibitionReqDto {
   };
 }
 
-export class CreateExhibitionResDto {
-  @ApiProperty()
-  _id: ExhibitionId;
-
-  @ApiProperty()
-  title: string;
-
-  @ApiProperty()
-  description: string;
-
-  @ApiProperty()
-  artefacts: LocalId[];
-}
+export class CreateExhibitionResDto extends GetExhibitionResDto {}
