@@ -31,6 +31,9 @@ export class ExhibitionsService {
       return Promise.reject(new BadRequestException("Invalid exhibition ID"));
     }
   }
+  async getAllExhibitions(): Promise<ExhibitionDocument[]> {
+    return this.exhibitionModel.find();
+  }
 
   async create(
     username: string,
