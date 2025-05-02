@@ -113,8 +113,8 @@ export default function ArtefactDetails() {
     setError("");
 
     fetchExhibition(exhibitionId)
-      .then((returnedArticle) => {
-        setExhibition(returnedArticle);
+      .then((returnedExhibition) => {
+        setExhibition(returnedExhibition);
         setIsLoading(false);
       })
       .catch((err) => {
