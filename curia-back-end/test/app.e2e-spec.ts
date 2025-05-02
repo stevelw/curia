@@ -146,6 +146,23 @@ describe("AppController (e2e)", () => {
   });
 
   describe("/exhibitions/", () => {
+    describe("(GET)", () => {
+      it("200: returns details of exhibitions", () => {
+        return request(app.getHttpServer())
+          .get(`/exhibitions/`)
+          .expect(200)
+          .then(({ body }) => {
+            expect(Array.isArray(body)).toBe(true);
+            for (const element of body) {
+              expect(element).toMatchObject({
+                title: expect.any(String),
+                description: expect.any(String),
+                artefacts: expect.any(Array),
+              });
+            }
+          });
+      });
+    });
     describe("(POST)", () => {
       it("201: returns new exhibition, GIVEN user is logged in", () => {
         return request(app.getHttpServer())
