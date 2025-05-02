@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ForbiddenException,
   Injectable,
   NotFoundException,
 } from "@nestjs/common";
@@ -9,6 +10,10 @@ import { Connection, DeleteResult, Model } from "mongoose";
 import { LocalId } from "src/types";
 import { PrivateUser, UserDocument } from "../users/schemas/user.schema";
 import { ExhibitionId } from "./dto/get-exhibition.dto";
+import {
+  UpdateExhibitionReqDto,
+  UpdateExhibitionResDto,
+} from "./dto/update-exhibition.dto";
 
 @Injectable()
 export class ExhibitionsService {
@@ -57,6 +62,33 @@ export class ExhibitionsService {
       exhibitionDocument._id,
     ]);
     await userDocument?.save();
+    return exhibitionDocument;
+  }
+
+  async updateExhibition(
+    username: string,
+    exhibitionId: ExhibitionId,
+    updateExhibitionReqDto: UpdateExhibitionReqDto,
+  ): Promise<UpdateExhibitionResDto> {
+    const exhibitionDocument = await this.exhibitionModel.findOne({
+      _id: exhibitionId,
+    });
+    if (!exhibitionDocument) {
+      throw new NotFoundException("User not found");
+    }
+    const userDocument = await this.userModel.findOne({ username });
+    if (!userDocument || !userDocument.exhibitions.includes(exhibitionId)) {
+      throw new ForbiddenException("Not authorised");
+    }
+    if (updateExhibitionReqDto.add?.length) {
+      exhibitionDocument.artefacts = [
+        ...new Set<string>([
+          ...exhibitionDocument.artefacts,
+          ...updateExhibitionReqDto.add,
+        ]),
+      ];
+    }
+    await exhibitionDocument?.save();
     return exhibitionDocument;
   }
 
