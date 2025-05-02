@@ -34,6 +34,16 @@ export class ExhibitionsController {
     return await this.exhibitionsService.create(user.username, title, options);
   }
 
+  @Get("/")
+  @ApiOperation({ summary: "Fetch list of exhibitions" })
+  @ApiResponse({
+    status: 200,
+    description: "Returns the exhibitions",
+  })
+  async getAllExhibitios(): Promise<CreateExhibitionResDto[]> {
+    return await this.exhibitionsService.getAllExhibitions();
+  }
+
   @Get("/:exhibitionId")
   @ApiOperation({ summary: "Fetch the exhibition" })
   @ApiResponse({
