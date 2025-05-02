@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  UseGuards,
+} from "@nestjs/common";
 import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { ExhibitionsService } from "./exhibitions.service";
 import {
@@ -9,6 +17,10 @@ import { GetUser } from "../auth/decorators/get-user.decorator";
 import { PrivateUser } from "../users/schemas/user.schema";
 import { AuthGuard } from "@nestjs/passport";
 import { ExhibitionId } from "./dto/get-exhibition.dto";
+import {
+  UpdateExhibitionReqDto,
+  UpdateExhibitionResDto,
+} from "./dto/update-exhibition.dto";
 
 @ApiTags("Exhibitions")
 @Controller("exhibitions")
@@ -58,5 +70,29 @@ export class ExhibitionsController {
     @Param("exhibitionId") exhibitionId: ExhibitionId,
   ): Promise<CreateExhibitionResDto> {
     return await this.exhibitionsService.getExhibition(exhibitionId);
+  }
+
+  @Patch("/:exhibitionId")
+  @UseGuards(AuthGuard())
+  @ApiOperation({ summary: "Update the exhibition" })
+  @ApiResponse({
+    status: 200,
+    description: "Returns the updated exhibition",
+  })
+  @ApiResponse({
+    status: 409,
+    description: "Owner not signed in",
+  })
+  async patchExhibition(
+    @GetUser() user: PrivateUser,
+    @Body() updateExhibitionReqDto: UpdateExhibitionReqDto,
+    @Param("exhibitionId") exhibitionId: ExhibitionId,
+  ): Promise<UpdateExhibitionResDto> {
+    const exhibitionToSendBack = await this.exhibitionsService.updateExhibition(
+      user.username,
+      exhibitionId,
+      updateExhibitionReqDto,
+    );
+    return exhibitionToSendBack;
   }
 }

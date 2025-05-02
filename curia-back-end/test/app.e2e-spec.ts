@@ -15,7 +15,8 @@ let validExhibition: CreateExhibitionResDto;
 
 describe("AppController (e2e)", () => {
   let app: INestApplication<App>;
-  let bearerToken: string;
+  let normalUserBearerToken: string;
+  let otherUserBearerToken: string;
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -30,9 +31,16 @@ describe("AppController (e2e)", () => {
 
     validExhibition = seedingResults.validExhibition;
 
-    bearerToken = await request(app.getHttpServer())
+    normalUserBearerToken = await request(app.getHttpServer())
       .post("/auth/signin")
       .send({ username: "user1", password: "password123" })
+      .then(({ body }) => {
+        const { accessToken }: { accessToken: string } = body;
+        return accessToken;
+      });
+    otherUserBearerToken = await request(app.getHttpServer())
+      .post("/auth/signin")
+      .send({ username: "user2", password: "password123" })
       .then(({ body }) => {
         const { accessToken }: { accessToken: string } = body;
         return accessToken;
@@ -90,7 +98,7 @@ describe("AppController (e2e)", () => {
       it("200: returns list of favourites, GIVEN the user is signed in", () => {
         return request(app.getHttpServer())
           .get("/users/favourites")
-          .set("Authorization", "bearer " + bearerToken)
+          .set("Authorization", "bearer " + normalUserBearerToken)
           .expect(200)
           .then((res) => {
             expect(res.body).toMatchObject({
@@ -111,7 +119,7 @@ describe("AppController (e2e)", () => {
         it("200: returns an updated list of favourites, GIVEN the user is signed in, WHEN a favourite is added", () => {
           return request(app.getHttpServer())
             .patch("/users/favourites")
-            .set("Authorization", "bearer " + bearerToken)
+            .set("Authorization", "bearer " + normalUserBearerToken)
             .send({ add: ["vaO76817"] })
             .expect(200)
             .then((res) => {
@@ -122,7 +130,7 @@ describe("AppController (e2e)", () => {
             .then(() => {
               return request(app.getHttpServer())
                 .patch("/users/favourites")
-                .set("Authorization", "bearer " + bearerToken)
+                .set("Authorization", "bearer " + normalUserBearerToken)
                 .send({ add: ["vaO76818"] })
                 .expect(200)
                 .then((res) => {
@@ -171,7 +179,7 @@ describe("AppController (e2e)", () => {
             title: "A journey through time",
             options: { description: "A great exhibition" },
           })
-          .set("Authorization", "bearer " + bearerToken)
+          .set("Authorization", "bearer " + normalUserBearerToken)
           .expect(201)
           .then(({ body }) => {
             expect(body).toMatchObject({
@@ -216,6 +224,47 @@ describe("AppController (e2e)", () => {
         return request(app.getHttpServer())
           .get("/users/favourites")
           .expect(401);
+      });
+    });
+    describe("(PATCH)", () => {
+      describe("add artefact to exhibition", () => {
+        it("200: returns an updated exhibition, GIVEN the user is signed in, WHEN an artefact is added", () => {
+          return request(app.getHttpServer())
+            .patch(`/exhibitions/${validExhibition._id.toString()}`)
+            .set("Authorization", "bearer " + normalUserBearerToken)
+            .send({ add: ["vaO76817"] })
+            .expect(200)
+            .then((res) => {
+              expect(res.body).toMatchObject({
+                artefacts: expect.arrayContaining(["vaO76817"]),
+              });
+            })
+            .then(() => {
+              return request(app.getHttpServer())
+                .patch(`/exhibitions/${validExhibition._id.toString()}`)
+                .set("Authorization", "bearer " + normalUserBearerToken)
+                .send({ add: ["vaO76818"] })
+                .expect(200)
+                .then((res) => {
+                  expect(res.body).toMatchObject({
+                    artefacts: expect.arrayContaining(["vaO76817", "vaO76818"]),
+                  });
+                });
+            });
+        });
+        it("403 GIVEN a user without permissions is signed in", () => {
+          return request(app.getHttpServer())
+            .patch(`/exhibitions/${validExhibition._id.toString()}`)
+            .set("Authorization", "bearer " + otherUserBearerToken)
+            .send({ add: ["vaO76817"] })
+            .expect(403);
+        });
+        it("401: GIVEN the user is not signed in", () => {
+          return request(app.getHttpServer())
+            .patch(`/exhibitions/${validExhibition._id.toString()}`)
+            .send({ add: ["vaO76817"] })
+            .expect(401);
+        });
       });
     });
   });
