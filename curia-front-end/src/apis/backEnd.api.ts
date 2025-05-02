@@ -90,6 +90,23 @@ export function addToFavourites(
     });
 }
 
+export function removeFromFavourites(
+  accessToken: string,
+  artefactId: LocalId,
+): Promise<LocalId[]> {
+  const body: UpdateFavouritesReqDto = { remove: [artefactId] };
+  return network
+    .patch<UpdateFavouritesResDto>("/users/favourites", body, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    })
+    .then(({ data }) => {
+      return data.favourites;
+    })
+    .catch(() => {
+      throw new Error("Incorrect username or password");
+    });
+}
+
 export function createExhibition(
   accessToken: string,
   title: string,

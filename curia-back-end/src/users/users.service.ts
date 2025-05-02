@@ -44,6 +44,11 @@ export class UsersService {
         ...new Set<string>([...favourites, ...updateFavouritesReqDto.add]),
       ];
     }
+    if (updateFavouritesReqDto.remove?.length) {
+      favourites = favourites.filter(
+        (item) => !updateFavouritesReqDto.remove?.includes(item),
+      );
+    }
     user?.set("favourites", favourites);
     await user?.save();
     return { favourites };
