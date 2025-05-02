@@ -3,7 +3,7 @@ import { LocalId } from "../apis/Artefact.interface";
 
 export interface Session {
   accessToken: string;
-  cachedFavourites: LocalId[] | null;
+  cachedFavourites: LocalId[];
 }
 
 export const SessionContext = createContext<
@@ -11,7 +11,7 @@ export const SessionContext = createContext<
 >([
   {
     accessToken: "",
-    cachedFavourites: null,
+    cachedFavourites: [],
   },
   () => {},
 ]);
