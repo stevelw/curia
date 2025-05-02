@@ -108,6 +108,19 @@ export function createExhibition(
     });
 }
 
+export function fetchAllExhibitions(): Promise<GetExhibitionResDto[]> {
+  return network
+    .get<GetExhibitionResDto[]>("/exhibitions/")
+    .then(({ data }) => {
+      return data;
+    })
+    .catch(() => {
+      throw new Error(
+        "Error fetching exhibitions. Check your internet connection.",
+      );
+    });
+}
+
 export function fetchExhibition(
   exhibitionId: ExhibitionId,
 ): Promise<GetExhibitionResDto> {
