@@ -25,12 +25,8 @@ export default function Index() {
       const signin = async () => {
         try {
           const accessToken = await apiSignIn(username, password);
-          const cachedFavourites = await fetchFavourites(accessToken);
-          setSession((prev) => ({
-            ...prev,
-            accessToken,
-            cachedFavourites,
-          }));
+          const { favourites } = await fetchFavourites(accessToken);
+          setSession({ accessToken, cachedFavourites: favourites });
         } catch (err) {
           setError((err as Error).message);
         }
