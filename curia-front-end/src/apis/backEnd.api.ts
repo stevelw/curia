@@ -154,3 +154,20 @@ export function fetchExhibition(
       );
     });
 }
+
+export function fetchUsersExhibitions(
+  accessToken: string,
+): Promise<{ exhibitions: GetExhibitionResDto[] }> {
+  return network
+    .get<{ exhibitions: GetExhibitionResDto[] }>(`/users/exhibitions/`, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    })
+    .then(({ data }) => {
+      return data;
+    })
+    .catch(() => {
+      throw new Error(
+        "Error fetching user's exhibitions. Check your internet connection.",
+      );
+    });
+}
