@@ -15,6 +15,10 @@ import {
   ExhibitionId,
   GetExhibitionResDto,
 } from "../interfaces/get-exhibitions.interface";
+import {
+  UpdateExhibitionReqDto,
+  UpdateExhibitionResDto,
+} from "../interfaces/update-exhibition.interface";
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 if (!process.env.EXPO_PUBLIC_BACK_END_URL) {
@@ -169,5 +173,23 @@ export function fetchUsersExhibitions(
       throw new Error(
         "Error fetching user's exhibitions. Check your internet connection.",
       );
+    });
+}
+
+export function addToExhibition(
+  accessToken: string,
+  exhibitionId: ExhibitionId,
+  artefactId: LocalId,
+): Promise<GetExhibitionResDto> {
+  const body: UpdateExhibitionReqDto = { add: [artefactId] };
+  return network
+    .patch<UpdateExhibitionResDto>("/exhibitions/" + exhibitionId, body, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    })
+    .then(({ data }) => {
+      return data;
+    })
+    .catch(() => {
+      throw new Error("Incorrect username or password");
     });
 }
