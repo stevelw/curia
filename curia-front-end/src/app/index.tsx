@@ -29,7 +29,11 @@ export default function Index() {
             title="Sign out"
             color={"red"}
             onPress={() =>
-              setSession({ accessToken: "", cachedFavourites: null })
+              setSession({
+                accessToken: "",
+                cachedFavourites: null,
+                cachedExhibitions: null,
+              })
             }
           />
         </>

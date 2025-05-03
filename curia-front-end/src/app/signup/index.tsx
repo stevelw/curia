@@ -18,7 +18,11 @@ export default function Index() {
     const createAccountAndSignIn = async () => {
       try {
         const accessToken = await signup(username, password);
-        setSession({ accessToken, cachedFavourites: [] });
+        setSession({
+          accessToken,
+          cachedFavourites: [],
+          cachedExhibitions: [],
+        });
         router.back();
       } catch (err) {
         setError((err as Error).message);

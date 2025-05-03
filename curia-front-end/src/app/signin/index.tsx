@@ -1,4 +1,8 @@
-import { signin as apiSignIn, fetchFavourites } from "@/src/apis/backEnd.api";
+import {
+  signin as apiSignIn,
+  fetchFavourites,
+  fetchUsersExhibitions,
+} from "@/src/apis/backEnd.api";
 import { SessionContext } from "@/src/contexts/session.context";
 import { useRouter } from "expo-router";
 import {
@@ -26,7 +30,12 @@ export default function Index() {
         try {
           const accessToken = await apiSignIn(username, password);
           const { favourites } = await fetchFavourites(accessToken);
-          setSession({ accessToken, cachedFavourites: favourites });
+          const { exhibitions } = await fetchUsersExhibitions(accessToken);
+          setSession({
+            accessToken,
+            cachedFavourites: favourites,
+            cachedExhibitions: exhibitions,
+          });
         } catch (err) {
           setError((err as Error).message);
         }
