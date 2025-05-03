@@ -1,4 +1,4 @@
-import { ScrollView, TouchableOpacity } from "react-native";
+import { ScrollView } from "react-native";
 import { LocalId } from "../../apis/Artefact.interface";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { vaApi } from "../../apis/va.api";
@@ -6,8 +6,9 @@ import { metApi } from "../../apis/met.api";
 import { useQuery } from "@tanstack/react-query";
 import { Api } from "../../apis/api.class";
 import { useCallback, useContext, useEffect, useState } from "react";
-import { SessionContext } from "@/src/contexts/session.context";
-import FavouriteButton from "@/src/components/FavouriteButton";
+import { SessionContext } from "../../contexts/session.context";
+import FavouriteButton from "../../components/FavouriteButton";
+import AddToExhibitionDropdown from "../../components/AddToExhibitionDropdown";
 
 export default function ArtefactDetails() {
   const [session] = useContext(SessionContext);
@@ -57,7 +58,10 @@ export default function ArtefactDetails() {
       <>
         <Stack.Screen options={{ title: artefact.data.title }} />
         {session.accessToken && (
-          <FavouriteButton localId={artefact.data.localId} />
+          <>
+            <FavouriteButton localId={artefact.data.localId} />
+            <AddToExhibitionDropdown artefactId={artefactId} />
+          </>
         )}
         <ScrollView>
           {objectDate && <p>{objectDate}</p>}
