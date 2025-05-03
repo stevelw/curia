@@ -15,7 +15,7 @@ export default function Index() {
   const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     setError("");
     e.preventDefault();
-    const signin = async () => {
+    const createAccountAndSignIn = async () => {
       try {
         const accessToken = await signup(username, password);
         setSession({ accessToken, cachedFavourites: [] });
@@ -24,7 +24,7 @@ export default function Index() {
         setError((err as Error).message);
       }
     };
-    void signin();
+    void createAccountAndSignIn();
   };
 
   return (

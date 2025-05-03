@@ -18,7 +18,7 @@ if (!process.env.JWT_SECRET_KEY) {
     PassportModule.register({ defaultStrategy: "jwt" }),
     JwtModule.register({
       secret: process.env.JWT_SECRET_KEY,
-      signOptions: { expiresIn: 900 },
+      signOptions: { expiresIn: "7d" },
     }),
   ],
   controllers: [AuthController],

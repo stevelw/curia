@@ -67,7 +67,9 @@ export function fetchFavourites(
       return data;
     })
     .catch(() => {
-      throw new Error("Incorrect username or password");
+      throw new Error(
+        "Error fetching user's favourites. Check your internet connection.",
+      );
     });
 }
 
