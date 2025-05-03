@@ -2,8 +2,8 @@ import { fetchAllExhibitions } from "@/src/apis/backEnd.api";
 import ExhibitionListItem from "@/src/components/ExhibitionListItem";
 import { SessionContext } from "@/src/contexts/session.context";
 import { GetExhibitionResDto } from "@/src/interfaces/get-exhibitions.interface";
-import { useRouter } from "expo-router";
-import { useContext, useEffect, useState } from "react";
+import { useRouter, useFocusEffect } from "expo-router";
+import { useCallback, useContext, useState } from "react";
 import { Button, FlatList } from "react-native";
 
 const MAX_TO_RENDER_PER_BATCH = 10; // 10
@@ -19,19 +19,21 @@ export default function Index() {
   const [error, setError] = useState("");
   const [exhibitions, setExhibitions] = useState<GetExhibitionResDto[]>([]);
 
-  useEffect(() => {
-    setIsLoading(true);
-    setError("");
+  useFocusEffect(
+    useCallback(() => {
+      setIsLoading(true);
+      setError("");
 
-    fetchAllExhibitions()
-      .then((returnedExhibitions) => {
-        setExhibitions(returnedExhibitions);
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        setError((err as Error).message);
-      });
-  }, []);
+      fetchAllExhibitions()
+        .then((returnedExhibitions) => {
+          setExhibitions(returnedExhibitions);
+          setIsLoading(false);
+        })
+        .catch((err) => {
+          setError((err as Error).message);
+        });
+    }, []),
+  );
 
   return (
     <>
