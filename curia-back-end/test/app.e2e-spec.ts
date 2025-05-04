@@ -266,6 +266,70 @@ describe("AppController (e2e)", () => {
             .expect(401);
         });
       });
+
+      describe("remove artefact from exhibition", () => {
+        it("200: returns an updated exhibition, GIVEN the user is signed in, WHEN an existing artefact is removed", () => {
+          return request(app.getHttpServer())
+            .patch(`/exhibitions/${validExhibition._id.toString()}`)
+            .set("Authorization", "bearer " + normalUserBearerToken)
+            .send({ add: ["vaO76817"] })
+            .expect(200)
+            .then((res) => {
+              expect(res.body).toMatchObject({
+                artefacts: expect.arrayContaining(["vaO76817"]),
+              });
+            })
+            .then(() => {
+              return request(app.getHttpServer())
+                .patch(`/exhibitions/${validExhibition._id.toString()}`)
+                .set("Authorization", "bearer " + normalUserBearerToken)
+                .send({ remove: ["vaO76817"] })
+                .expect(200)
+                .then((res) => {
+                  expect(res.body).toMatchObject({
+                    artefacts: expect.not.arrayContaining(["vaO76817"]),
+                  });
+                });
+            });
+        });
+        it("200: returns an updated exhibition, GIVEN the user is signed in, WHEN an artefact is removed that doesn't exist", () => {
+          return request(app.getHttpServer())
+            .patch(`/exhibitions/${validExhibition._id.toString()}`)
+            .set("Authorization", "bearer " + normalUserBearerToken)
+            .send({ remove: ["vaO76817"] })
+            .expect(200)
+            .then((res) => {
+              expect(res.body).toMatchObject({
+                artefacts: expect.not.arrayContaining(["vaO76817"]),
+              });
+            })
+            .then(() => {
+              return request(app.getHttpServer())
+                .patch(`/exhibitions/${validExhibition._id.toString()}`)
+                .set("Authorization", "bearer " + normalUserBearerToken)
+                .send({ remove: ["vaO76817"] })
+                .expect(200)
+                .then((res) => {
+                  expect(res.body).toMatchObject({
+                    artefacts: expect.not.arrayContaining(["vaO76817"]),
+                  });
+                });
+            });
+        });
+        it("403 GIVEN a user without permissions is signed in", () => {
+          return request(app.getHttpServer())
+            .patch(`/exhibitions/${validExhibition._id.toString()}`)
+            .set("Authorization", "bearer " + otherUserBearerToken)
+            .send({ remove: ["vaO76817"] })
+            .expect(403);
+        });
+        it("401: GIVEN the user is not signed in", () => {
+          return request(app.getHttpServer())
+            .patch(`/exhibitions/${validExhibition._id.toString()}`)
+            .send({ remove: ["vaO76817"] })
+            .expect(401);
+        });
+      });
     });
   });
 
