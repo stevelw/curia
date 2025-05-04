@@ -88,6 +88,11 @@ export class ExhibitionsService {
         ]),
       ];
     }
+    if (updateExhibitionReqDto.remove?.length) {
+      exhibitionDocument.artefacts = exhibitionDocument.artefacts.filter(
+        (item) => !updateExhibitionReqDto.remove?.includes(item),
+      );
+    }
     await exhibitionDocument?.save();
     return exhibitionDocument;
   }
