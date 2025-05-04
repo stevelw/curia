@@ -3,7 +3,7 @@ import { FlatList, StyleSheet, Text, TouchableOpacity } from "react-native";
 import { useCallback, useContext, useState } from "react";
 import { addToExhibition } from "../apis/backEnd.api";
 import { SessionContext } from "../contexts/session.context";
-import { ExhibitionId } from "../interfaces/get-exhibitions.interface";
+import { ExhibitionId } from "../interfaces/get-exhibition.interface";
 interface Props {
   artefactId: LocalId;
 }

@@ -1,7 +1,7 @@
 import { fetchAllExhibitions } from "@/src/apis/backEnd.api";
 import ExhibitionListItem from "@/src/components/ExhibitionListItem";
 import { SessionContext } from "@/src/contexts/session.context";
-import { GetExhibitionResDto } from "@/src/interfaces/get-exhibitions.interface";
+import { GetExhibitionResDto } from "@/src/interfaces/get-exhibition.interface";
 import { useRouter, useFocusEffect } from "expo-router";
 import { useCallback, useContext, useState } from "react";
 import { Button, FlatList } from "react-native";

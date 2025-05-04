@@ -9,7 +9,7 @@ import {
   defaultFilterOptions,
   FilterOptions,
 } from "@/src/components/FilterPicker";
-import { GetExhibitionResDto } from "@/src/interfaces/get-exhibitions.interface";
+import { GetExhibitionResDto } from "@/src/interfaces/get-exhibition.interface";
 import { useQueries, UseQueryResult } from "@tanstack/react-query";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { useCallback, useEffect, useState } from "react";

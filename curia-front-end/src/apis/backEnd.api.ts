@@ -14,7 +14,7 @@ import {
 import {
   ExhibitionId,
   GetExhibitionResDto,
-} from "../interfaces/get-exhibitions.interface";
+} from "../interfaces/get-exhibition.interface";
 import {
   UpdateExhibitionReqDto,
   UpdateExhibitionResDto,

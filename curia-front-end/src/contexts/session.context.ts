@@ -1,6 +1,6 @@
 import { createContext, Dispatch, SetStateAction } from "react";
 import { LocalId } from "../apis/Artefact.interface";
-import { GetExhibitionResDto } from "../interfaces/get-exhibitions.interface";
+import { GetExhibitionResDto } from "../interfaces/get-exhibition.interface";
 
 export interface Session {
   accessToken: string;

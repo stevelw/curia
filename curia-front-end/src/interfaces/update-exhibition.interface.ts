@@ -1,5 +1,5 @@
 import { LocalId } from "../apis/Artefact.interface";
-import { GetExhibitionResDto } from "./get-exhibitions.interface";
+import { GetExhibitionResDto } from "./get-exhibition.interface";
 
 export interface UpdateExhibitionReqDto {
   add?: LocalId[];

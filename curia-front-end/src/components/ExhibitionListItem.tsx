@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, View } from "react-native";
 import { useRouter } from "expo-router";
-import { GetExhibitionResDto } from "../interfaces/get-exhibitions.interface";
+import { GetExhibitionResDto } from "../interfaces/get-exhibition.interface";
 
 interface Props {
   item: GetExhibitionResDto;
