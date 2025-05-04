@@ -12,10 +12,20 @@ import {
 import { SessionContext } from "@/src/contexts/session.context";
 import { GetExhibitionResDto } from "@/src/interfaces/get-exhibition.interface";
 import { useQueries, UseQueryResult } from "@tanstack/react-query";
-import { Stack, useLocalSearchParams } from "expo-router";
+import { Stack, useLocalSearchParams, usePathname } from "expo-router";
 import { useCallback, useContext, useEffect, useState } from "react";
+import { Button } from "react-native";
+import * as Clipboard from "expo-clipboard";
 
-export default function ArtefactDetails() {
+// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+if (!process.env.EXPO_PUBLIC_FRONT_END_URL) {
+  throw new Error(
+    "EXPO_PUBLIC_FRONT_END_URL needs to be set for this environment.",
+  );
+}
+
+export default function Exhibition() {
+  const path = usePathname();
   const { exhibitionId } = useLocalSearchParams<{ exhibitionId: string }>();
   const [session] = useContext(SessionContext);
 
@@ -111,6 +121,16 @@ export default function ArtefactDetails() {
     combine: combineResults,
   });
 
+  const copySharableLink = useCallback<() => void>(() => {
+    const copyLinkToClipboard = async () => {
+      await Clipboard.setStringAsync(
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        process.env.EXPO_PUBLIC_FRONT_END_URL + path,
+      );
+    };
+    void copyLinkToClipboard();
+  }, [path]);
+
   useEffect(() => {
     const cachedExhibition = session.cachedExhibitions?.find(
       ({ _id }) => _id === exhibitionId,
@@ -175,6 +195,7 @@ export default function ArtefactDetails() {
     <>
       <Stack.Screen options={{ title: "Exhibition" }} />
       <h1>{exhibition.title}</h1>
+      <Button title="Copy link to share" onPress={copySharableLink} />
       {exhibition.description && <p>Description: {exhibition.description}</p>}
       <CollectionObjectList
         queryResultsPending={pending}
