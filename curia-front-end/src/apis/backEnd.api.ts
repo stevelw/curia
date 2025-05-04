@@ -15,6 +15,10 @@ import {
   ExhibitionId,
   GetExhibitionResDto,
 } from "../interfaces/get-exhibitions.interface";
+import {
+  UpdateExhibitionReqDto,
+  UpdateExhibitionResDto,
+} from "../interfaces/update-exhibition.interface";
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 if (!process.env.EXPO_PUBLIC_BACK_END_URL) {
@@ -90,6 +94,23 @@ export function addToFavourites(
     });
 }
 
+export function removeFromFavourites(
+  accessToken: string,
+  artefactId: LocalId,
+): Promise<LocalId[]> {
+  const body: UpdateFavouritesReqDto = { remove: [artefactId] };
+  return network
+    .patch<UpdateFavouritesResDto>("/users/favourites", body, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    })
+    .then(({ data }) => {
+      return data.favourites;
+    })
+    .catch(() => {
+      throw new Error("Incorrect username or password");
+    });
+}
+
 export function createExhibition(
   accessToken: string,
   title: string,
@@ -135,5 +156,40 @@ export function fetchExhibition(
       throw new Error(
         "That exhibition doesn't seem to exist. Perhaps it was deleted.",
       );
+    });
+}
+
+export function fetchUsersExhibitions(
+  accessToken: string,
+): Promise<{ exhibitions: GetExhibitionResDto[] }> {
+  return network
+    .get<{ exhibitions: GetExhibitionResDto[] }>(`/users/exhibitions/`, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    })
+    .then(({ data }) => {
+      return data;
+    })
+    .catch(() => {
+      throw new Error(
+        "Error fetching user's exhibitions. Check your internet connection.",
+      );
+    });
+}
+
+export function addToExhibition(
+  accessToken: string,
+  exhibitionId: ExhibitionId,
+  artefactId: LocalId,
+): Promise<GetExhibitionResDto> {
+  const body: UpdateExhibitionReqDto = { add: [artefactId] };
+  return network
+    .patch<UpdateExhibitionResDto>("/exhibitions/" + exhibitionId, body, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    })
+    .then(({ data }) => {
+      return data;
+    })
+    .catch(() => {
+      throw new Error("Incorrect username or password");
     });
 }

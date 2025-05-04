@@ -1,9 +1,11 @@
 import { createContext, Dispatch, SetStateAction } from "react";
 import { LocalId } from "../apis/Artefact.interface";
+import { GetExhibitionResDto } from "../interfaces/get-exhibitions.interface";
 
 export interface Session {
   accessToken: string;
-  cachedFavourites: LocalId[];
+  cachedFavourites: LocalId[] | null;
+  cachedExhibitions: GetExhibitionResDto[] | null;
 }
 
 export const SessionContext = createContext<
@@ -12,6 +14,7 @@ export const SessionContext = createContext<
   {
     accessToken: "",
     cachedFavourites: [],
+    cachedExhibitions: [],
   },
   () => {},
 ]);

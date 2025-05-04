@@ -5,9 +5,13 @@ import { vaApi } from "../../apis/va.api";
 import { metApi } from "../../apis/met.api";
 import { useQuery } from "@tanstack/react-query";
 import { Api } from "../../apis/api.class";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
+import { SessionContext } from "../../contexts/session.context";
+import FavouriteButton from "../../components/FavouriteButton";
+import AddToExhibitionDropdown from "../../components/AddToExhibitionDropdown";
 
 export default function ArtefactDetails() {
+  const [session] = useContext(SessionContext);
   const { artefactId } = useLocalSearchParams<{ artefactId: string }>();
   const [apiHandler, setApiHandler] = useState<Api | undefined>();
   const fetch = useCallback(
@@ -53,6 +57,12 @@ export default function ArtefactDetails() {
     return (
       <>
         <Stack.Screen options={{ title: artefact.data.title }} />
+        {session.accessToken && (
+          <>
+            <FavouriteButton localId={artefact.data.localId} />
+            <AddToExhibitionDropdown artefactId={artefactId} />
+          </>
+        )}
         <ScrollView>
           {objectDate && <p>{objectDate}</p>}
           <p>Accession Number: {accessionNumber}</p>

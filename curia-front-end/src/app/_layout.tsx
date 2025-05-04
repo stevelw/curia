@@ -11,6 +11,7 @@ export default function RootLayout() {
   const [session, setSession] = useState<Session>({
     accessToken: "",
     cachedFavourites: null,
+    cachedExhibitions: null,
   });
 
   const onCopy = async (text: string) => {

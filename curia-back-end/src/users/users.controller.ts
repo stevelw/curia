@@ -9,12 +9,17 @@ import {
 import { GetUser } from "../auth/decorators/get-user.decorator";
 import { PrivateUser } from "./schemas/user.schema";
 import { FavouritesResDto } from "./dto/favourites.dto";
+import { ExhibitionsService } from "../exhibitions/exhibitions.service";
+import { GetExhibitionResDto } from "src/exhibitions/dto/get-exhibition.dto";
 
 @ApiTags("Users")
 @Controller("users")
 @UseGuards(AuthGuard())
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly exhibitionsService: ExhibitionsService,
+  ) {}
 
   @Get("/favourites")
   @ApiOperation({ summary: "Fetch the logged in user's favourites" })
@@ -50,5 +55,26 @@ export class UsersController {
       user.username,
     );
     return favouritesToSendBack;
+  }
+  @Get("/exhibitions")
+  @ApiOperation({ summary: "Fetch the logged in user's exhibitions" })
+  @ApiResponse({
+    status: 200,
+    description: "Returns the list of exhibitions",
+  })
+  @ApiResponse({
+    status: 409,
+    description: "User not signed in",
+  })
+  async getExhibitions(
+    @GetUser() user: PrivateUser,
+  ): Promise<{ exhibitions: GetExhibitionResDto[] }> {
+    const localUser = await this.usersService.fetch(user.username);
+    const usersExhibitions = await Promise.all(
+      localUser.exhibitions.map((exhibitionId) =>
+        this.exhibitionsService.getExhibition(exhibitionId),
+      ),
+    );
+    return { exhibitions: usersExhibitions };
   }
 }
