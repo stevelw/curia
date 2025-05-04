@@ -14,7 +14,7 @@ import { GetExhibitionResDto } from "@/src/interfaces/get-exhibition.interface";
 import { useQueries, UseQueryResult } from "@tanstack/react-query";
 import { Stack, useLocalSearchParams, usePathname } from "expo-router";
 import { useCallback, useContext, useEffect, useState } from "react";
-import { Button } from "react-native";
+import { Button, View } from "react-native";
 import * as Clipboard from "expo-clipboard";
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
@@ -176,10 +176,10 @@ export default function Exhibition() {
 
   if (error || !exhibition) {
     return (
-      <>
+      <View>
         <Stack.Screen options={{ title: "Oops!" }} />
         <p>{error}</p>
-      </>
+      </View>
     );
   }
 
@@ -192,7 +192,7 @@ export default function Exhibition() {
   }
 
   return (
-    <>
+    <View>
       <Stack.Screen options={{ title: "Exhibition" }} />
       <h1>{exhibition.title}</h1>
       <Button title="Copy link to share" onPress={copySharableLink} />
@@ -209,6 +209,6 @@ export default function Exhibition() {
         setFilterOptions={setFilterOptions}
         forExhibition={exhibitionId}
       />
-    </>
+    </View>
   );
 }

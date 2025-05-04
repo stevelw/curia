@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { useQueries, UseQueryResult } from "@tanstack/react-query";
 import { vaApi, SearchFnReturn } from "../apis/va.api";
 import { metApi } from "../apis/met.api";
@@ -134,7 +134,7 @@ export default function SearchResults() {
   ]);
 
   return (
-    <>
+    <View>
       <h1 style={styles.h1}>Search</h1>
       <SearchBox setSearchTerm={setSearchTerm} />
       {searchTerm !== "" && (
@@ -150,7 +150,7 @@ export default function SearchResults() {
           setFilterOptions={setFilterOptions}
         />
       )}
-    </>
+    </View>
   );
 }
 

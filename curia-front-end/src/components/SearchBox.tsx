@@ -6,7 +6,7 @@ import {
   useEffect,
   useMemo,
 } from "react";
-import { StyleSheet, TextInput } from "react-native";
+import { StyleSheet, TextInput, View } from "react-native";
 
 interface Props {
   setSearchTerm: Dispatch<SetStateAction<string>>;
@@ -30,10 +30,9 @@ export default function SearchBox({ setSearchTerm }: Props) {
   }, [debouncedSearch]);
 
   return (
-    <TextInput
-      onChangeText={debouncedSearch}
-      style={styles.searchInput}
-    ></TextInput>
+    <View>
+      <TextInput onChangeText={debouncedSearch} style={styles.searchInput} />
+    </View>
   );
 }
 

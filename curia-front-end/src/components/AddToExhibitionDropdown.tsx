@@ -1,5 +1,11 @@
 import { LocalId } from "../apis/api.class";
-import { FlatList, StyleSheet, Text, TouchableOpacity } from "react-native";
+import {
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { useCallback, useContext, useState } from "react";
 import { addToExhibition } from "../apis/backEnd.api";
 import { SessionContext } from "../contexts/session.context";
@@ -50,7 +56,7 @@ export default function AddToExhibitionDropdown({ artefactId }: Props) {
     return <> </>;
 
   return (
-    <>
+    <View>
       <TouchableOpacity>
         <Text onPress={toggleDropdown}>Add to exhibition</Text>
       </TouchableOpacity>
@@ -70,7 +76,7 @@ export default function AddToExhibitionDropdown({ artefactId }: Props) {
           }}
         />
       )}
-    </>
+    </View>
   );
 }
 
