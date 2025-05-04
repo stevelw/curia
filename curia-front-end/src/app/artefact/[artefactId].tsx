@@ -1,4 +1,4 @@
-import { ScrollView } from "react-native";
+import { ScrollView, View } from "react-native";
 import { LocalId } from "../../apis/Artefact.interface";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { vaApi } from "../../apis/va.api";
@@ -36,10 +36,17 @@ export default function ArtefactDetails() {
     }
   }, [artefactId]);
 
-  if (!artefact.isSuccess) return <p>Loading...</p>;
+  if (!artefact.isSuccess)
+    return (
+      <View>
+        <p>Loading...</p>;
+      </View>
+    );
   if (artefact.isError)
     return (
-      <p>Sorry, we couldn't find that artefact. Perhaps it's been removed.</p>
+      <View>
+        <p>Sorry, we couldn't find that artefact. Perhaps it's been removed.</p>
+      </View>
     );
 
   if (artefact.data) {
@@ -55,7 +62,7 @@ export default function ArtefactDetails() {
     } = artefact.data;
 
     return (
-      <>
+      <View>
         <Stack.Screen options={{ title: artefact.data.title }} />
         {session.accessToken && (
           <>
@@ -73,7 +80,7 @@ export default function ArtefactDetails() {
           <p>Current location: {currentLocation}</p>
           <p>API source: {apiSource}</p>
         </ScrollView>
-      </>
+      </View>
     );
   }
 }

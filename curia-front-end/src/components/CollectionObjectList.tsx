@@ -51,7 +51,7 @@ export default function CollectionObjectList({
   }, [page, numberOfPages, setPage]);
 
   return (
-    <>
+    <View>
       <SortPicker sortBy={sortBy} setSortBy={setSortBy} />
       <View style={styles.columns}>
         <ScrollView style={styles.filters}>
@@ -88,7 +88,7 @@ export default function CollectionObjectList({
           )}
         </View>
       </View>
-    </>
+    </View>
   );
 }
 
