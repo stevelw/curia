@@ -2,11 +2,17 @@ import { Artefact } from "../apis/api.class";
 import { Pressable, StyleSheet, View } from "react-native";
 import { useRouter } from "expo-router";
 import FavouriteButton from "./FavouriteButton";
+import RemoveButton from "./RemoveButton";
+import { ExhibitionId } from "../interfaces/get-exhibition.interface";
 interface Props {
   item: Artefact;
+  viewedInExhibition?: ExhibitionId;
 }
 
-export default function CollectionObjectListItem({ item }: Props) {
+export default function CollectionObjectListItem({
+  item,
+  viewedInExhibition,
+}: Props) {
   const {
     localId,
     title,
@@ -28,7 +34,15 @@ export default function CollectionObjectListItem({ item }: Props) {
         <div style={styles.flex}>
           <div style={styles.container}>
             <h2 style={styles.flex}>{title}</h2>
-            <FavouriteButton localId={localId} />
+            <View>
+              <FavouriteButton localId={localId} />
+              {viewedInExhibition && (
+                <RemoveButton
+                  exhibitionId={viewedInExhibition}
+                  artefactId={localId}
+                />
+              )}
+            </View>
           </div>
           <p>Made by: {maker}</p>
           <p>Current location: {currentLocation}</p>

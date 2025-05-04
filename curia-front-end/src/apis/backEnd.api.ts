@@ -193,3 +193,21 @@ export function addToExhibition(
       throw new Error("Incorrect username or password");
     });
 }
+
+export function removeFromExhibition(
+  accessToken: string,
+  exhibitionId: ExhibitionId,
+  artefactId: LocalId,
+): Promise<GetExhibitionResDto> {
+  const body: UpdateExhibitionReqDto = { remove: [artefactId] };
+  return network
+    .patch<UpdateExhibitionResDto>("/exhibitions/" + exhibitionId, body, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    })
+    .then(({ data }) => {
+      return data;
+    })
+    .catch(() => {
+      throw new Error("Incorrect username or password");
+    });
+}
