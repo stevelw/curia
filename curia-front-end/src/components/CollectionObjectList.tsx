@@ -5,6 +5,7 @@ import PagePicker from "./PagePicker";
 import SortPicker from "./SortPicker";
 import FilterPicker, { FilterOptions } from "./FilterPicker";
 import { Artefact, SortOptions } from "../apis/api.class";
+import { ExhibitionId } from "../interfaces/get-exhibition.interface";
 
 export const RESULTS_PER_PAGE = 10;
 const MAX_TO_RENDER_PER_BATCH = 10; // 10
@@ -22,6 +23,7 @@ interface Props {
   filterOptions: FilterOptions;
   setFilterOptions: Dispatch<SetStateAction<FilterOptions>>;
   artefactsForPage: Artefact[];
+  forExhibition?: ExhibitionId;
 }
 
 export default function CollectionObjectList({
@@ -34,6 +36,7 @@ export default function CollectionObjectList({
   filterOptions,
   setFilterOptions,
   artefactsForPage,
+  forExhibition,
 }: Props) {
   const [numberOfPages, setNumberOfPages] = useState(1);
 
@@ -76,7 +79,10 @@ export default function CollectionObjectList({
               initialNumToRender={INITIAL_NUM_TO_RENDER}
               windowSize={WINDOW_SIZE}
               renderItem={({ item }) => (
-                <CollectionObjectListItem item={item} />
+                <CollectionObjectListItem
+                  item={item}
+                  viewedInExhibition={forExhibition}
+                />
               )}
             />
           )}

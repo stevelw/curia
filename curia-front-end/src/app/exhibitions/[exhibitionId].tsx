@@ -186,6 +186,7 @@ export default function ArtefactDetails() {
         setSortBy={setSortBy}
         filterOptions={filterOptions}
         setFilterOptions={setFilterOptions}
+        forExhibition={exhibitionId}
       />
     </>
   );
