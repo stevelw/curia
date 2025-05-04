@@ -100,7 +100,7 @@ export default function ArtefactDetails() {
       exhibition?.artefacts?.map((localId) => {
         const api = apiDetailsForArtefact(localId);
         return {
-          queryKey: ["post", localId],
+          queryKey: [exhibitionId, localId],
           queryFn: () => api.fetchFn(),
           staleTime: Infinity,
         };

@@ -95,7 +95,7 @@ export default function Index() {
       session.cachedFavourites?.map((localId) => {
         const api = apiDetailsForArtefact(localId);
         return {
-          queryKey: ["post", localId],
+          queryKey: ["favourites", localId],
           queryFn: () => api.fetchFn(),
           staleTime: Infinity,
         };
