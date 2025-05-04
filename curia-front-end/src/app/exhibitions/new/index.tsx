@@ -1,11 +1,14 @@
-import { createExhibition } from "@/src/apis/backEnd.api";
+import {
+  createExhibition,
+  fetchUsersExhibitions,
+} from "@/src/apis/backEnd.api";
 import { SessionContext } from "@/src/contexts/session.context";
 import { Redirect, useRouter } from "expo-router";
 import { FormEventHandler, useCallback, useContext, useState } from "react";
 import { StyleSheet, View } from "react-native";
 
 export default function Index() {
-  const [session] = useContext(SessionContext);
+  const [session, setSession] = useContext(SessionContext);
   const router = useRouter();
 
   const [title, setTitle] = useState("");
@@ -23,6 +26,9 @@ export default function Index() {
             title,
             description !== "" ? description : undefined,
           );
+          const { exhibitions: cachedExhibitions } =
+            await fetchUsersExhibitions(session.accessToken);
+          setSession((prev) => ({ ...prev, cachedExhibitions }));
           router.replace(`/exhibitions/${newExhibition._id}`);
         } catch (err) {
           setError((err as Error).message);
@@ -30,7 +36,7 @@ export default function Index() {
       };
       void create();
     },
-    [title, description, router, session.accessToken],
+    [session.accessToken, title, description, setSession, router],
   );
 
   if (!session.accessToken) {

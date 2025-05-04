@@ -9,13 +9,16 @@ import {
   defaultFilterOptions,
   FilterOptions,
 } from "@/src/components/FilterPicker";
-import { GetExhibitionResDto } from "@/src/interfaces/get-exhibitions.interface";
+import { SessionContext } from "@/src/contexts/session.context";
+import { GetExhibitionResDto } from "@/src/interfaces/get-exhibition.interface";
 import { useQueries, UseQueryResult } from "@tanstack/react-query";
 import { Stack, useLocalSearchParams } from "expo-router";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 
 export default function ArtefactDetails() {
   const { exhibitionId } = useLocalSearchParams<{ exhibitionId: string }>();
+  const [session] = useContext(SessionContext);
+
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
   const [exhibition, setExhibition] = useState<GetExhibitionResDto | undefined>(
@@ -100,7 +103,7 @@ export default function ArtefactDetails() {
       exhibition?.artefacts?.map((localId) => {
         const api = apiDetailsForArtefact(localId);
         return {
-          queryKey: ["post", localId],
+          queryKey: [exhibitionId, localId],
           queryFn: () => api.fetchFn(),
           staleTime: Infinity,
         };
@@ -109,18 +112,27 @@ export default function ArtefactDetails() {
   });
 
   useEffect(() => {
-    setIsLoading(true);
-    setError("");
+    const cachedExhibition = session.cachedExhibitions?.find(
+      ({ _id }) => _id === exhibitionId,
+    );
 
-    fetchExhibition(exhibitionId)
-      .then((returnedExhibition) => {
-        setExhibition(returnedExhibition);
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        setError((err as Error).message);
-      });
-  }, [exhibitionId]);
+    if (cachedExhibition) {
+      setExhibition(cachedExhibition);
+      setIsLoading(false);
+    } else {
+      setIsLoading(true);
+      setError("");
+
+      fetchExhibition(exhibitionId)
+        .then((returnedExhibition) => {
+          setExhibition(returnedExhibition);
+          setIsLoading(false);
+        })
+        .catch((err) => {
+          setError((err as Error).message);
+        });
+    }
+  }, [exhibitionId, session.cachedExhibitions]);
 
   useEffect(() => {
     if (!pending) {
