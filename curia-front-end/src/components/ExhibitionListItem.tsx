@@ -14,7 +14,7 @@ export default function ExhibitionListItem({ item }: Props) {
   return (
     <Pressable onPress={() => router.push(`/exhibitions/${_id}`)}>
       <View role="listitem" style={styles.listItem}>
-        <h2 style={styles.flex}>{title}</h2>
+        <h3>{title}</h3>
         <p>{description}</p>
       </View>
     </Pressable>
@@ -25,13 +25,8 @@ const styles = StyleSheet.create({
   listItem: {
     margin: 10,
     padding: 10,
-    borderColor: "black",
+    borderColor: "grey",
     borderWidth: 1,
     borderStyle: "solid",
-    flexDirection: "row",
-    display: "flex",
-  },
-  flex: {
-    flex: 1,
   },
 });
