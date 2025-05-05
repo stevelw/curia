@@ -30,10 +30,10 @@ export default function SortPicker({ sortBy, setSortBy }: Props) {
 const styles = StyleSheet.create({
   flexRow: {
     flexDirection: "row",
+    alignItems: "center",
   },
   picker__label: {
     flexGrow: 1,
     textAlign: "right",
-    padding: 10,
   },
 });
