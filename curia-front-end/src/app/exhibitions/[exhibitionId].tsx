@@ -14,7 +14,7 @@ import { GetExhibitionResDto } from "@/src/interfaces/get-exhibition.interface";
 import { useQueries, UseQueryResult } from "@tanstack/react-query";
 import { Stack, useLocalSearchParams, usePathname } from "expo-router";
 import { useCallback, useContext, useEffect, useState } from "react";
-import { Button, View } from "react-native";
+import { Button, StyleSheet, View } from "react-native";
 import * as Clipboard from "expo-clipboard";
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
@@ -192,11 +192,13 @@ export default function Exhibition() {
   }
 
   return (
-    <View>
+    <View style={styles.container}>
       <Stack.Screen options={{ title: "Exhibition" }} />
-      <h1>{exhibition.title}</h1>
+      <h1 style={styles.marginLeft10}>{exhibition.title}</h1>
       <Button title="Copy link to share" onPress={copySharableLink} />
-      {exhibition.description && <p>Description: {exhibition.description}</p>}
+      {exhibition.description && (
+        <p style={styles.marginLeft10}>Description: {exhibition.description}</p>
+      )}
       <CollectionObjectList
         queryResultsPending={pending}
         artefactsForPage={dataForPage}
@@ -212,3 +214,8 @@ export default function Exhibition() {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: { flexDirection: "column", flex: 1 },
+  marginLeft10: { marginLeft: 10 },
+});
