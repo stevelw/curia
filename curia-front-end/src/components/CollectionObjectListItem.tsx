@@ -18,9 +18,7 @@ export default function CollectionObjectListItem({
     title,
     maker,
     currentLocation,
-    objectDate,
     images: { primaryThumbnailUrl },
-    apiSource,
   } = item;
 
   const router = useRouter();
@@ -28,26 +26,20 @@ export default function CollectionObjectListItem({
   return (
     <Pressable onPress={() => router.push(`/artefact/${localId}`)}>
       <View role="listitem" style={styles.listItem}>
-        <div style={styles.listItemLeft}>
-          <img src={primaryThumbnailUrl} alt="" style={styles.image} />
-        </div>
+        <img src={primaryThumbnailUrl} alt="" style={styles.image} />
         <div style={styles.flex}>
-          <div style={styles.container}>
-            <h1 style={styles.flex}>{title}</h1>
-            <View>
-              <FavouriteButton localId={localId} />
-              {viewedInExhibition && (
-                <RemoveButton
-                  exhibitionId={viewedInExhibition}
-                  artefactId={localId}
-                />
-              )}
-            </View>
-          </div>
+          <h1 style={styles.flex}>{title}</h1>
+          <View>
+            <FavouriteButton localId={localId} />
+            {viewedInExhibition && (
+              <RemoveButton
+                exhibitionId={viewedInExhibition}
+                artefactId={localId}
+              />
+            )}
+          </View>
           <p>Made by: {maker}</p>
           <p>Current location: {currentLocation}</p>
-          <p>{objectDate}</p>
-          <p>Source: {apiSource}</p>
         </div>
       </View>
     </Pressable>
@@ -61,24 +53,16 @@ const styles = StyleSheet.create({
     borderColor: "black",
     borderWidth: 1,
     borderStyle: "solid",
-    flexDirection: "row",
+    flexDirection: "column",
     display: "flex",
-  },
-  listItemLeft: {
-    flex: 1,
-    height: 100,
   },
   flex: {
     flex: 1,
   },
-  image: {
-    maxHeight: "100%",
-  },
+  image: { width: "100%" },
   container: {
     flexDirection: "row",
     display: "flex",
     width: "100%",
   },
-  isFavourited: { backgroundColor: "red" },
-  isNotFavourited: { backgroundColor: "gold" },
 });
