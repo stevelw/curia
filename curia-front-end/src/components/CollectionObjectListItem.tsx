@@ -33,7 +33,7 @@ export default function CollectionObjectListItem({
         </div>
         <div style={styles.flex}>
           <div style={styles.container}>
-            <h2 style={styles.flex}>{title}</h2>
+            <h1 style={styles.flex}>{title}</h1>
             <View>
               <FavouriteButton localId={localId} />
               {viewedInExhibition && (

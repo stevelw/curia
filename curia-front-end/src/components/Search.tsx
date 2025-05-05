@@ -7,8 +7,9 @@ import SearchBox from "./SearchBox";
 import { SortOptions } from "../apis/api.class";
 import CollectionObjectList, { RESULTS_PER_PAGE } from "./CollectionObjectList";
 import { defaultFilterOptions, FilterOptions } from "./FilterPicker";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
 
-export default function SearchResults() {
+export default function Search() {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState(SortOptions.Maker);
   const [page, setPage] = useState(1);
@@ -135,8 +136,12 @@ export default function SearchResults() {
 
   return (
     <View>
-      <h1 style={styles.h1}>Search</h1>
-      <SearchBox setSearchTerm={setSearchTerm} />
+      <View style={styles.searchBar}>
+        <FontAwesome name="search" size={24} color="black" />
+        <View style={styles.searchbar__input}>
+          <SearchBox setSearchTerm={setSearchTerm} />
+        </View>
+      </View>
       {searchTerm !== "" && (
         <CollectionObjectList
           queryResultsPending={queryResults.pending}
@@ -157,5 +162,15 @@ export default function SearchResults() {
 const styles = StyleSheet.create({
   h1: {
     padding: 10,
+  },
+  searchBar: {
+    flexDirection: "row",
+    height: 30,
+    alignItems: "center",
+    margin: 10,
+  },
+  searchbar__input: {
+    flex: 1,
+    height: "100%",
   },
 });
