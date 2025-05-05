@@ -1,4 +1,4 @@
-import { ScrollView, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import { LocalId } from "../../apis/Artefact.interface";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { vaApi } from "../../apis/va.api";
@@ -62,7 +62,7 @@ export default function ArtefactDetails() {
     } = artefact.data;
 
     return (
-      <View>
+      <View style={styles.container}>
         <Stack.Screen options={{ title: artefact.data.title }} />
         {session.accessToken && (
           <>
@@ -71,16 +71,21 @@ export default function ArtefactDetails() {
           </>
         )}
         <ScrollView>
-          {objectDate && <p>{objectDate}</p>}
-          <p>Accession Number: {accessionNumber}</p>
+          {objectDate && <p style={styles.margins}>Dated: {objectDate}</p>}
+          <p style={styles.margins}>Accession Number: {accessionNumber}</p>
           <img src={images.primaryImage} alt="" />
-          <p>Object Type: {objectType}</p>
-          {maker && <p>Maker: {maker}</p>}
-          {provenance && <p>Provenance: {provenance}</p>}
-          <p>Current location: {currentLocation}</p>
-          <p>API source: {apiSource}</p>
+          <p style={styles.margins}>Object Type: {objectType}</p>
+          {maker && <p style={styles.margins}>Maker: {maker}</p>}
+          {provenance && <p style={styles.margins}>Provenance: {provenance}</p>}
+          <p style={styles.margins}>Current location: {currentLocation}</p>
+          <p style={styles.margins}>API source: {apiSource}</p>
         </ScrollView>
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: { flexDirection: "column", flex: 1 },
+  margins: { marginLeft: 10, marginTop: 5, marginBottom: 5 },
+});
