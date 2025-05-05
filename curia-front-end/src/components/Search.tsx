@@ -135,7 +135,7 @@ export default function Search() {
   ]);
 
   return (
-    <View>
+    <View style={styles.container}>
       <View style={styles.searchBar}>
         <FontAwesome name="search" size={24} color="black" />
         <View style={styles.searchbar__input}>
@@ -143,23 +143,26 @@ export default function Search() {
         </View>
       </View>
       {searchTerm !== "" && (
-        <CollectionObjectList
-          queryResultsPending={queryResults.pending}
-          artefactsForPage={queryResults.data}
-          totalResultsAvailable={queryResults.totalResultsAvailable}
-          page={page}
-          setPage={setPage}
-          sortBy={sortBy}
-          setSortBy={setSortBy}
-          filterOptions={filterOptions}
-          setFilterOptions={setFilterOptions}
-        />
+        <View style={styles.flex1}>
+          <CollectionObjectList
+            queryResultsPending={queryResults.pending}
+            artefactsForPage={queryResults.data}
+            totalResultsAvailable={queryResults.totalResultsAvailable}
+            page={page}
+            setPage={setPage}
+            sortBy={sortBy}
+            setSortBy={setSortBy}
+            filterOptions={filterOptions}
+            setFilterOptions={setFilterOptions}
+          />
+        </View>
       )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  container: { flexDirection: "column", flex: 1 },
   h1: {
     padding: 10,
   },
@@ -173,5 +176,7 @@ const styles = StyleSheet.create({
     flex: 1,
     height: "100%",
   },
-  filterOrResults: {},
+  flex1: {
+    flex: 1,
+  },
 });
