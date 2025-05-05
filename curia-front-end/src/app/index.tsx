@@ -9,7 +9,7 @@ export default function Index() {
   const [session, setSession] = useContext(SessionContext);
 
   return (
-    <View>
+    <View style={styles.container}>
       {!session.accessToken ? (
         <View style={styles.flexRow}>
           <View style={styles.flexButton}>
@@ -49,23 +49,32 @@ export default function Index() {
           </View>
         </View>
       )}
-      <View style={styles.flexButton}>
+      <View style={styles.button}>
         <Button
           title="Exhibitions"
           onPress={() => router.navigate("/exhibitions")}
         />
       </View>
-      <Search />
+      <View style={styles.flex1}>
+        <Search />
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  container: { flexDirection: "column", flex: 1 },
   flexRow: {
     flexDirection: "row",
   },
   flexButton: {
     flex: 1,
     padding: 5,
+  },
+  button: {
+    padding: 5,
+  },
+  flex1: {
+    flex: 1,
   },
 });

@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { FlatList, ScrollView, StyleSheet, View } from "react-native";
+import { Button, FlatList, ScrollView, StyleSheet, View } from "react-native";
 import CollectionObjectListItem from "./CollectionObjectListItem";
 import PagePicker from "./PagePicker";
 import SortPicker from "./SortPicker";
@@ -39,6 +39,7 @@ export default function CollectionObjectList({
   forExhibition,
 }: Props) {
   const [numberOfPages, setNumberOfPages] = useState(1);
+  const [isShowingFilters, setIsShowingFilters] = useState(false);
 
   useEffect(() => {
     if (!queryResultsPending) {
@@ -50,43 +51,51 @@ export default function CollectionObjectList({
     if (page > numberOfPages) setPage(numberOfPages);
   }, [page, numberOfPages, setPage]);
 
+  function toggleFilterDisplay() {
+    setIsShowingFilters((prev) => !prev);
+  }
+
   return (
     <View>
+      <Button title="Filters" onPress={toggleFilterDisplay} />
       <SortPicker sortBy={sortBy} setSortBy={setSortBy} />
       <View style={styles.columns}>
-        <ScrollView style={styles.filters}>
-          <FilterPicker
-            filterOptions={filterOptions}
-            setFilterOptions={setFilterOptions}
-          />
-        </ScrollView>
-        <View style={styles.results}>
-          <PagePicker
-            currentPage={page}
-            numOfPages={numberOfPages}
-            setPageCbFn={(page) => {
-              setPage(page);
-            }}
-          />
-          {queryResultsPending ? (
-            <p>Loading...</p>
-          ) : (
-            <FlatList
-              data={queryResultsPending ? [] : artefactsForPage}
-              keyExtractor={(item) => item.localId}
-              maxToRenderPerBatch={MAX_TO_RENDER_PER_BATCH}
-              updateCellsBatchingPeriod={UPDATE_CELLS_BATCH_PERIOD}
-              initialNumToRender={INITIAL_NUM_TO_RENDER}
-              windowSize={WINDOW_SIZE}
-              renderItem={({ item }) => (
-                <CollectionObjectListItem
-                  item={item}
-                  viewedInExhibition={forExhibition}
-                />
-              )}
+        {isShowingFilters ? (
+          <ScrollView style={styles.filters}>
+            <FilterPicker
+              filterOptions={filterOptions}
+              setFilterOptions={setFilterOptions}
             />
-          )}
-        </View>
+          </ScrollView>
+        ) : (
+          <View style={styles.results}>
+            <PagePicker
+              currentPage={page}
+              numOfPages={numberOfPages}
+              setPageCbFn={(page) => {
+                setPage(page);
+              }}
+            />
+            {queryResultsPending ? (
+              <p>Loading...</p>
+            ) : (
+              <FlatList
+                data={queryResultsPending ? [] : artefactsForPage}
+                keyExtractor={(item) => item.localId}
+                maxToRenderPerBatch={MAX_TO_RENDER_PER_BATCH}
+                updateCellsBatchingPeriod={UPDATE_CELLS_BATCH_PERIOD}
+                initialNumToRender={INITIAL_NUM_TO_RENDER}
+                windowSize={WINDOW_SIZE}
+                renderItem={({ item }) => (
+                  <CollectionObjectListItem
+                    item={item}
+                    viewedInExhibition={forExhibition}
+                  />
+                )}
+              />
+            )}
+          </View>
+        )}
       </View>
     </View>
   );
@@ -98,9 +107,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   filters: {
-    flex: 1,
+    height: 100,
   },
   results: {
-    flex: 2,
+    flex: 1,
   },
 });
