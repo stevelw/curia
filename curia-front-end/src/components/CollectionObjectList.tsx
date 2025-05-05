@@ -56,60 +56,61 @@ export default function CollectionObjectList({
   }
 
   return (
-    <View>
-      <Button title="Filters" onPress={toggleFilterDisplay} />
-      <SortPicker sortBy={sortBy} setSortBy={setSortBy} />
-      <View style={styles.columns}>
-        {isShowingFilters ? (
-          <ScrollView style={styles.filters}>
-            <FilterPicker
-              filterOptions={filterOptions}
-              setFilterOptions={setFilterOptions}
-            />
-          </ScrollView>
-        ) : (
-          <View style={styles.results}>
-            <PagePicker
-              currentPage={page}
-              numOfPages={numberOfPages}
-              setPageCbFn={(page) => {
-                setPage(page);
-              }}
-            />
-            {queryResultsPending ? (
-              <p>Loading...</p>
-            ) : (
-              <FlatList
-                data={queryResultsPending ? [] : artefactsForPage}
-                keyExtractor={(item) => item.localId}
-                maxToRenderPerBatch={MAX_TO_RENDER_PER_BATCH}
-                updateCellsBatchingPeriod={UPDATE_CELLS_BATCH_PERIOD}
-                initialNumToRender={INITIAL_NUM_TO_RENDER}
-                windowSize={WINDOW_SIZE}
-                renderItem={({ item }) => (
-                  <CollectionObjectListItem
-                    item={item}
-                    viewedInExhibition={forExhibition}
-                  />
-                )}
-              />
-            )}
-          </View>
-        )}
+    <View style={styles.container}>
+      <View style={styles.flexRow}>
+        <Button title="Filters" onPress={toggleFilterDisplay} />
+        <View style={styles.flex1}>
+          <SortPicker sortBy={sortBy} setSortBy={setSortBy} />
+        </View>
       </View>
+      {isShowingFilters ? (
+        <ScrollView style={styles.flex1}>
+          <FilterPicker
+            filterOptions={filterOptions}
+            setFilterOptions={setFilterOptions}
+          />
+        </ScrollView>
+      ) : (
+        <View style={styles.container}>
+          <PagePicker
+            currentPage={page}
+            numOfPages={numberOfPages}
+            setPageCbFn={(page) => {
+              setPage(page);
+            }}
+          />
+          {queryResultsPending ? (
+            <p>Loading...</p>
+          ) : (
+            <FlatList
+              style={styles.flex1}
+              data={queryResultsPending ? [] : artefactsForPage}
+              keyExtractor={(item) => item.localId}
+              maxToRenderPerBatch={MAX_TO_RENDER_PER_BATCH}
+              updateCellsBatchingPeriod={UPDATE_CELLS_BATCH_PERIOD}
+              initialNumToRender={INITIAL_NUM_TO_RENDER}
+              windowSize={WINDOW_SIZE}
+              renderItem={({ item }) => (
+                <CollectionObjectListItem
+                  item={item}
+                  viewedInExhibition={forExhibition}
+                />
+              )}
+            />
+          )}
+        </View>
+      )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  columns: {
+  container: { flexDirection: "column", flex: 1, margin: 0, padding: 0 },
+  flexRow: {
     flexDirection: "row",
-    flex: 1,
+    margin: 5,
   },
-  filters: {
-    height: 100,
-  },
-  results: {
+  flex1: {
     flex: 1,
   },
 });

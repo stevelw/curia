@@ -41,8 +41,11 @@ export default function PagePicker({
 const styles = StyleSheet.create({
   picker: {
     display: "flex",
-    width: "100%",
-    justifyContent: "space-evenly",
+    justifyContent: "flex-start",
     flexDirection: "row",
+    flexWrap: "wrap",
+    maxWidth: "100%",
+    margin: 5,
+    gap: 5,
   },
 });
