@@ -30,14 +30,24 @@ export default function SearchBox({ setSearchTerm }: Props) {
   }, [debouncedSearch]);
 
   return (
-    <View>
-      <TextInput onChangeText={debouncedSearch} style={styles.searchInput} />
+    <View style={styles.searchInput__frame}>
+      <TextInput style={styles.searchInput} onChangeText={debouncedSearch} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  searchInput__frame: {
+    borderRadius: 5,
+    height: "100%",
+    shadowColor: "grey",
+    shadowOpacity: 0.8,
+    shadowOffset: { width: 0, height: 3 },
+    shadowRadius: 10,
+    marginStart: 10,
+  },
   searchInput: {
-    backgroundColor: "gray",
+    height: "100%",
+    paddingStart: 10,
   },
 });
