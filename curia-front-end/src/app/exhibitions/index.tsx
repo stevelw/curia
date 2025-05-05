@@ -4,7 +4,13 @@ import { SessionContext } from "@/src/contexts/session.context";
 import { GetExhibitionResDto } from "@/src/interfaces/get-exhibition.interface";
 import { useRouter, useFocusEffect } from "expo-router";
 import { useCallback, useContext, useState } from "react";
-import { Button, SectionList, SectionListData, View } from "react-native";
+import {
+  Button,
+  SectionList,
+  SectionListData,
+  StyleSheet,
+  View,
+} from "react-native";
 
 const MAX_TO_RENDER_PER_BATCH = 10; // 10
 const UPDATE_CELLS_BATCH_PERIOD = 50; // 50
@@ -56,7 +62,7 @@ export default function Index() {
   );
 
   return (
-    <View>
+    <View style={styles.container}>
       {session.accessToken && (
         <Button
           title="Create an exhibition"
@@ -68,6 +74,7 @@ export default function Index() {
         <p>Loading...</p>
       ) : (
         <SectionList
+          style={styles.flex1}
           sections={exhibitionsSections}
           keyExtractor={(item) => item._id}
           maxToRenderPerBatch={MAX_TO_RENDER_PER_BATCH}
@@ -77,7 +84,7 @@ export default function Index() {
           renderItem={({ item }) => <ExhibitionListItem item={item} />}
           renderSectionHeader={
             session.cachedExhibitions
-              ? ({ section }) => <h2>{section.title}</h2>
+              ? ({ section }) => <h2 style={styles.h2}>{section.title}</h2>
               : undefined
           }
         />
@@ -85,3 +92,9 @@ export default function Index() {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: { flexDirection: "column", flex: 1 },
+  flex1: { flex: 1 },
+  h2: { marginLeft: 10, marginBottom: 5 },
+});
