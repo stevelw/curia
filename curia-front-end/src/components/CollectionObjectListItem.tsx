@@ -1,5 +1,5 @@
 import { Artefact } from "../apis/api.class";
-import { Pressable, StyleSheet, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import { useRouter } from "expo-router";
 import FavouriteButton from "./FavouriteButton";
 import RemoveButton from "./RemoveButton";
@@ -24,11 +24,22 @@ export default function CollectionObjectListItem({
   const router = useRouter();
 
   return (
-    <Pressable onPress={() => router.push(`/artefact/${localId}`)}>
-      <View role="listitem" style={styles.listItem}>
-        <img src={primaryThumbnailUrl} alt="" style={styles.image} />
-        <div style={styles.flex}>
-          <h1 style={styles.flex}>{title}</h1>
+    <View role="listitem" style={styles.outerListItem}>
+      <Pressable
+        style={styles.innerListItem}
+        onPress={() => router.push(`/artefact/${localId}`)}
+      >
+        <View style={styles.listItemTop}>
+          <img src={primaryThumbnailUrl} alt="" style={styles.image} />
+        </View>
+        <View style={styles.listItemBottom}>
+          <Text
+            style={styles.title}
+            accessibilityRole="header"
+            adjustsFontSizeToFit
+          >
+            {title}
+          </Text>
           <View>
             <FavouriteButton localId={localId} />
             {viewedInExhibition && (
@@ -40,29 +51,42 @@ export default function CollectionObjectListItem({
           </View>
           <p>Made by: {maker}</p>
           <p>Current location: {currentLocation}</p>
-        </div>
-      </View>
-    </Pressable>
+        </View>
+      </Pressable>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  listItem: {
+  outerListItem: {
     margin: 10,
     padding: 10,
     borderColor: "black",
     borderWidth: 1,
     borderStyle: "solid",
-    flexDirection: "column",
-    display: "flex",
-  },
-  flex: {
     flex: 1,
   },
-  image: { width: "100%" },
+  innerListItem: {
+    display: "flex",
+    flexDirection: "column",
+    height: 300,
+  },
+  listItemTop: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    flexShrink: 2,
+    flexGrow: 1,
+  },
+  listItemBottom: { flexGrow: 1, flexShrink: 0 },
+  image: { maxWidth: "100%", maxHeight: "100%" },
   container: {
     flexDirection: "row",
     display: "flex",
     width: "100%",
+  },
+  title: {
+    fontWeight: "bold",
+    paddingTop: 10,
   },
 });

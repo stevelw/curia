@@ -41,7 +41,7 @@ export default function PagePicker({
 const styles = StyleSheet.create({
   picker: {
     display: "flex",
-    justifyContent: "flex-start",
+    justifyContent: "center",
     flexDirection: "row",
     flexWrap: "wrap",
     maxWidth: "100%",
