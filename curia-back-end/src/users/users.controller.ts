@@ -10,7 +10,7 @@ import { GetUser } from "../auth/decorators/get-user.decorator";
 import { PrivateUser } from "./schemas/user.schema";
 import { FavouritesResDto } from "./dto/favourites.dto";
 import { ExhibitionsService } from "../exhibitions/exhibitions.service";
-import { GetExhibitionResDto } from "src/exhibitions/dto/get-exhibition.dto";
+import { GetExhibitionResDto } from "../exhibitions/dto/get-exhibition.dto";
 
 @ApiTags("Users")
 @Controller("users")
