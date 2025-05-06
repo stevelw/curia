@@ -3,6 +3,7 @@ import Search from "../components/Search";
 import { useRouter } from "expo-router";
 import { useContext } from "react";
 import { SessionContext } from "../contexts/session.context";
+import { action, create, destroy } from "../components/colours";
 
 export default function Index() {
   const router = useRouter();
@@ -15,13 +16,14 @@ export default function Index() {
           <View style={styles.flexButton}>
             <Button
               title="Sign in"
+              color={action}
               onPress={() => router.navigate("/signin")}
             />
           </View>
           <View style={styles.flexButton}>
             <Button
               title="Create account"
-              color={"green"}
+              color={create}
               onPress={() => router.navigate("/signup")}
             />
           </View>
@@ -31,13 +33,14 @@ export default function Index() {
           <View style={styles.flexButton}>
             <Button
               title="My Favourites"
+              color={action}
               onPress={() => router.navigate("/favourites")}
             />
           </View>
           <View style={styles.flexButton}>
             <Button
               title="Sign out"
-              color={"red"}
+              color={destroy}
               onPress={() =>
                 setSession({
                   accessToken: "",
@@ -52,6 +55,7 @@ export default function Index() {
       <View style={styles.button}>
         <Button
           title="Exhibitions"
+          color={action}
           onPress={() => router.navigate("/exhibitions")}
         />
       </View>

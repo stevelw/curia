@@ -2,6 +2,7 @@ import {
   createExhibition,
   fetchUsersExhibitions,
 } from "@/src/apis/backEnd.api";
+import { create } from "@/src/components/colours";
 import { SessionContext } from "@/src/contexts/session.context";
 import { Redirect, useRouter } from "expo-router";
 import { useCallback, useContext, useState } from "react";
@@ -69,7 +70,7 @@ export default function Index() {
         <Button
           title="Create"
           onPress={handleSubmit}
-          color={"green"}
+          color={create}
           disabled={!title || !description}
         />
         {error && <p>{error}</p>}

@@ -1,4 +1,5 @@
 import { Button, StyleSheet, View } from "react-native";
+import { action } from "./colours";
 
 interface Props {
   currentPage: number;
@@ -15,6 +16,7 @@ export default function PagePicker({
     <View style={styles.picker}>
       <Button
         title="Previous"
+        color={action}
         onPress={() => setPageCbFn(currentPage - 1)}
         disabled={currentPage < 2}
       />
@@ -24,6 +26,7 @@ export default function PagePicker({
           <Button
             key={pageNumber}
             title={pageNumber.toString()}
+            color={action}
             onPress={() => setPageCbFn(pageNumber)}
             disabled={pageNumber === currentPage}
           />
@@ -31,6 +34,7 @@ export default function PagePicker({
       })}
       <Button
         title="Next"
+        color={action}
         onPress={() => setPageCbFn(currentPage + 1)}
         disabled={currentPage >= numOfPages}
       />

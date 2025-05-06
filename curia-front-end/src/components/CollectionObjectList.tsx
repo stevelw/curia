@@ -13,6 +13,7 @@ import SortPicker from "./SortPicker";
 import FilterPicker, { FilterOptions } from "./FilterPicker";
 import { Artefact, SortOptions } from "../apis/api.class";
 import { ExhibitionId } from "../interfaces/get-exhibition.interface";
+import { action } from "./colours";
 
 export const RESULTS_PER_PAGE = 25;
 const MAX_TO_RENDER_PER_BATCH = 10; // 10
@@ -77,7 +78,7 @@ export default function CollectionObjectList({
   return (
     <View style={styles.container}>
       <View style={styles.flexRow}>
-        <Button title="Filters" onPress={toggleFilterDisplay} />
+        <Button title="Filters" color={action} onPress={toggleFilterDisplay} />
         <View style={styles.flex1}>
           <SortPicker sortBy={sortBy} setSortBy={setSortBy} />
         </View>

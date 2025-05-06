@@ -1,4 +1,5 @@
 import { fetchAllExhibitions } from "@/src/apis/backEnd.api";
+import { create } from "@/src/components/colours";
 import ExhibitionListItem from "@/src/components/ExhibitionListItem";
 import { SessionContext } from "@/src/contexts/session.context";
 import { GetExhibitionResDto } from "@/src/interfaces/get-exhibition.interface";
@@ -66,6 +67,7 @@ export default function Index() {
       {session.accessToken && (
         <Button
           title="Create an exhibition"
+          color={create}
           onPress={() => router.navigate("/exhibitions/new")}
         />
       )}

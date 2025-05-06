@@ -4,6 +4,7 @@ import { useCallback, useContext, useState } from "react";
 import { addToExhibition } from "../apis/backEnd.api";
 import { SessionContext } from "../contexts/session.context";
 import { ExhibitionId } from "../interfaces/get-exhibition.interface";
+import { action, create } from "./colours";
 interface Props {
   artefactId: LocalId;
 }
@@ -57,7 +58,7 @@ export default function AddToExhibitionDropdown({ artefactId }: Props) {
       <Button
         title="Add to exhibition..."
         onPress={toggleDropdown}
-        color="green"
+        color={action}
       />
       {isDropdownVisible && (
         <FlatList
@@ -68,6 +69,7 @@ export default function AddToExhibitionDropdown({ artefactId }: Props) {
             return (
               <Button
                 title={"+ " + item.title}
+                color={create}
                 onPress={() => handleAddToExhibition(item._id)}
               />
             );
