@@ -1,4 +1,5 @@
 import { signup } from "../../apis/backEnd.api";
+import { create } from "../../components/colours";
 import { SessionContext } from "../../contexts/session.context";
 import { useRouter } from "expo-router";
 import { useContext, useState } from "react";
@@ -61,7 +62,7 @@ export default function Index() {
           title="Sign up"
           onPress={handleSubmit}
           disabled={!username || !password}
-          color={"green"}
+          color={create}
         />
         {error && <p>{error}</p>}
       </form>

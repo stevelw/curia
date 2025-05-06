@@ -3,6 +3,7 @@ import {
   fetchFavourites,
   fetchUsersExhibitions,
 } from "@/src/apis/backEnd.api";
+import { action } from "@/src/components/colours";
 import { SessionContext } from "@/src/contexts/session.context";
 import { useRouter } from "expo-router";
 import { useCallback, useContext, useEffect, useState } from "react";
@@ -70,6 +71,7 @@ export default function Index() {
         </div>
         <Button
           title="Sign In"
+          color={action}
           onPress={handleSubmit}
           disabled={!username || !password}
         />

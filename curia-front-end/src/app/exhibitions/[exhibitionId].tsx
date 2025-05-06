@@ -16,6 +16,7 @@ import { Stack, useLocalSearchParams, usePathname } from "expo-router";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { Button, StyleSheet, View } from "react-native";
 import * as Clipboard from "expo-clipboard";
+import { action } from "@/src/components/colours";
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 if (!process.env.EXPO_PUBLIC_FRONT_END_URL) {
@@ -195,7 +196,11 @@ export default function Exhibition() {
     <View style={styles.container}>
       <Stack.Screen options={{ title: "Exhibition" }} />
       <h1 style={styles.marginLeft10}>{exhibition.title}</h1>
-      <Button title="Copy link to share" onPress={copySharableLink} />
+      <Button
+        title="Copy link to share"
+        color={action}
+        onPress={copySharableLink}
+      />
       {exhibition.description && (
         <p style={styles.marginLeft10}>Description: {exhibition.description}</p>
       )}

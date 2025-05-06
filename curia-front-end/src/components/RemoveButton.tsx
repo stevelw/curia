@@ -5,6 +5,7 @@ import { removeFromExhibition } from "../apis/backEnd.api";
 import { SessionContext } from "../contexts/session.context";
 import { ExhibitionId } from "../interfaces/get-exhibition.interface";
 import { useQueryClient } from "@tanstack/react-query";
+import { destroy } from "./colours";
 interface Props {
   exhibitionId: ExhibitionId;
   artefactId: LocalId;
@@ -47,7 +48,7 @@ export default function RemoveButton({ exhibitionId, artefactId }: Props) {
 
   return (
     <TouchableOpacity>
-      <Button title="Remove" onPress={handleRemove} color={"red"} />
+      <Button title="Remove" onPress={handleRemove} color={destroy} />
     </TouchableOpacity>
   );
 }

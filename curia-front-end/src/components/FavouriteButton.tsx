@@ -3,6 +3,7 @@ import { Button } from "react-native";
 import { useCallback, useContext } from "react";
 import { addToFavourites, removeFromFavourites } from "../apis/backEnd.api";
 import { SessionContext } from "../contexts/session.context";
+import { destroy, flag } from "./colours";
 interface Props {
   localId: LocalId;
 }
@@ -38,13 +39,13 @@ export default function FavouriteButton({ localId }: Props) {
     return (
       <Button
         title="Unfavourite"
-        color={"red"}
+        color={destroy}
         onPress={handleRemoveFavourite}
       />
     );
   } else {
     return (
-      <Button title="Favourite" color={"gold"} onPress={handleAddFavourite} />
+      <Button title="Favourite" color={flag} onPress={handleAddFavourite} />
     );
   }
 }
