@@ -1,7 +1,7 @@
-import { signup } from "@/src/apis/backEnd.api";
-import { SessionContext } from "@/src/contexts/session.context";
+import { signup } from "../../apis/backEnd.api";
+import { SessionContext } from "../../contexts/session.context";
 import { useRouter } from "expo-router";
-import { FormEventHandler, useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { Button, StyleSheet, View } from "react-native";
 
 export default function Index() {
