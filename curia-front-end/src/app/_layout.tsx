@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Stack } from "expo-router";
 import { SessionContext, Session } from "../contexts/session.context";
 import { useState } from "react";
-import { SafeAreaView } from "react-native";
+import { SafeAreaView, StyleSheet } from "react-native";
 
 const queryClient = new QueryClient();
 
@@ -27,7 +27,7 @@ export default function RootLayout() {
   return (
     <QueryClientProvider client={queryClient}>
       <SessionContext.Provider value={[session, setSession]}>
-        <SafeAreaView>
+        <SafeAreaView style={styles.appView}>
           <Stack>
             <Stack.Screen name="index" options={{ headerTitle: "Curia" }} />
             <Stack.Screen
@@ -61,3 +61,9 @@ export default function RootLayout() {
 export const unstable_settings = {
   initialRouteName: "index",
 };
+
+const styles = StyleSheet.create({
+  appView: {
+    flex: 1,
+  },
+});
