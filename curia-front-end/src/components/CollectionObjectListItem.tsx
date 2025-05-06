@@ -1,5 +1,5 @@
 import { Artefact } from "../apis/api.class";
-import { Pressable, StyleSheet, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import { useRouter } from "expo-router";
 import FavouriteButton from "./FavouriteButton";
 import RemoveButton from "./RemoveButton";
@@ -18,67 +18,75 @@ export default function CollectionObjectListItem({
     title,
     maker,
     currentLocation,
-    objectDate,
     images: { primaryThumbnailUrl },
-    apiSource,
   } = item;
 
   const router = useRouter();
 
   return (
-    <Pressable onPress={() => router.push(`/artefact/${localId}`)}>
-      <View role="listitem" style={styles.listItem}>
-        <div style={styles.listItemLeft}>
+    <View role="listitem" style={styles.outerListItem}>
+      <Pressable
+        style={styles.innerListItem}
+        onPress={() => router.push(`/artefact/${localId}`)}
+      >
+        <View style={styles.listItemTop}>
           <img src={primaryThumbnailUrl} alt="" style={styles.image} />
-        </div>
-        <div style={styles.flex}>
-          <div style={styles.container}>
-            <h2 style={styles.flex}>{title}</h2>
-            <View>
-              <FavouriteButton localId={localId} />
-              {viewedInExhibition && (
-                <RemoveButton
-                  exhibitionId={viewedInExhibition}
-                  artefactId={localId}
-                />
-              )}
-            </View>
-          </div>
+        </View>
+        <View style={styles.listItemBottom}>
+          <Text
+            style={styles.title}
+            accessibilityRole="header"
+            adjustsFontSizeToFit
+          >
+            {title}
+          </Text>
+          <View>
+            <FavouriteButton localId={localId} />
+            {viewedInExhibition && (
+              <RemoveButton
+                exhibitionId={viewedInExhibition}
+                artefactId={localId}
+              />
+            )}
+          </View>
           <p>Made by: {maker}</p>
           <p>Current location: {currentLocation}</p>
-          <p>{objectDate}</p>
-          <p>Source: {apiSource}</p>
-        </div>
-      </View>
-    </Pressable>
+        </View>
+      </Pressable>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  listItem: {
+  outerListItem: {
     margin: 10,
     padding: 10,
     borderColor: "black",
     borderWidth: 1,
     borderStyle: "solid",
-    flexDirection: "row",
+    flex: 1,
+  },
+  innerListItem: {
     display: "flex",
+    flexDirection: "column",
+    height: 300,
   },
-  listItemLeft: {
-    flex: 1,
-    height: 100,
+  listItemTop: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    flexShrink: 2,
+    flexGrow: 1,
   },
-  flex: {
-    flex: 1,
-  },
-  image: {
-    maxHeight: "100%",
-  },
+  listItemBottom: { flexGrow: 1, flexShrink: 0 },
+  image: { maxWidth: "100%", maxHeight: "100%" },
   container: {
     flexDirection: "row",
     display: "flex",
     width: "100%",
   },
-  isFavourited: { backgroundColor: "red" },
-  isNotFavourited: { backgroundColor: "gold" },
+  title: {
+    fontWeight: "bold",
+    paddingTop: 10,
+  },
 });

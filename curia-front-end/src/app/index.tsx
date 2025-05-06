@@ -1,5 +1,5 @@
 import { Button, StyleSheet, View } from "react-native";
-import SearchResults from "../components/SearchResults";
+import Search from "../components/Search";
 import { useRouter } from "expo-router";
 import { useContext } from "react";
 import { SessionContext } from "../contexts/session.context";
@@ -9,46 +9,72 @@ export default function Index() {
   const [session, setSession] = useContext(SessionContext);
 
   return (
-    <View style={styles.appView}>
+    <View style={styles.container}>
       {!session.accessToken ? (
-        <>
-          <Button title="Sign in" onPress={() => router.navigate("/signin")} />
-          <Button
-            title="Create account"
-            color={"green"}
-            onPress={() => router.navigate("/signup")}
-          />
-        </>
+        <View style={styles.flexRow}>
+          <View style={styles.flexButton}>
+            <Button
+              title="Sign in"
+              onPress={() => router.navigate("/signin")}
+            />
+          </View>
+          <View style={styles.flexButton}>
+            <Button
+              title="Create account"
+              color={"green"}
+              onPress={() => router.navigate("/signup")}
+            />
+          </View>
+        </View>
       ) : (
-        <>
-          <Button
-            title="My Favourites"
-            onPress={() => router.navigate("/favourites")}
-          />
-          <Button
-            title="Sign out"
-            color={"red"}
-            onPress={() =>
-              setSession({
-                accessToken: "",
-                cachedFavourites: null,
-                cachedExhibitions: null,
-              })
-            }
-          />
-        </>
+        <View style={styles.flexRow}>
+          <View style={styles.flexButton}>
+            <Button
+              title="My Favourites"
+              onPress={() => router.navigate("/favourites")}
+            />
+          </View>
+          <View style={styles.flexButton}>
+            <Button
+              title="Sign out"
+              color={"red"}
+              onPress={() =>
+                setSession({
+                  accessToken: "",
+                  cachedFavourites: null,
+                  cachedExhibitions: null,
+                })
+              }
+            />
+          </View>
+        </View>
       )}
-      <Button
-        title="Exhibitions"
-        onPress={() => router.navigate("/exhibitions")}
-      />
-      <SearchResults />
+      <View style={styles.button}>
+        <Button
+          title="Exhibitions"
+          onPress={() => router.navigate("/exhibitions")}
+        />
+      </View>
+      <View style={styles.flex1}>
+        <Search />
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  appView: {
-    height: "100%",
+  container: { flexDirection: "column", flex: 1 },
+  flexRow: {
+    flexDirection: "row",
+  },
+  flexButton: {
+    flex: 1,
+    padding: 5,
+  },
+  button: {
+    padding: 5,
+  },
+  flex1: {
+    flex: 1,
   },
 });

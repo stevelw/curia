@@ -1,11 +1,5 @@
 import { LocalId } from "../apis/api.class";
-import {
-  FlatList,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Button, FlatList, StyleSheet, View } from "react-native";
 import { useCallback, useContext, useState } from "react";
 import { addToExhibition } from "../apis/backEnd.api";
 import { SessionContext } from "../contexts/session.context";
@@ -52,14 +46,19 @@ export default function AddToExhibitionDropdown({ artefactId }: Props) {
     [artefactId, session.accessToken, session.cachedExhibitions, setSession],
   );
 
-  if (!session.accessToken || !UserExhibitionsNotIncludingArtefact(artefactId))
+  if (
+    !session.accessToken ||
+    !UserExhibitionsNotIncludingArtefact(artefactId)?.length
+  )
     return <> </>;
 
   return (
     <View>
-      <TouchableOpacity>
-        <Text onPress={toggleDropdown}>Add to exhibition</Text>
-      </TouchableOpacity>
+      <Button
+        title="Add to exhibition..."
+        onPress={toggleDropdown}
+        color="green"
+      />
       {isDropdownVisible && (
         <FlatList
           style={styles.dropdown}
@@ -67,11 +66,10 @@ export default function AddToExhibitionDropdown({ artefactId }: Props) {
           keyExtractor={({ _id }) => _id}
           renderItem={({ item }) => {
             return (
-              <TouchableOpacity>
-                <Text onPress={() => handleAddToExhibition(item._id)}>
-                  {item.title}
-                </Text>
-              </TouchableOpacity>
+              <Button
+                title={"+ " + item.title}
+                onPress={() => handleAddToExhibition(item._id)}
+              />
             );
           }}
         />

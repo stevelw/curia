@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import { Button, StyleSheet, View } from "react-native";
+import { Button, StyleSheet, Text, View } from "react-native";
 import { SortOptions } from "../apis/api.class";
 
 interface Props {
@@ -9,26 +9,31 @@ interface Props {
 
 export default function SortPicker({ sortBy, setSortBy }: Props) {
   return (
-    <View style={styles.picker}>
-      {Object.keys(SortOptions).map((key) => (
-        <Button
-          key={key}
-          title={SortOptions[key as keyof typeof SortOptions]}
-          disabled={SortOptions[key as keyof typeof SortOptions] === sortBy}
-          onPress={() =>
-            setSortBy(SortOptions[key as keyof typeof SortOptions])
-          }
-        />
-      ))}
+    <View style={styles.flexRow}>
+      <Text style={styles.picker__label}>Sort by:</Text>
+      <View style={styles.flexRow}>
+        {Object.keys(SortOptions).map((key) => (
+          <Button
+            key={key}
+            title={SortOptions[key as keyof typeof SortOptions]}
+            disabled={SortOptions[key as keyof typeof SortOptions] === sortBy}
+            onPress={() =>
+              setSortBy(SortOptions[key as keyof typeof SortOptions])
+            }
+          />
+        ))}
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  picker: {
-    display: "flex",
-    width: "100%",
-    justifyContent: "space-evenly",
+  flexRow: {
     flexDirection: "row",
+    alignItems: "center",
+  },
+  picker__label: {
+    flexGrow: 1,
+    textAlign: "right",
   },
 });

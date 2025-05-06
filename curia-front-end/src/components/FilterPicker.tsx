@@ -60,10 +60,10 @@ export default function FilterPicker({
   );
 
   return (
-    <View style={styles.picker}>
+    <View>
       {Object.keys(filterOptions).map((filterKey) => (
         <View key={filterKey}>
-          <label htmlFor={filterKey}>
+          <label style={styles.heading} htmlFor={filterKey}>
             Filter by{" "}
             {filterKey === "objectType"
               ? "object type"
@@ -76,8 +76,7 @@ export default function FilterPicker({
           {filterOptions[filterKey as keyof typeof filterOptions].valid.map(
             (option) => {
               return (
-                <View key={option}>
-                  <label htmlFor={option}>{option}</label>
+                <View key={option} style={styles.container}>
                   <input
                     type="checkbox"
                     id={option}
@@ -88,6 +87,9 @@ export default function FilterPicker({
                     }}
                     checked={isChecked(filterKey, option)}
                   />
+                  <label style={styles.label} htmlFor={option}>
+                    {option}
+                  </label>
                 </View>
               );
             },
@@ -99,10 +101,20 @@ export default function FilterPicker({
 }
 
 const styles = StyleSheet.create({
-  picker: {
-    display: "flex",
-    width: "100%",
-    justifyContent: "space-evenly",
-    flexDirection: "column",
+  container: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+  },
+  heading: {
+    fontWeight: "bold",
+    marginTop: 10,
+    marginLeft: 5,
+    marginBottom: 5,
+  },
+  flex1: {
+    flex: 1,
+  },
+  label: {
+    flex: 1,
   },
 });
