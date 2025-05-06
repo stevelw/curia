@@ -11,57 +11,59 @@ export default function Index() {
 
   return (
     <View style={styles.container}>
-      {!session.accessToken ? (
-        <View style={styles.flexRow}>
-          <View style={styles.flexButton}>
-            <Button
-              title="Sign in"
-              color={action}
-              onPress={() => router.navigate("/signin")}
-            />
+      <nav>
+        {!session.accessToken ? (
+          <View style={styles.flexRow}>
+            <View style={styles.flexButton}>
+              <Button
+                title="Sign in"
+                color={action}
+                onPress={() => router.navigate("/signin")}
+              />
+            </View>
+            <View style={styles.flexButton}>
+              <Button
+                title="Create account"
+                color={create}
+                onPress={() => router.navigate("/signup")}
+              />
+            </View>
           </View>
-          <View style={styles.flexButton}>
-            <Button
-              title="Create account"
-              color={create}
-              onPress={() => router.navigate("/signup")}
-            />
+        ) : (
+          <View style={styles.flexRow}>
+            <View style={styles.flexButton}>
+              <Button
+                title="My Favourites"
+                color={action}
+                onPress={() => router.navigate("/favourites")}
+              />
+            </View>
+            <View style={styles.flexButton}>
+              <Button
+                title="Sign out"
+                color={destroy}
+                onPress={() =>
+                  setSession({
+                    accessToken: "",
+                    cachedFavourites: null,
+                    cachedExhibitions: null,
+                  })
+                }
+              />
+            </View>
           </View>
+        )}
+        <View style={styles.button}>
+          <Button
+            title="Exhibitions"
+            color={action}
+            onPress={() => router.navigate("/exhibitions")}
+          />
         </View>
-      ) : (
-        <View style={styles.flexRow}>
-          <View style={styles.flexButton}>
-            <Button
-              title="My Favourites"
-              color={action}
-              onPress={() => router.navigate("/favourites")}
-            />
-          </View>
-          <View style={styles.flexButton}>
-            <Button
-              title="Sign out"
-              color={destroy}
-              onPress={() =>
-                setSession({
-                  accessToken: "",
-                  cachedFavourites: null,
-                  cachedExhibitions: null,
-                })
-              }
-            />
-          </View>
-        </View>
-      )}
-      <View style={styles.button}>
-        <Button
-          title="Exhibitions"
-          color={action}
-          onPress={() => router.navigate("/exhibitions")}
-        />
-      </View>
-      <View style={styles.flex1}>
+      </nav>
+      <main style={styles.flex1}>
         <Search />
-      </View>
+      </main>
     </View>
   );
 }

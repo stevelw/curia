@@ -31,7 +31,11 @@ export default function SearchBox({ setSearchTerm }: Props) {
 
   return (
     <View style={styles.searchInput__frame}>
-      <TextInput style={styles.searchInput} onChangeText={debouncedSearch} />
+      <TextInput
+        aria-label="Search"
+        style={styles.searchInput}
+        onChangeText={debouncedSearch}
+      />
     </View>
   );
 }
