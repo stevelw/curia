@@ -61,9 +61,9 @@ export default function Index() {
           />
         </View>
       </nav>
-      <main style={styles.flex1}>
+      <View aria-label="main" style={styles.flex1}>
         <Search />
-      </main>
+      </View>
     </View>
   );
 }
