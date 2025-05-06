@@ -13,8 +13,8 @@ import {
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: PrivateUser.name, schema: UserSchema }]),
     MongooseModule.forFeature([
+      { name: PrivateUser.name, schema: UserSchema },
       { name: Exhibition.name, schema: ExhibitionSchema },
     ]),
     AuthModule,
