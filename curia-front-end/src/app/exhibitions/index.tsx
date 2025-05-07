@@ -1,8 +1,8 @@
-import { fetchAllExhibitions } from "@/src/apis/backEnd.api";
-import { create } from "@/src/components/colours";
-import ExhibitionListItem from "@/src/components/ExhibitionListItem";
-import { SessionContext } from "@/src/contexts/session.context";
-import { GetExhibitionResDto } from "@/src/interfaces/get-exhibition.interface";
+import { fetchAllExhibitions } from "../../apis/backEnd.api";
+import { create } from "../../components/colours";
+import ExhibitionListItem from "../../components/ExhibitionListItem";
+import { SessionContext } from "../../contexts/session.context";
+import { GetExhibitionResDto } from "../../interfaces/get-exhibition.interface";
 import { useRouter, useFocusEffect } from "expo-router";
 import { useCallback, useContext, useState } from "react";
 import {

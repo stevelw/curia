@@ -1,22 +1,22 @@
-import { SortOptions } from "@/src/apis/api.class";
-import Artefact from "@/src/apis/Artefact.interface";
-import { fetchExhibition } from "@/src/apis/backEnd.api";
-import { apiDetailsForArtefact } from "@/src/apis/gateway.api";
+import { SortOptions } from "../../apis/api.class";
+import Artefact from "../../apis/Artefact.interface";
+import { fetchExhibition } from "../../apis/backEnd.api";
+import { apiDetailsForArtefact } from "../../apis/gateway.api";
 import CollectionObjectList, {
   RESULTS_PER_PAGE,
-} from "@/src/components/CollectionObjectList";
+} from "../../components/CollectionObjectList";
 import {
   defaultFilterOptions,
   FilterOptions,
-} from "@/src/components/FilterPicker";
-import { SessionContext } from "@/src/contexts/session.context";
-import { GetExhibitionResDto } from "@/src/interfaces/get-exhibition.interface";
+} from "../../components/FilterPicker";
+import { SessionContext } from "../../contexts/session.context";
+import { GetExhibitionResDto } from "../../interfaces/get-exhibition.interface";
 import { useQueries, UseQueryResult } from "@tanstack/react-query";
 import { Stack, useLocalSearchParams, usePathname } from "expo-router";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { Button, StyleSheet, View } from "react-native";
 import * as Clipboard from "expo-clipboard";
-import { action } from "@/src/components/colours";
+import { action } from "../../components/colours";
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 if (!process.env.EXPO_PUBLIC_FRONT_END_URL) {

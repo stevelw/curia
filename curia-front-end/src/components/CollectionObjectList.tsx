@@ -55,7 +55,9 @@ export default function CollectionObjectList({
 
   useEffect(() => {
     if (!queryResultsPending) {
-      setNumberOfPages(Math.ceil(totalResultsAvailable / RESULTS_PER_PAGE));
+      setNumberOfPages(
+        Math.max(Math.ceil(totalResultsAvailable / RESULTS_PER_PAGE), 1),
+      );
     }
   }, [queryResultsPending, totalResultsAvailable]);
 
