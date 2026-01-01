@@ -68,7 +68,7 @@
     "jest-expo": "~52.0.6",
     "prettier": "^3.5.3",
     "react-test-renderer": "18.3.1",
-    "typescript": "^5.3.3"
+    "typescript": "^5.9.3"
   },
   "private": true
 }
