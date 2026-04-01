@@ -30,7 +30,7 @@
     "@nestjs/swagger": "^11.2.6",
     "bcrypt": "^5.1.1",
     "mongodb": "6.16",
-    "mongoose": "^8.14.0",
+    "mongoose": "^9.3.3",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "reflect-metadata": "^0.2.2",
