@@ -83,5 +83,12 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
+  },
+  "allowScripts": {
+    "@nestjs/core@11.1.0": true,
+    "@scarf/scarf@1.4.0": true,
+    "@swc/core@1.11.22": true,
+    "bcrypt@5.1.1": true,
+    "fsevents@2.3.3": true
   }
 }
