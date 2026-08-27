@@ -28,7 +28,7 @@
     "@nestjs/mongoose": "^11.0.3",
     "@nestjs/platform-express": "^11.1.17",
     "@nestjs/swagger": "^11.2.6",
-    "bcrypt": "^5.1.1",
+    "bcrypt": "^6.0.0",
     "mongodb": "6.16",
     "mongoose": "^8.14.0",
     "passport": "^0.7.0",
@@ -44,7 +44,7 @@
     "@nestjs/passport": "^11.0.5",
     "@nestjs/schematics": "^11.0.9",
     "@nestjs/testing": "^11.1.11",
-    "@swc/cli": "^0.6.0",
+    "@swc/cli": "^0.8.1",
     "@swc/core": "^1.10.7",
     "@types/bcrypt": "^5.0.2",
     "@types/express": "^5.0.6",
@@ -83,5 +83,12 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
+  },
+  "allowScripts": {
+    "@nestjs/core@11.1.0": true,
+    "@scarf/scarf@1.4.0": true,
+    "fsevents@2.3.3": true,
+    "@swc/core@1.16.1": true,
+    "bcrypt@6.0.0": true
   }
 }
