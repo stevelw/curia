@@ -78,6 +78,7 @@
   },
   "overrides": {
     "ws": "^8.20.2",
-    "postcss": "^8.5.23"
+    "postcss": "^8.5.23",
+    "@xmldom/xmldom": "^0.8.13"
   }
 }
